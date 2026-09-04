@@ -1,65 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+<svg xmlns="http://www.w3.org/2000/svg" width="997" height="556" viewBox="0 0 997 556">
   <defs>
-    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#05080c" />
-      <stop offset="50%" stop-color="#0d1520" />
-      <stop offset="100%" stop-color="#040608" />
-    </linearGradient>
-    <radialGradient id="arcGlow" cx="50%" cy="46%" r="40%">
-      <stop offset="0%" stop-color="#22d1ee" stop-opacity="0.6" />
-      <stop offset="40%" stop-color="#e83a3a" stop-opacity="0.3" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
-    </radialGradient>
-    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f0a030" />
-      <stop offset="100%" stop-color="#d7b46a" />
-    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="124" height="74" patternUnits="userSpaceOnUse">
+      <path d="M124 0H0V74" fill="none" stroke="#123028" stroke-width="1"/>
+    </pattern>
   </defs>
+  <rect width="997" height="556" fill="#020907"/>
+  <rect width="997" height="556" fill="url(#grid)"/>
+  <rect x="37" y="27" width="920" height="47" rx="5" fill="none" stroke="#0b6d4b" stroke-width="1.2"/>
 
-  <!-- Background -->
-  <rect width="800" height="1000" fill="url(#bgGrad)" />
-  <rect width="800" height="1000" fill="url(#arcGlow)" />
+  <rect x="148" y="138" width="200" height="125" rx="8" fill="#030b08" stroke="#ff9d00" stroke-width="3"/>
+  <text x="248" y="188" text-anchor="middle" fill="#ff9d00" font-family="Arial,sans-serif" font-size="17" font-weight="700">AWS S3 BUCKET</text>
+  <text x="248" y="219" text-anchor="middle" fill="#27e68b" font-family="Arial,sans-serif" font-size="12">STATIC MEDIA CDN</text>
 
-  <!-- Tech Grid Background -->
-  <g stroke="#22d1ee" stroke-opacity="0.07" stroke-width="1">
-    <path d="M0 100h800M0 200h800M0 300h800M0 400h800M0 500h800M0 600h800M0 700h800M0 800h800M0 900h800" />
-    <path d="M100 0v1000M200 0v1000M300 0v1000M400 0v1000M500 0v1000M600 0v1000M700 0v1000" />
-  </g>
+  <rect x="397" y="138" width="200" height="125" rx="8" fill="#030b08" stroke="#20e0bd" stroke-width="3"/>
+  <text x="497" y="188" text-anchor="middle" fill="#27e68b" font-family="Arial,sans-serif" font-size="17" font-weight="700">FLASK APP</text>
+  <text x="497" y="219" text-anchor="middle" fill="#22d7ff" font-family="Arial,sans-serif" font-size="12">DOCKER CONTAINER</text>
 
-  <!-- Outer HUD Rings -->
-  <g fill="none" stroke="#22d1ee" stroke-opacity="0.35">
-    <circle cx="400" cy="460" r="340" stroke-width="1" stroke-dasharray="8 6" />
-    <circle cx="400" cy="460" r="280" stroke-width="2" />
-    <circle cx="400" cy="460" r="230" stroke-width="1.5" stroke-dasharray="16 8" />
-  </g>
+  <rect x="645" y="138" width="201" height="125" rx="8" fill="#030b08" stroke="#19c9ee" stroke-width="3"/>
+  <text x="745.5" y="188" text-anchor="middle" fill="#19d7ee" font-family="Arial,sans-serif" font-size="17" font-weight="700">MYSQL CLUSTER</text>
+  <text x="745.5" y="219" text-anchor="middle" fill="#ff9d00" font-family="Arial,sans-serif" font-size="12">AWS RDS CLOUD DB</text>
 
-  <g fill="none" stroke="#e83a3a" stroke-opacity="0.4">
-    <circle cx="400" cy="460" r="180" stroke-width="2" />
-    <path d="M200 460h400M400 260v400" stroke-width="1" stroke-dasharray="4 4" />
-  </g>
+  <path d="M348 201H397" stroke="#27e68b" stroke-width="4" stroke-dasharray="5 4"/>
+  <path d="M597 201H645" stroke="#27e68b" stroke-width="4" stroke-dasharray="5 4"/>
 
-  <!-- Armor Core Hexagon Silhouette -->
-  <path d="M400 200 L560 300 L560 620 L400 720 L240 620 L240 300 Z" fill="#080e16" stroke="url(#goldGrad)" stroke-width="4" filter="drop-shadow(0 0 15px rgba(240,160,48,0.3))" />
-
-  <path d="M400 230 L530 315 L530 605 L400 690 L270 605 L270 315 Z" fill="#0c1622" stroke="#22d1ee" stroke-opacity="0.5" stroke-width="2" />
-
-  <!-- Arc Reactor Center Emblem -->
-  <circle cx="400" cy="460" r="85" fill="#050a10" stroke="#e83a3a" stroke-width="4" />
-  <circle cx="400" cy="460" r="70" fill="none" stroke="#22d1ee" stroke-width="3" stroke-dasharray="12 6" />
-  <circle cx="400" cy="460" r="48" fill="#0e1f2e" stroke="url(#goldGrad)" stroke-width="3" />
-
-  <!-- Central Crest S -->
-  <text x="400" y="482" fill="#22d1ee" font-size="64" text-anchor="middle" font-family="'Orbitron', sans-serif" font-weight="900" filter="drop-shadow(0 0 10px #22d1ee)">S</text>
-
-  <!-- HUD Data Readouts Overlay -->
-  <g font-family="'JetBrains Mono', monospace" font-size="13" fill="#22d1ee" opacity="0.8">
-    <text x="260" y="280">SYS//ARC_REACTOR_ONLINE</text>
-    <text x="260" y="650">OUTPUT::100%_OPERATIONAL</text>
-    <text x="440" y="280">VOLTAGE::MAX_CAPACITY</text>
-    <text x="440" y="650">DEVOPS//AUTOMATION_SET</text>
-  </g>
-
-  <!-- Bottom Crest Label -->
-  <rect x="250" y="850" width="300" height="42" fill="#0a121c" stroke="url(#goldGrad)" stroke-width="1.5" rx="4" />
-  <text x="400" y="877" fill="#f0f0f5" font-size="16" text-anchor="middle" font-family="'Orbitron', sans-serif" font-weight="700" letter-spacing="4">SIVA S // DEVOPS CORE</text>
+  <rect x="148" y="337" width="698" height="126" rx="8" fill="#030b08" stroke="#20e0bd" stroke-width="2.5"/>
+  <circle cx="198.5" cy="399.5" r="10" fill="#27e68b" filter="url(#glow)"/>
+  <circle cx="236" cy="399.5" r="10" fill="#22c8e8"/>
+  <circle cx="273.5" cy="399.5" r="10" fill="#ff9d00"/>
+  <text x="311" y="394" fill="#27e68b" font-family="Arial,sans-serif" font-size="16" font-weight="700">HIGH AVAILABILITY NGINX REVERSE PROXY</text>
+  <text x="311" y="424" fill="#aabdb7" font-family="monospace" font-size="13">LOAD BALANCING  •  SSL ENCRYPTION  •  99.9% UPTIME TARGET</text>
 </svg>
