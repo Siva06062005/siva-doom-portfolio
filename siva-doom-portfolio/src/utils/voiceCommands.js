@@ -102,14 +102,14 @@ export function processVoiceCommand(rawTranscript) {
   // ─────────────────────────────────────────────────────────────
   if (
     hasMatch(input, [
-      "protocol stark",
-      "activate stark",
-      "stark mode",
-      "stark theme"
+      "protocol ironman",
+      "activate ironman",
+      "ironman mode",
+      "ironman theme"
     ])
   ) {
     return {
-      text: "Stark protocol has been decommissioned, sir. The system has been unified into the DOOM Industrial Cyber architecture.",
+      text: "Ironman mode is currently in standby, sir. The system is operating on the DOOM Industrial Cyber architecture.",
       action: null,
     };
   }
@@ -454,17 +454,15 @@ export function processVoiceCommand(rawTranscript) {
   }
   if (
     hasMatch(input, [
-      "inbox",
-      "open inbox",
-      "secure inbox",
-      "command inbox",
       "transmission vault",
       "open vault",
       "check messages",
       "view messages",
       "transmissions",
       "check transmissions",
-      "send message"
+      "send message",
+      "message siva",
+      "contact siva"
     ])
   ) {
     return {
@@ -614,7 +612,7 @@ export function processVoiceCommand(rawTranscript) {
   // ─────────────────────────────────────────────────────────────
   if (hasMatch(input, ["joke", "funny", "make me laugh", "tell a joke"])) {
     return {
-      text: "Why do DevOps engineers prefer dark mode? Because light attracts bugs, and Stark mode looks like Iron Man!",
+      text: "Why do DevOps engineers prefer dark mode? Because light attracts bugs, and Doom mode looks unstoppable!",
       action: null,
     };
   }
@@ -688,7 +686,7 @@ export function processVoiceCommand(rawTranscript) {
   // ─────────────────────────────────────────────────────────────
   if (hasMatch(input, ["help", "what can you do", "commands", "options", "what do you know"])) {
     return {
-      text: "You have full voice access, sir. Try: 'Status report', 'Pitch Siva', 'Explain Docker', 'What is Terraform', 'Inspect SmartPanchayat', 'Drop a needle', 'Protocol Stark', or 'Browse encyclopedia'.",
+      text: "You have full voice access, sir. Try: 'Status report', 'Pitch Siva', 'Explain Docker', 'What is Terraform', 'Inspect SmartPanchayat', 'Drop a needle', 'Protocol Ironman', or 'Browse encyclopedia'.",
       action: null,
     };
   }

@@ -69,7 +69,7 @@ export default function SystemTelemetry() {
         </div>
         <div className="telemetry-item">
           <span className="telemetry-label">MODE:</span>
-          <strong>{theme === "stark" ? "STARK ARC HUD" : "DOOM TERMINAL"}</strong>
+          <strong>{theme === "ironman" ? "IRONMAN ARC HUD" : "DOOM TERMINAL"}</strong>
         </div>
       </div>
     </div>

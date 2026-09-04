@@ -15,9 +15,9 @@ export default function PageShell({ eyebrow, title, intro, children }) {
         <span className="eyebrow">{eyebrow}</span>
         <h1>{title}</h1>
         {intro && <p>{intro}</p>}
-        {theme === "stark" && (
+        {theme === "ironman" && (
           <div className="status" style={{ marginTop: 16 }}>
-            <span /> SYSTEM OPERATIONAL
+            <span /> ARC REACTOR ONLINE
           </div>
         )}
         {theme === "doom" && (

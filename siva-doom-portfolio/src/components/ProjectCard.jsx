@@ -42,10 +42,10 @@ export default function ProjectCard({ project, index, onInspect }) {
       <div className="project-body">
         <span className="eyebrow">{project.category}</span>
         <h3>{project.title}</h3>
-        <p>{project.description}</p>
+        <p>{project.shortDescription || project.description}</p>
 
         <div className="chips">
-          {project.stack.map((s) => (
+          {(project.technologies || project.stack || []).slice(0, 6).map((s) => (
             <span className="chip" key={s}>
               {s}
             </span>

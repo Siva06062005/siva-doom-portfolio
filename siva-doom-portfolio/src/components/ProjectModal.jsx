@@ -118,19 +118,44 @@ export default function ProjectModal({ project, onClose }) {
 
           {/* Footer Actions */}
           <div className="modal-footer">
-            <a
-              href={profile.socials.github}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-secondary"
-              onClick={() => sfx.playClick()}
-            >
-              <Github size={16} /> GitHub Profile
-            </a>
+            {project.githubUrl && !project.githubUrl.startsWith("REPLACE_WITH") && project.githubUrl !== "#" ? (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary"
+                onClick={() => sfx.playClick()}
+              >
+                <Github size={16} /> Repository
+              </a>
+            ) : (
+              <a
+                href={profile.socials.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary"
+                onClick={() => sfx.playClick()}
+              >
+                <Github size={16} /> GitHub Profile
+              </a>
+            )}
+
+            {project.liveUrl && !project.liveUrl.startsWith("REPLACE_WITH") && project.liveUrl !== "#" && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                onClick={() => sfx.playClick()}
+              >
+                <ExternalLink size={16} /> Live Demo
+              </a>
+            )}
+
             <a
               href={profile.socials.linkedin}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-primary"
               onClick={() => sfx.playClick()}
             >

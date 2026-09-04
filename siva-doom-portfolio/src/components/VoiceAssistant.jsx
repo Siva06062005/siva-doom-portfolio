@@ -117,7 +117,7 @@ export default function VoiceAssistant() {
       case "theme":
         if (action.payload === "toggle") {
           toggleTheme();
-        } else if (action.payload === "stark" && theme !== "stark") {
+        } else if (action.payload === "ironman" && theme !== "ironman") {
           toggleTheme();
         } else if (action.payload === "doom" && theme !== "doom") {
           toggleTheme();

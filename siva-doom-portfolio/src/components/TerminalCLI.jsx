@@ -142,6 +142,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
 9b2a4c8e1f     siva/smartpanchayat-dapp   Up 42 days     3000/tcp, 8545/tcp (Hardhat)
 3c5d7e9a2b     siva/scalable-ecommerce    Up 18 days     80/tcp -> 5000/tcp (Flask)
 4e1f7a8b9c     siva/automation-ci:v2      Up 14 days     8080/tcp (Jenkins)
+5a6b7c8d9e     siva/fakenews-ml-pipeline  Up 10 days     8000/tcp, 3306/tcp (MySQL/TF-IDF)
 COMMAND: --automate-everything --zero-downtime`,
         });
         break;
@@ -162,10 +163,10 @@ A: Because light attracts bugs! (And because the Doom Cyber HUD looks so clean).
         });
         break;
 
-      case "stark":
+      case "ironman":
         newHistory.push({
           type: "output",
-          text: "[LEGACY PROTOCOL] Stark mode decommissioned. System unified into DOOM INDUSTRIAL architecture.",
+          text: "[STANDBY PROTOCOL] Ironman mode standby. System unified into DOOM INDUSTRIAL architecture.",
         });
         break;
 

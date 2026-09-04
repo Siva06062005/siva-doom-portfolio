@@ -186,120 +186,194 @@ export default async function handler(req, res) {
     });
 
     // 6. Check Provider Credentials
-    // Supports RESEND_API_KEY or EMAIL_SERVICE_API_KEY
-    const apiKey = process.env.RESEND_API_KEY || process.env.EMAIL_SERVICE_API_KEY;
-    // Supports CONTACT_EMAIL or CONTACT_TO_EMAIL
+    const web3formsKey = process.env.WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_KEY || process.env.ACCESS_KEY;
+    const resendKey = process.env.RESEND_API_KEY || process.env.EMAIL_SERVICE_API_KEY;
+    const formspreeId = process.env.FORMSPREE_FORM_ID;
     const toEmail = process.env.CONTACT_EMAIL || process.env.CONTACT_TO_EMAIL || 'sivasathiya0606@gmail.com';
     const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Siva Portfolio Contact <onboarding@resend.dev>';
 
-    // 7. Dev Mode Fallback (if no API key configured in local dev)
-    if (!apiKey) {
-      console.warn('⚠️ [CONTACT DEV LOG] RESEND_API_KEY / EMAIL_SERVICE_API_KEY not configured. Logging transmission locally:');
-      console.log({
-        from: cleanName,
-        email: cleanEmail,
-        subject: cleanSubject,
-        timestamp: timestampIso,
-        preview: message.substring(0, 100) + '...'
+    // Option A: Web3Forms (Recommended — direct to sivasathiya0606@gmail.com, zero DNS/domain setup)
+    if (web3formsKey) {
+      const w3Response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: web3formsKey,
+          name: cleanName,
+          email: cleanEmail,
+          replyto: cleanEmail,
+          subject: `[Portfolio Contact] ${cleanSubject}`,
+          message: `Sender Name: ${cleanName}\nSender Email: ${cleanEmail}\nSubject: ${cleanSubject}\nDate: ${timestampFormatted} (IST)\nSource: Siva Doom Portfolio\n\nMessage:\n${message.trim()}`,
+          from_name: `${cleanName} (Portfolio Inquirer)`,
+          botcheck: honeypot || ''
+        })
       });
+
+      const w3Data = await w3Response.json().catch(() => ({}));
+
+      if (!w3Response.ok || w3Data.success === false) {
+        console.error('❌ Web3Forms Gateway Error:', w3Data);
+        res.statusCode = 502;
+        res.end(JSON.stringify({
+          success: false,
+          error: w3Data.message || 'Email delivery failed at gateway. Please try again later.'
+        }));
+        return;
+      }
 
       res.statusCode = 200;
       res.end(JSON.stringify({
         success: true,
-        message: 'Message captured in local development environment. Configure RESEND_API_KEY for live delivery.'
+        message: 'Message sent successfully. I will get back to you soon.'
       }));
       return;
     }
 
-    // 8. Construct Email Payload for Resend API
-    const emailPayload = {
-      from: fromEmail,
-      to: [toEmail],
-      reply_to: cleanEmail,
-      subject: `[Portfolio Contact] ${cleanSubject}`,
-      text: `NEW CONTACT MESSAGE\n\nName: ${cleanName}\nEmail: ${cleanEmail}\nSubject: ${cleanSubject}\nDate: ${timestampFormatted} (IST)\nSource: Siva Doom Portfolio\n\nMessage:\n${message.trim()}`,
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0b0f0d; color: #e2ede4; margin: 0; padding: 20px; }
-            .card { background: #131d17; border: 1px solid #234633; border-radius: 8px; max-width: 600px; margin: 0 auto; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-            .header { background: #1a2a21; border-bottom: 2px solid #39e68b; padding: 18px 24px; }
-            .header h2 { margin: 0; color: #39e68b; font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase; }
-            .body { padding: 24px; }
-            .field { margin-bottom: 16px; }
-            .label { font-size: 0.75rem; color: #7f9b87; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-            .value { font-size: 1rem; color: #f0f7f2; font-weight: 500; }
-            .message-box { background: #0b0f0d; border-left: 3px solid #39e68b; padding: 16px; margin-top: 16px; border-radius: 4px; font-size: 0.95rem; line-height: 1.6; color: #d0e4d6; }
-            .footer { background: #0c1410; padding: 14px 24px; font-size: 0.75rem; color: #5f7a67; border-top: 1px solid #1a2c20; }
-          </style>
-        </head>
-        <body>
-          <div class="card">
-            <div class="header">
-              <h2>⚡ Incoming Portfolio Contact Message</h2>
-            </div>
-            <div class="body">
-              <div class="field">
-                <div class="label">Sender Identity</div>
-                <div class="value">${safeNameHtml} &lt;${safeEmailHtml}&gt;</div>
-              </div>
-              <div class="field">
-                <div class="label">Subject</div>
-                <div class="value">${safeSubjectHtml}</div>
-              </div>
-              <div class="field">
-                <div class="label">Received Date & Time</div>
-                <div class="value">${timestampFormatted} (IST)</div>
-              </div>
-              <div class="field">
-                <div class="label">Source</div>
-                <div class="value">Siva Doom React Portfolio (Production)</div>
-              </div>
-              <div class="field">
-                <div class="label">Message</div>
-                <div class="message-box">${safeMessageHtml}</div>
-              </div>
-            </div>
-            <div class="footer">
-              Securely dispatched via Siva Portfolio Contact Engine • Click Reply to respond directly to ${safeEmailHtml}
-            </div>
-          </div>
-        </body>
-        </html>
-      `
-    };
+    // Option B: Formspree
+    if (formspreeId) {
+      const fsResponse = await fetch(`https://formspree.io/f/${formspreeId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: cleanName,
+          email: cleanEmail,
+          _replyto: cleanEmail,
+          subject: `[Portfolio Contact] ${cleanSubject}`,
+          message: message.trim()
+        })
+      });
 
-    // 9. Dispatch to Resend API
-    const resendResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(emailPayload)
-    });
+      if (!fsResponse.ok) {
+        res.statusCode = 502;
+        res.end(JSON.stringify({
+          success: false,
+          error: 'Email delivery failed at gateway. Please try again later.'
+        }));
+        return;
+      }
 
-    const resendData = await resendResponse.json().catch(() => ({}));
-
-    if (!resendResponse.ok) {
-      console.error('❌ Resend API Error:', resendData);
-      res.statusCode = 502;
+      res.statusCode = 200;
       res.end(JSON.stringify({
-        success: false,
-        error: 'Email delivery uplink failed at provider gateway. Please try again later.'
+        success: true,
+        message: 'Message sent successfully. I will get back to you soon.'
       }));
       return;
     }
+
+    // Option C: Resend API
+    if (resendKey) {
+      const emailPayload = {
+        from: fromEmail,
+        to: [toEmail],
+        reply_to: cleanEmail,
+        subject: `[Portfolio Contact] ${cleanSubject}`,
+        text: `NEW CONTACT MESSAGE\n\nName: ${cleanName}\nEmail: ${cleanEmail}\nSubject: ${cleanSubject}\nDate: ${timestampFormatted} (IST)\nSource: Siva Doom Portfolio\n\nMessage:\n${message.trim()}`,
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0b0f0d; color: #e2ede4; margin: 0; padding: 20px; }
+              .card { background: #131d17; border: 1px solid #234633; border-radius: 8px; max-width: 600px; margin: 0 auto; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+              .header { background: #1a2a21; border-bottom: 2px solid #39e68b; padding: 18px 24px; }
+              .header h2 { margin: 0; color: #39e68b; font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase; }
+              .body { padding: 24px; }
+              .field { margin-bottom: 16px; }
+              .label { font-size: 0.75rem; color: #7f9b87; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+              .value { font-size: 1rem; color: #f0f7f2; font-weight: 500; }
+              .message-box { background: #0b0f0d; border-left: 3px solid #39e68b; padding: 16px; margin-top: 16px; border-radius: 4px; font-size: 0.95rem; line-height: 1.6; color: #d0e4d6; }
+              .footer { background: #0c1410; padding: 14px 24px; font-size: 0.75rem; color: #5f7a67; border-top: 1px solid #1a2c20; }
+            </style>
+          </head>
+          <body>
+            <div class="card">
+              <div class="header">
+                <h2>⚡ Incoming Portfolio Contact Message</h2>
+              </div>
+              <div class="body">
+                <div class="field">
+                  <div class="label">Sender Identity</div>
+                  <div class="value">${safeNameHtml} &lt;${safeEmailHtml}&gt;</div>
+                </div>
+                <div class="field">
+                  <div class="label">Subject</div>
+                  <div class="value">${safeSubjectHtml}</div>
+                </div>
+                <div class="field">
+                  <div class="label">Received Date & Time</div>
+                  <div class="value">${timestampFormatted} (IST)</div>
+                </div>
+                <div class="field">
+                  <div class="label">Source</div>
+                  <div class="value">Siva Doom React Portfolio (Production)</div>
+                </div>
+                <div class="field">
+                  <div class="label">Message</div>
+                  <div class="message-box">${safeMessageHtml}</div>
+                </div>
+              </div>
+              <div class="footer">
+                Securely dispatched via Siva Portfolio Contact Engine • Click Reply to respond directly to ${safeEmailHtml}
+              </div>
+            </div>
+          </body>
+          </html>
+        `
+      };
+
+      const resendResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailPayload)
+      });
+
+      const resendData = await resendResponse.json().catch(() => ({}));
+
+      if (!resendResponse.ok) {
+        console.error('❌ Resend API Error:', resendData);
+        res.statusCode = 502;
+        res.end(JSON.stringify({
+          success: false,
+          error: 'Email delivery failed at provider gateway. Please try again later.'
+        }));
+        return;
+      }
+
+      res.statusCode = 200;
+      res.end(JSON.stringify({
+        success: true,
+        message: 'Message sent successfully. I will get back to you soon.',
+        id: resendData.id
+      }));
+      return;
+    }
+
+    // Fallback: Local dev log when no key is configured yet
+    console.warn('⚠️ [CONTACT DEV LOG] No email service key configured (WEB3FORMS_ACCESS_KEY or RESEND_API_KEY). Logging transmission locally:');
+    console.log({
+      from: cleanName,
+      email: cleanEmail,
+      subject: cleanSubject,
+      timestamp: timestampIso,
+      preview: message.substring(0, 100) + '...'
+    });
 
     res.statusCode = 200;
     res.end(JSON.stringify({
       success: true,
-      message: 'Transmission successfully uplinked.',
-      id: resendData.id
+      message: 'Message captured in local development environment. Configure WEB3FORMS_ACCESS_KEY for live delivery to your email.'
     }));
+    return;
   } catch (err) {
     console.error('❌ Internal server error in contact uplink:', err);
     res.statusCode = 500;

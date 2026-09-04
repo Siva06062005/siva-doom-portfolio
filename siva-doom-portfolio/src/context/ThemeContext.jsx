@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  // Single theme — Doom only. No toggle needed.
+  // Single active theme — Doom. Ironman theme preserved in CSS and components for future activation.
   const theme = "doom";
   const toggleTheme = () => {};
   const transitioning = false;

@@ -16,8 +16,8 @@ build/
 .env.local
 .env.development.local
 .env.test.local
-.env.production.local
 .env.*
+!.env.example
 
 # Logs
 npm-debug.log*
@@ -36,3 +36,5 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+*.exe
+
