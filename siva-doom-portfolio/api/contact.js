@@ -117,7 +117,7 @@ export default async function handler(req, res) {
     const {
       name,
       email,
-      subject = 'Portfolio Uplink Transmission',
+      subject,
       message,
       honeypot = ''
     } = body;
@@ -128,7 +128,7 @@ export default async function handler(req, res) {
       res.statusCode = 200;
       res.end(JSON.stringify({
         success: true,
-        message: 'Transmission uplink verified.'
+        message: 'Message sent successfully.'
       }));
       return;
     }
@@ -152,11 +152,11 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (subject && (typeof subject !== 'string' || subject.trim().length > 150)) {
+    if (!subject || typeof subject !== 'string' || subject.trim().length < 2 || subject.trim().length > 150) {
       res.statusCode = 400;
       res.end(JSON.stringify({
         success: false,
-        error: 'Subject must not exceed 150 characters.'
+        error: 'Subject must be between 2 and 150 characters.'
       }));
       return;
     }
@@ -173,7 +173,7 @@ export default async function handler(req, res) {
     // 5. Sanitize Inputs for Email Delivery
     const cleanName = stripHeaderInjection(name);
     const cleanEmail = stripHeaderInjection(email).toLowerCase();
-    const cleanSubject = stripHeaderInjection(subject || 'Portfolio Uplink Transmission');
+    const cleanSubject = stripHeaderInjection(subject);
     const safeNameHtml = sanitizeText(cleanName);
     const safeEmailHtml = sanitizeText(cleanEmail);
     const safeSubjectHtml = sanitizeText(cleanSubject);
@@ -186,13 +186,15 @@ export default async function handler(req, res) {
     });
 
     // 6. Check Provider Credentials
-    const apiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.CONTACT_TO_EMAIL || 'sivasathiya0606@gmail.com';
-    const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Siva Portfolio Uplink <onboarding@resend.dev>';
+    // Supports RESEND_API_KEY or EMAIL_SERVICE_API_KEY
+    const apiKey = process.env.RESEND_API_KEY || process.env.EMAIL_SERVICE_API_KEY;
+    // Supports CONTACT_EMAIL or CONTACT_TO_EMAIL
+    const toEmail = process.env.CONTACT_EMAIL || process.env.CONTACT_TO_EMAIL || 'sivasathiya0606@gmail.com';
+    const fromEmail = process.env.CONTACT_FROM_EMAIL || 'Siva Portfolio Contact <onboarding@resend.dev>';
 
     // 7. Dev Mode Fallback (if no API key configured in local dev)
     if (!apiKey) {
-      console.warn('⚠️ [UPLINK DEV LOG] RESEND_API_KEY not configured. Logging transmission locally:');
+      console.warn('⚠️ [CONTACT DEV LOG] RESEND_API_KEY / EMAIL_SERVICE_API_KEY not configured. Logging transmission locally:');
       console.log({
         from: cleanName,
         email: cleanEmail,
@@ -204,7 +206,7 @@ export default async function handler(req, res) {
       res.statusCode = 200;
       res.end(JSON.stringify({
         success: true,
-        message: 'Uplink transmission received and logged in local development environment. Configure RESEND_API_KEY for live delivery.'
+        message: 'Message captured in local development environment. Configure RESEND_API_KEY for live delivery.'
       }));
       return;
     }
@@ -214,8 +216,8 @@ export default async function handler(req, res) {
       from: fromEmail,
       to: [toEmail],
       reply_to: cleanEmail,
-      subject: `[Siva Portfolio Uplink] ${cleanSubject}`,
-      text: `NEW PORTFOLIO CONTACT TRANSMISSION\n\nName: ${cleanName}\nEmail: ${cleanEmail}\nSubject: ${cleanSubject}\nDate: ${timestampFormatted} (IST)\n\nMessage:\n${message.trim()}`,
+      subject: `[Portfolio Contact] ${cleanSubject}`,
+      text: `NEW CONTACT MESSAGE\n\nName: ${cleanName}\nEmail: ${cleanEmail}\nSubject: ${cleanSubject}\nDate: ${timestampFormatted} (IST)\nSource: Siva Doom Portfolio\n\nMessage:\n${message.trim()}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -237,7 +239,7 @@ export default async function handler(req, res) {
         <body>
           <div class="card">
             <div class="header">
-              <h2>⚡ Incoming Portfolio Uplink</h2>
+              <h2>⚡ Incoming Portfolio Contact Message</h2>
             </div>
             <div class="body">
               <div class="field">
@@ -249,16 +251,20 @@ export default async function handler(req, res) {
                 <div class="value">${safeSubjectHtml}</div>
               </div>
               <div class="field">
-                <div class="label">Transmission Time</div>
-                <div class="value">${timestampFormatted}</div>
+                <div class="label">Received Date & Time</div>
+                <div class="value">${timestampFormatted} (IST)</div>
               </div>
               <div class="field">
-                <div class="label">Message Transmission</div>
+                <div class="label">Source</div>
+                <div class="value">Siva Doom React Portfolio (Production)</div>
+              </div>
+              <div class="field">
+                <div class="label">Message</div>
                 <div class="message-box">${safeMessageHtml}</div>
               </div>
             </div>
             <div class="footer">
-              Securely dispatched via Siva-Doom-Portfolio Uplink Engine
+              Securely dispatched via Siva Portfolio Contact Engine • Click Reply to respond directly to ${safeEmailHtml}
             </div>
           </div>
         </body>

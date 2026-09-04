@@ -12,7 +12,6 @@ import Skills from "./pages/Skills";
 import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
 import Contact from "./pages/Contact";
-import Inbox from "./pages/Inbox";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -32,7 +31,6 @@ export default function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/experience" element={<Experience />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/inbox" element={<Inbox />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, Shield, Volume2, VolumeX, Music, Inbox } from "lucide-react";
+import { Menu, X, Volume2, VolumeX, Music } from "lucide-react";
 import SystemTelemetry from "./SystemTelemetry";
 import VoiceAssistant from "./VoiceAssistant";
 import { sfx } from "../utils/sfx";
-import { inboxService } from "../services/inboxService";
 
 const links = [
   ["Home", "/"],
@@ -13,22 +12,12 @@ const links = [
   ["Projects", "/projects"],
   ["Experience", "/experience"],
   ["Contact", "/contact"],
-  ["Inbox", "/inbox"],
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [sfxOn, setSfxOn] = useState(() => sfx.enabled);
   const [musicOn, setMusicOn] = useState(() => sfx.bgmPlaying);
-  const [unreadCount, setUnreadCount] = useState(() => inboxService.getStats().unread);
-
-  useEffect(() => {
-    const updateCount = () => {
-      setUnreadCount(inboxService.getStats().unread);
-    };
-    window.addEventListener("inbox_updated", updateCount);
-    return () => window.removeEventListener("inbox_updated", updateCount);
-  }, []);
 
   const toggleSfx = () => {
     const newState = sfx.toggle();
@@ -89,14 +78,8 @@ export default function Navbar() {
               className={({ isActive }) => `nav-link-item ${isActive ? "active" : ""}`}
             >
               <span>{`// ${label}`}</span>
-              {label === "Inbox" && unreadCount > 0 && (
-                <span className="nav-unread-badge" title={`${unreadCount} unread transmissions`}>
-                  {unreadCount}
-                </span>
-              )}
             </NavLink>
           ))}
-
 
           <button
             className={`sfx-toggle-btn ${musicOn ? "music-active" : ""}`}

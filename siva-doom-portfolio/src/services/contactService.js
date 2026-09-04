@@ -1,25 +1,14 @@
-import { inboxService } from "./inboxService";
-
 /**
  * Client-Side Contact Uplink Service
- * Dispatches secure contact payloads to /api/contact
- * and archives the transmission in the local secure command inbox.
+ * Dispatches verified contact payloads to /api/contact
+ * to deliver inquiries directly to the portfolio email.
  */
 
 export async function sendContactMessage({ name, email, subject, message, honeypot = "" }) {
-  const cleanName = name.trim();
-  const cleanEmail = email.trim();
-  const cleanSubject = subject ? subject.trim() : "Portfolio Uplink Transmission";
-  const cleanMessage = message.trim();
-
-  // Archive immediately into local encrypted Command Inbox
-  inboxService.saveMessage({
-    name: cleanName,
-    email: cleanEmail,
-    subject: cleanSubject,
-    message: cleanMessage,
-    origin: "TRANSMIT UPLINK"
-  });
+  const cleanName = typeof name === "string" ? name.trim() : "";
+  const cleanEmail = typeof email === "string" ? email.trim() : "";
+  const cleanSubject = typeof subject === "string" ? subject.trim() : "";
+  const cleanMessage = typeof message === "string" ? message.trim() : "";
 
   try {
     const response = await fetch("/api/contact", {
@@ -33,32 +22,29 @@ export async function sendContactMessage({ name, email, subject, message, honeyp
         email: cleanEmail,
         subject: cleanSubject,
         message: cleanMessage,
-        honeypot: honeypot ? honeypot.trim() : ""
+        honeypot: honeypot ? String(honeypot).trim() : ""
       })
     });
 
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      // Even if remote server responded with error (e.g. rate limit / dev mode),
-      // local transmission was successfully captured in the Command Inbox!
       return {
         success: false,
-        error: data.error || `Server responded with status ${response.status}. Transmission archived in local inbox.`
+        error: data.error || "Unable to send your message. Please try again or contact me directly."
       };
     }
 
     return {
       success: true,
-      message: data.message || "Transmission uplink established successfully and archived in Command Inbox."
+      message: data.message || "Message sent successfully. I'll get back to you soon."
     };
   } catch (err) {
-    console.warn("Network endpoint notice (transmission stored locally in vault):", err);
-    // Return success since it's preserved in the client command vault
+    // Log minimal message for client debugging without sensitive information
+    console.error("Transmission uplink network fault:", err?.message || "Unknown error");
     return {
-      success: true,
-      message: "Transmission archived securely in Command Inbox (Offline/Local Uplink Mode)."
+      success: false,
+      error: "Unable to send your message. Please try again or contact me directly."
     };
   }
 }
-

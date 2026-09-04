@@ -464,12 +464,12 @@ export function processVoiceCommand(rawTranscript) {
       "view messages",
       "transmissions",
       "check transmissions",
-      "classified messages"
+      "send message"
     ])
   ) {
     return {
-      text: "Accessing encrypted command transmission vault, sir. Security clearance required.",
-      action: { type: "navigate", payload: "/inbox" },
+      text: "Opening direct communication channels to transmit your message to Siva.",
+      action: { type: "navigate", payload: "/contact" },
     };
   }
 

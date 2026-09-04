@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, ShieldCheck, AlertTriangle, Loader2, Inbox, Lock } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import PageShell from "../components/PageShell";
 import { profile } from "../data/portfolio";
@@ -19,7 +18,7 @@ export default function Contact() {
   const [status, setStatus] = useState({
     submitting: false,
     success: false,
-    error: null,
+    error: false,
     message: ""
   });
 
@@ -35,24 +34,31 @@ export default function Contact() {
 
   const validate = () => {
     const errors = {};
-    if (!formData.name.trim() || formData.name.trim().length < 2) {
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedSubject = formData.subject.trim();
+    const trimmedMessage = formData.message.trim();
+
+    if (!trimmedName || trimmedName.length < 2) {
       errors.name = "Name must be at least 2 characters.";
-    } else if (formData.name.trim().length > 80) {
+    } else if (trimmedName.length > 80) {
       errors.name = "Name must not exceed 80 characters.";
     }
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
-    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
       errors.email = "Please enter a valid email address.";
     }
 
-    if (formData.subject && formData.subject.trim().length > 150) {
+    if (!trimmedSubject || trimmedSubject.length < 2) {
+      errors.subject = "Subject must be at least 2 characters.";
+    } else if (trimmedSubject.length > 150) {
       errors.subject = "Subject must not exceed 150 characters.";
     }
 
-    if (!formData.message.trim() || formData.message.trim().length < 10) {
+    if (!trimmedMessage || trimmedMessage.length < 10) {
       errors.message = "Message must be at least 10 characters.";
-    } else if (formData.message.trim().length > 5000) {
+    } else if (trimmedMessage.length > 5000) {
       errors.message = "Message must not exceed 5000 characters.";
     }
 
@@ -69,7 +75,7 @@ export default function Contact() {
       return;
     }
 
-    setStatus({ submitting: true, success: false, error: null, message: "" });
+    setStatus({ submitting: true, success: false, error: false, message: "" });
     sfx.playTransmission();
 
     const result = await sendContactMessage({
@@ -84,8 +90,8 @@ export default function Contact() {
       setStatus({
         submitting: false,
         success: true,
-        error: null,
-        message: "UPLINK SUCCESSFUL — Transmission received by command channel."
+        error: false,
+        message: "Message sent successfully. I'll get back to you soon."
       });
       setFormData({
         name: "",
@@ -99,7 +105,7 @@ export default function Contact() {
         submitting: false,
         success: false,
         error: true,
-        message: result.error || "TRANSMISSION FAILED — Please try again later."
+        message: result.error || "Unable to send your message. Please try again or contact me directly."
       });
     }
   };
@@ -108,7 +114,7 @@ export default function Contact() {
     <PageShell
       eyebrow="05 / COMMS & UPLINK"
       title="Transmit Uplink"
-      intro="Transmit an operational message to the terminal. Encrypted background delivery to command inbox."
+      intro="Have an inquiry, project proposal, or DevOps collaboration in mind? Dispatch a message directly to my email."
     >
       <section className="section">
         <div className="container contact-grid">
@@ -172,26 +178,6 @@ export default function Contact() {
                 <Linkedin size={16} /> LinkedIn
               </a>
             </div>
-
-            {/* Command Transmission Vault Access Card */}
-            <div className="contact-vault-access panel">
-              <div className="vault-access-badge">
-                <Lock size={14} />
-                <span>COMMAND VAULT // CLEARANCE</span>
-              </div>
-              <p className="vault-access-desc">
-                Command intelligence. Enter security clearance terminal to decrypt and inspect transmission records.
-              </p>
-              <Link
-                to="/inbox"
-                className="btn btn-sm btn-outline vault-access-link"
-                onMouseEnter={() => sfx.playHover()}
-                onClick={() => sfx.playClick()}
-              >
-                <Inbox size={15} />
-                <span>ACCESS SECURE INBOX</span>
-              </Link>
-            </div>
           </motion.div>
 
           {/* Secure Contact Form Panel */}
@@ -223,14 +209,7 @@ export default function Contact() {
                 <ShieldCheck size={20} />
                 <div>
                   <strong>{status.message}</strong>
-                  <p>Your message has been safely delivered and recorded in the command vault.</p>
-                  <Link
-                    to="/inbox"
-                    className="status-inbox-link"
-                    onClick={() => sfx.playClick()}
-                  >
-                    View in Secure Command Inbox →
-                  </Link>
+                  <p>Thank you for reaching out. Your transmission has been dispatched directly to my email address.</p>
                 </div>
               </div>
             )}
@@ -240,7 +219,7 @@ export default function Contact() {
                 <AlertTriangle size={20} />
                 <div>
                   <strong>{status.message}</strong>
-                  <p>If the error persists, you may reach out directly via the direct channels listed.</p>
+                  <p>If the issue persists, feel free to reach out directly via email or LinkedIn.</p>
                 </div>
               </div>
             )}
@@ -284,11 +263,12 @@ export default function Contact() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="contact_subject">Subject</label>
+              <label htmlFor="contact_subject">Subject *</label>
               <input
                 id="contact_subject"
                 name="subject"
                 type="text"
+                required
                 disabled={status.submitting}
                 placeholder="e.g. Cloud Architecture Consultation"
                 value={formData.subject}
@@ -324,15 +304,16 @@ export default function Contact() {
               className={`btn btn-primary submit-btn ${status.submitting ? "btn-submitting" : ""}`}
               type="submit"
               disabled={status.submitting}
+              aria-label={status.submitting ? "Sending transmission..." : "Send Message"}
             >
               {status.submitting ? (
                 <>
                   <Loader2 size={18} className="spinner-icon" />
-                  <span>TRANSMITTING...</span>
+                  <span>SENDING...</span>
                 </>
               ) : (
                 <>
-                  <span>TRANSMIT UPLINK</span>
+                  <span>SEND MESSAGE</span>
                   <Send size={16} />
                 </>
               )}
