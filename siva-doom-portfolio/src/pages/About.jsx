@@ -33,7 +33,7 @@ export default function About() {
             <div className="hud-corner hud-br" />
 
             <img
-              src="/images/Profile.jpg"
+              src="/images/Profile.jpeg"
               alt="Siva S profile portrait"
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
