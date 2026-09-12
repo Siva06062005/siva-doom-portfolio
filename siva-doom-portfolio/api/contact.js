@@ -186,7 +186,8 @@ export default async function handler(req, res) {
     });
 
     // 6. Check Provider Credentials
-    const web3formsKey = process.env.WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_KEY || process.env.ACCESS_KEY;
+    const DEFAULT_WEB3FORMS_KEY = 'd2d9a14a-e56c-49ee-b452-464cc727897a';
+    const web3formsKey = process.env.WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_KEY || process.env.ACCESS_KEY || DEFAULT_WEB3FORMS_KEY;
     const resendKey = process.env.RESEND_API_KEY || process.env.EMAIL_SERVICE_API_KEY;
     const formspreeId = process.env.FORMSPREE_FORM_ID;
     const toEmail = process.env.CONTACT_EMAIL || process.env.CONTACT_TO_EMAIL || 'sivasathiya0606@gmail.com';
@@ -368,10 +369,10 @@ export default async function handler(req, res) {
       preview: message.substring(0, 100) + '...'
     });
 
-    res.statusCode = 200;
+    res.statusCode = 503;
     res.end(JSON.stringify({
-      success: true,
-      message: 'Message captured in local development environment. Configure WEB3FORMS_ACCESS_KEY for live delivery to your email.'
+      success: false,
+      error: 'No email service key configured on server. Handing over to direct client gateway.'
     }));
     return;
   } catch (err) {

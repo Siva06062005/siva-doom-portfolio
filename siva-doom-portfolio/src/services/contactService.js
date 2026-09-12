@@ -7,7 +7,7 @@
  * 2. Seamless fallback to direct browser dispatch via Web3Forms gateway
  */
 
-const DEFAULT_WEB3FORMS_KEY = "22a82d65-a90a-436b-b16f-690c07099084";
+const DEFAULT_WEB3FORMS_KEY = "d2d9a14a-e56c-49ee-b452-464cc727897a";
 
 export async function sendContactMessage({ name, email, subject, message, honeypot = "" }) {
   const cleanName = typeof name === "string" ? name.trim() : "";
