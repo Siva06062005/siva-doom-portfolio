@@ -18,11 +18,13 @@ import {
 import { motion } from "framer-motion";
 import { profile, stats, projects } from "../data/portfolio";
 import ProjectCard from "../components/ProjectCard";
+import ProjectModal from "../components/ProjectModal";
 import ResumeModal from "../components/ResumeModal";
 import resumePdf from "../components/Siva Resume.pdf";
 import { sfx } from "../utils/sfx";
 
 export default function Home() {
+  const [selectedProject, setSelectedProject] = useState(null);
   const [showResume, setShowResume] = useState(false);
   const [termOutput, setTermOutput] = useState("siva@production:~$");
   const [isDeploying, setIsDeploying] = useState(false);
@@ -269,7 +271,12 @@ export default function Home() {
           </div>
           <div className="projects-grid">
             {projects.slice(0, 3).map((p, i) => (
-              <ProjectCard key={p.title} project={p} index={i} />
+              <ProjectCard
+                key={p.title}
+                project={p}
+                index={i}
+                onInspect={(proj) => setSelectedProject(proj)}
+              />
             ))}
           </div>
         </div>
@@ -277,6 +284,12 @@ export default function Home() {
 
       {/* Resume Modal */}
       <ResumeModal isOpen={showResume} onClose={() => setShowResume(false)} />
+
+      {/* Project Specs Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </>
   );
 }

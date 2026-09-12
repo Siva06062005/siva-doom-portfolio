@@ -1251,10 +1251,131 @@ h2 {
 .ghost-btn {
   display: flex; align-items: center; gap: 6px;
   border: 0; background: none; color: var(--accent-secondary);
-  margin-top: 20px; padding: 0; cursor: pointer;
+  padding: 0; cursor: pointer;
   font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem;
+  transition: all 0.2s ease;
 }
+.ghost-btn:hover { color: var(--text-primary); transform: translateX(3px); }
 [data-theme="ironman"] .ghost-btn { color: var(--accent-primary); }
+
+.project-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.project-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--accent-secondary);
+  color: #030a10 !important;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--dot-glow);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-live-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+  box-shadow: 0 0 20px var(--accent-secondary);
+  color: #000 !important;
+}
+
+[data-theme="ironman"] .project-live-btn {
+  background: var(--accent-primary);
+  color: #fff !important;
+  box-shadow: 0 0 14px rgba(255, 59, 48, 0.4);
+}
+
+[data-theme="ironman"] .project-live-btn:hover {
+  box-shadow: 0 0 22px rgba(255, 59, 48, 0.7);
+}
+
+.live-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(3, 12, 18, 0.88);
+  border: 1px solid var(--accent-secondary);
+  color: var(--accent-secondary);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 2px;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  z-index: 2;
+  transition: all 0.25s ease;
+}
+
+.live-badge:hover {
+  background: var(--accent-secondary);
+  color: #030a10;
+  box-shadow: 0 0 14px var(--accent-secondary);
+}
+
+.live-url-banner {
+  background: rgba(34, 209, 238, 0.05);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  border-radius: 2px;
+}
+
+.live-url-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  margin-top: 6px;
+}
+
+.live-url-box:hover {
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 14px var(--dot-glow);
+  transform: translateX(4px);
+}
+
+.live-url-text {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent-secondary);
+  word-break: break-all;
+}
+
+.live-url-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--chip-bg);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
 
 /* ── MODAL ────────────────────────────────────────────────────────── */
 .modal-backdrop {
@@ -1306,6 +1427,28 @@ h2 {
   border: 1px solid var(--border); padding: 8px 14px;
   cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
   transition: all 0.3s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.tab-pill-accent {
+  background: var(--accent-secondary);
+  color: #030a10;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+[data-theme="ironman"] .tab-pill-accent {
+  background: var(--accent-primary);
+  color: #fff;
+}
+.project-tab-banner {
+  border-left: 3px solid var(--accent-secondary);
+  background: rgba(34, 209, 238, 0.04);
+}
+[data-theme="ironman"] .project-tab-banner {
+  border-left-color: var(--accent-primary);
+  background: rgba(255, 59, 48, 0.04);
 }
 .filter-btn:hover, .filter-btn.active {
   color: var(--text-primary); border-color: var(--border-hover);

@@ -9,7 +9,7 @@ export const projects = [
     year: "May 2026",
     image: "/images/project-smartpanchayat.svg",
     githubUrl: "https://github.com/SIva06062005",
-    liveUrl: "REPLACE_WITH_LIVE_URL",
+    liveUrl: "https://smart-panchayat-p2tr.vercel.app/",
     architecture: "React Frontend → Web3 Provider → Solidity Smart Contract (Ethereum Testnet) → Java Microservices Middleware",
     metrics: [
       { label: "Ledger Integrity", value: "100% Immutable" },

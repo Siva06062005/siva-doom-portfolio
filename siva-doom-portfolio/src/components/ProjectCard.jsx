@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Cpu, Layers } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Cpu, Layers } from "lucide-react";
 import { sfx } from "../utils/sfx";
 
 export default function ProjectCard({ project, index, onInspect }) {
   const [imgError, setImgError] = useState(false);
 
+  const hasLiveUrl = project.liveUrl && !project.liveUrl.startsWith("REPLACE_WITH") && project.liveUrl !== "#";
+
   const handleCardClick = () => {
     sfx.playClick();
-    if (onInspect) onInspect(project);
+    if (onInspect) {
+      onInspect(project);
+    } else if (hasLiveUrl) {
+      window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   return (
@@ -34,6 +40,23 @@ export default function ProjectCard({ project, index, onInspect }) {
           loading="lazy"
         />
         <span className="project-year">{project.year}</span>
+
+        {hasLiveUrl && (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="live-badge"
+            title={`Tap to launch ${project.title} live app`}
+            onClick={(e) => {
+              e.stopPropagation();
+              sfx.playClick();
+            }}
+          >
+            <span className="pulse-dot" /> LIVE APP ↗
+          </a>
+        )}
+
         <div className="project-tactical-tag">
           <span className="badge-pulse" /> SPEC_V{index + 1}.0
         </div>
@@ -52,9 +75,26 @@ export default function ProjectCard({ project, index, onInspect }) {
           ))}
         </div>
 
-        <button className="ghost-btn cyber-ghost-btn" type="button" onClick={handleCardClick}>
-          Inspect Specifications <ArrowUpRight size={16} />
-        </button>
+        <div className="project-card-actions">
+          {hasLiveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-live-btn"
+              title={`Tap to open ${project.title} Project Link`}
+              onClick={(e) => {
+                e.stopPropagation();
+                sfx.playClick();
+              }}
+            >
+              <ExternalLink size={14} /> Tap for Project Link ↗
+            </a>
+          )}
+          <button className="ghost-btn cyber-ghost-btn" type="button" onClick={handleCardClick}>
+            Inspect Specs <ArrowUpRight size={15} />
+          </button>
+        </div>
       </div>
     </motion.article>
   );
