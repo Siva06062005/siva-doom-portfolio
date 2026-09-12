@@ -106,7 +106,7 @@ export default function Projects() {
                   className="btn btn-primary"
                   onClick={() => sfx.playClick()}
                 >
-                  <ExternalLink size={16} /> Tap for Project Link ↗
+                  <ExternalLink size={16} /> Launch Live Build ↗
                 </a>
               </div>
             </div>

@@ -34,7 +34,7 @@ export const projects = [
     year: "2026",
     image: "/images/project-fakenews.svg",
     githubUrl: "https://github.com/SIva06062005",
-    liveUrl: "REPLACE_WITH_LIVE_URL",
+    liveUrl: "https://fake-news-classifier-demo.vercel.app/", // DUMMY LINK: Replace with your actual live URL
     architecture: "Raw Data (44,898) → Extract & Validate → Transform → Load (MySQL 44,058) → EDA → TF-IDF Vectorization → ML Classifier Training → Prediction",
     metrics: [
       { label: "Clean Records", value: "44,058" },
@@ -60,7 +60,7 @@ export const projects = [
     year: "Jul 2025",
     image: "/images/project-genious.png",
     githubUrl: "https://github.com/SIva06062005",
-    liveUrl: "REPLACE_WITH_LIVE_URL",
+    liveUrl: "https://genious-shoppy-analytics.vercel.app/", // DUMMY LINK: Replace with your actual live URL
     architecture: "Python Pipeline → Pandas RFM Matrix → SHAP/LIME Explainable AI → Dynamic Dashboard Visualizer",
     metrics: [
       { label: "Segmentation", value: "RFM 5-Tier" },
@@ -85,7 +85,7 @@ export const projects = [
     year: "Apr 2025",
     image: "/images/project-ecommerce.svg",
     githubUrl: "https://github.com/SIva06062005",
-    liveUrl: "REPLACE_WITH_LIVE_URL",
+    liveUrl: "https://scalable-ecommerce-platform.vercel.app/", // DUMMY LINK: Replace with your actual live URL
     architecture: "AWS S3 Asset Bucket → Flask Application Container → MySQL Database Cluster (AWS RDS) → Nginx Reverse Proxy",
     metrics: [
       { label: "Asset Storage", value: "AWS S3 CDN" },

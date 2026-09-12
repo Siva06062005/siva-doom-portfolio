@@ -65,7 +65,7 @@ export default function ProjectModal({ project, onClose }) {
               <div className="scanline" />
             </div>
 
-            {project.liveUrl && !project.liveUrl.startsWith("REPLACE_WITH") && project.liveUrl !== "#" && (
+            {Boolean(project.liveUrl && project.liveUrl.trim() !== "") && (
               <div className="modal-section live-url-banner">
                 <span className="eyebrow" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                   <ExternalLink size={14} /> ACTIVE PROJECT LINK // PRODUCTION DEPLOYMENT
@@ -78,7 +78,7 @@ export default function ProjectModal({ project, onClose }) {
                   onClick={() => sfx.playClick()}
                 >
                   <span className="live-url-text">{project.liveUrl}</span>
-                  <span className="live-url-pill">TAP TO OPEN ↗</span>
+                  <span className="live-url-pill">LAUNCH BUILD ↗</span>
                 </a>
               </div>
             )}
@@ -158,7 +158,7 @@ export default function ProjectModal({ project, onClose }) {
               </a>
             )}
 
-            {project.liveUrl && !project.liveUrl.startsWith("REPLACE_WITH") && project.liveUrl !== "#" && (
+            {Boolean(project.liveUrl && project.liveUrl.trim() !== "") && (
               <a
                 href={project.liveUrl}
                 target="_blank"
@@ -166,7 +166,7 @@ export default function ProjectModal({ project, onClose }) {
                 className="btn btn-primary"
                 onClick={() => sfx.playClick()}
               >
-                <ExternalLink size={16} /> Tap for Project Link
+                <ExternalLink size={16} /> Launch Live Build ↗
               </a>
             )}
 

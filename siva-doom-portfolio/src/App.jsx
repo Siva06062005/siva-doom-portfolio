@@ -5,7 +5,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import BackgroundEffects from "./components/BackgroundEffects";
-import StormbreakerCursor from "./components/StormbreakerCursor";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Skills from "./pages/Skills";
@@ -19,7 +18,6 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <div className="app">
-          <StormbreakerCursor />
           <BackgroundEffects />
           <ScrollToTop />
           <Navbar />

@@ -6,7 +6,7 @@ import { sfx } from "../utils/sfx";
 export default function ProjectCard({ project, index, onInspect }) {
   const [imgError, setImgError] = useState(false);
 
-  const hasLiveUrl = project.liveUrl && !project.liveUrl.startsWith("REPLACE_WITH") && project.liveUrl !== "#";
+  const hasLiveUrl = Boolean(project.liveUrl && project.liveUrl.trim() !== "");
 
   const handleCardClick = () => {
     sfx.playClick();
@@ -47,13 +47,13 @@ export default function ProjectCard({ project, index, onInspect }) {
             target="_blank"
             rel="noopener noreferrer"
             className="live-badge"
-            title={`Tap to launch ${project.title} live app`}
+            title={`Launch ${project.title} Live Build`}
             onClick={(e) => {
               e.stopPropagation();
               sfx.playClick();
             }}
           >
-            <span className="pulse-dot" /> LIVE APP ↗
+            <span className="pulse-dot" /> LIVE BUILD ↗
           </a>
         )}
 
@@ -82,13 +82,13 @@ export default function ProjectCard({ project, index, onInspect }) {
               target="_blank"
               rel="noopener noreferrer"
               className="project-live-btn"
-              title={`Tap to open ${project.title} Project Link`}
+              title={`Launch ${project.title} Live Build`}
               onClick={(e) => {
                 e.stopPropagation();
                 sfx.playClick();
               }}
             >
-              <ExternalLink size={14} /> Tap for Project Link ↗
+              <ExternalLink size={14} /> Launch Live Build ↗
             </a>
           )}
           <button className="ghost-btn cyber-ghost-btn" type="button" onClick={handleCardClick}>
