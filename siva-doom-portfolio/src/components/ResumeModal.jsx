@@ -19,7 +19,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     sfx.playClick();
     const md = `# ${profile.name} — ${profile.role}
 Email: ${profile.email} | Phone: ${profile.phone} | Location: ${profile.location}
-LinkedIn: ${profile.socials.linkedin} | GitHub: ${profile.socials.github}
+LinkedIn: ${profile.socials.linkedin} | GitHub: ${profile.socials.github} | Instagram: ${profile.socials.instagram}
 
 ## SUMMARY
 ${profile.summary}
@@ -131,6 +131,9 @@ ${skillGroups.map((g) => `- **${g.title}**: ${g.items.join(", ")}`).join("\n")}
                 </a>
                 <a href={profile.socials.github} target="_blank" rel="noreferrer" style={{ color: "var(--accent-secondary)", textDecoration: "underline" }}>
                   GitHub
+                </a>
+                <a href={profile.socials.instagram} target="_blank" rel="noreferrer" style={{ color: "var(--accent-secondary)", textDecoration: "underline" }}>
+                  Instagram
                 </a>
               </div>
             </div>

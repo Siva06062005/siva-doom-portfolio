@@ -26,7 +26,7 @@ export const projects = [
   },
   {
     id: "fake-news-pipeline",
-    title: "Fake News Data Processing & Classification Pipeline",
+    title: "Fake News Detection System",
     shortDescription: "End-to-end data engineering and ML pipeline extracting news data, validating and loading into MySQL, and classifying real vs fake news using TF-IDF and Scikit-Learn.",
     description:
       "End-to-end Data Engineering and Machine Learning pipeline for Fake News Detection. The pipeline extracts raw news data, performs validation and transformation, loads cleaned data into MySQL, conducts exploratory data analysis (EDA), engineers features using TF-IDF, and trains machine learning models to classify news as Fake or Real.",

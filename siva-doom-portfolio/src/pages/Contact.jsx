@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Instagram, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import PageShell from "../components/PageShell";
 import { profile } from "../data/portfolio";
@@ -176,6 +176,15 @@ export default function Contact() {
                 onClick={() => sfx.playClick()}
               >
                 <Linkedin size={16} /> LinkedIn
+              </a>
+              <a
+                href={profile.socials.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-secondary social-btn"
+                onClick={() => sfx.playClick()}
+              >
+                <Instagram size={16} /> Instagram
               </a>
             </div>
           </motion.div>

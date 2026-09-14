@@ -573,6 +573,12 @@ export function processVoiceCommand(rawTranscript) {
       action: { type: "link", payload: profile.socials.linkedin },
     };
   }
+  if (hasMatch(input, ["open instagram", "instagram profile", "show instagram", "go to instagram"])) {
+    return {
+      text: "Opening Siva's Instagram profile, sir.",
+      action: { type: "link", payload: profile.socials.instagram },
+    };
+  }
   if (hasMatch(input, ["send email", "email siva", "mail siva", "write email"])) {
     return {
       text: "Opening email client to Siva, sir.",

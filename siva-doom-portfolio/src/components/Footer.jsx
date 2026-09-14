@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail, ArrowUpRight } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { sfx } from "../utils/sfx";
 
@@ -33,6 +33,15 @@ export default function Footer() {
             onClick={() => sfx.playClick()}
           >
             <Linkedin size={18} />
+          </a>
+          <a
+            href={profile.socials.instagram}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram Profile"
+            onClick={() => sfx.playClick()}
+          >
+            <Instagram size={18} />
           </a>
           <a
             href={`mailto:${profile.email}`}

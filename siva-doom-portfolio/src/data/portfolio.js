@@ -10,7 +10,8 @@ export const profile = {
     "I believe infrastructure should never be an afterthought — it is the backbone of great software. Whether debugging root-cause kernel issues or orchestrating multi-container deployments, I build with discipline, speed, and zero tolerance for downtime.",
   socials: {
     linkedin: "https://www.linkedin.com/in/siva-selvaraj-0472432a1",
-    github: "https://github.com/SIva06062005"
+    github: "https://github.com/SIva06062005",
+    instagram: "https://www.instagram.com/siva_the_sharp"
   }
 };
 
