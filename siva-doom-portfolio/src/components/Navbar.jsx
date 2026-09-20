@@ -1,18 +1,17 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Menu, X, Volume2, VolumeX, Music } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SystemTelemetry from "./SystemTelemetry";
 import VoiceAssistant from "./VoiceAssistant";
 import { sfx } from "../utils/sfx";
 
-const links = [
-  ["Home", "/"],
-  ["About", "/about"],
-  ["Skills", "/skills"],
-  ["Projects", "/projects"],
-  ["Experience", "/experience"],
-  ["Contact", "/contact"],
+const navSections = [
+  ["Home", "home"],
+  ["About", "about"],
+  ["Skills", "skills"],
+  ["Projects", "projects"],
+  ["Experience", "experience"],
+  ["Contact", "contact"],
 ];
 
 const navLinkVariants = {
@@ -50,6 +49,36 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [sfxOn, setSfxOn] = useState(() => sfx.enabled);
   const [musicOn, setMusicOn] = useState(() => sfx.bgmPlaying);
+  const [activeSection, setActiveSection] = useState("home");
+
+  // Scroll spy to detect current active section in single-page layout
+  useEffect(() => {
+    const sectionIds = ["home", "about", "skills", "projects", "experience", "contact"];
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 160;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(sectionIds[i]);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    sfx.playClick();
+    setOpen(false);
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", `#${id}`);
+      setActiveSection(id);
+    }
+  };
 
   const toggleSfx = () => {
     const newState = sfx.toggle();
@@ -74,12 +103,12 @@ export default function Navbar() {
           transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
           style={{ display: "inline-block" }}
         >
-          <Link
-            to="/"
+          <a
+            href="#home"
             className="brand"
-            onClick={() => {
-              sfx.playClick();
-              setOpen(false);
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("home");
             }}
             onMouseEnter={() => sfx.playHover()}
           >
@@ -89,7 +118,7 @@ export default function Navbar() {
             <span>
               SIVA<span className="accent">.</span>S
             </span>
-          </Link>
+          </a>
         </motion.div>
 
         {/* Mobile hamburger */}
@@ -130,22 +159,25 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="nav-links desktop-nav">
-          {links.map(([label, path], i) => (
+          {navSections.map(([label, id], i) => (
             <motion.div
-              key={path}
+              key={id}
               custom={i}
               variants={navLinkVariants}
               initial="hidden"
               animate="visible"
             >
-              <NavLink
-                to={path}
-                onClick={() => sfx.playClick()}
+              <a
+                href={`#${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(id);
+                }}
                 onMouseEnter={() => sfx.playHover()}
-                className={({ isActive }) => `nav-link-item ${isActive ? "active" : ""}`}
+                className={`nav-link-item ${activeSection === id ? "active" : ""}`}
               >
                 <span>{`// ${label}`}</span>
-              </NavLink>
+              </a>
             </motion.div>
           ))}
 
@@ -195,19 +227,19 @@ export default function Navbar() {
               exit="exit"
               style={{ transformOrigin: "top" }}
             >
-              {links.map(([label, path]) => (
-                <motion.div key={path} variants={mobileLinkVariants}>
-                  <NavLink
-                    to={path}
-                    onClick={() => {
-                      sfx.playClick();
-                      setOpen(false);
+              {navSections.map(([label, id]) => (
+                <motion.div key={id} variants={mobileLinkVariants}>
+                  <a
+                    href={`#${id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection(id);
                     }}
                     onMouseEnter={() => sfx.playHover()}
-                    className={({ isActive }) => `nav-link-item ${isActive ? "active" : ""}`}
+                    className={`nav-link-item ${activeSection === id ? "active" : ""}`}
                   >
                     <span>{`// ${label}`}</span>
-                  </NavLink>
+                  </a>
                 </motion.div>
               ))}
 

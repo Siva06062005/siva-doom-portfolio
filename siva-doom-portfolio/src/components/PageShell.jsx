@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import ScrambleText from "./ScrambleText";
 
 const containerVariants = {
   hidden: {},
@@ -30,22 +31,20 @@ export default function PageShell({ eyebrow, title, intro, children }) {
   const { theme } = useTheme();
 
   return (
-    <motion.div
-      className="page"
-      variants={pageVariant}
-      initial="hidden"
-      animate="visible"
-    >
+    <div className="page">
       <section className="page-head container">
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
         >
           <motion.span className="eyebrow" variants={eyebrowVariant}>
             {eyebrow}
           </motion.span>
-          <motion.h1 variants={titleVariant}>{title}</motion.h1>
+          <motion.h1 variants={titleVariant}>
+            <ScrambleText text={title} />
+          </motion.h1>
           {intro && (
             <motion.p variants={introVariant}>{intro}</motion.p>
           )}
@@ -62,6 +61,6 @@ export default function PageShell({ eyebrow, title, intro, children }) {
         </motion.div>
       </section>
       {children}
-    </motion.div>
+    </div>
   );
 }

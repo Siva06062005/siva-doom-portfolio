@@ -174,13 +174,17 @@ export default function Home() {
 
             <motion.div className="hero-actions" variants={fadeSlideUp}>
               <MagneticButton>
-                <Link
+                <a
                   className="btn btn-primary"
-                  to="/projects"
-                  onClick={() => sfx.playClick()}
+                  href="#projects"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    sfx.playClick();
+                    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                  }}
                 >
                   Explore Projects <ArrowRight size={17} />
-                </Link>
+                </a>
               </MagneticButton>
 
               <MagneticButton>
@@ -210,13 +214,17 @@ export default function Home() {
               </MagneticButton>
 
               <MagneticButton>
-                <Link
+                <a
                   className="btn btn-secondary"
-                  to="/contact"
-                  onClick={() => sfx.playClick()}
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    sfx.playClick();
+                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                  }}
                 >
                   Let's Connect
-                </Link>
+                </a>
               </MagneticButton>
             </motion.div>
 
@@ -449,9 +457,17 @@ export default function Home() {
               <span className="eyebrow">SELECTED WORK</span>
               <h2>FEATURED BUILDS</h2>
             </div>
-            <Link to="/projects" className="text-link">
+            <a
+              href="#projects"
+              className="text-link"
+              onClick={(e) => {
+                e.preventDefault();
+                sfx.playClick();
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               View all projects <ArrowRight size={16} />
-            </Link>
+            </a>
           </motion.div>
           <div className="projects-grid">
             {projects.slice(0, 3).map((p, i) => (
