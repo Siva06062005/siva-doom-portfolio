@@ -1755,8 +1755,334 @@ h2 {
   .scroll-cue { display: none; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   SCROLL PROGRESS BAR
+   ═══════════════════════════════════════════════════════════════════ */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), #22d1ee);
+  transform-origin: left;
+  z-index: 9999;
+  box-shadow: 0 0 12px rgba(57, 230, 139, 0.7), 0 0 4px rgba(57, 230, 139, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SECTION DIVIDER
+   ═══════════════════════════════════════════════════════════════════ */
+.section-divider-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+  height: 2px;
+  overflow: visible;
+}
+.section-divider-line {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+  box-shadow: 0 0 12px rgba(57, 230, 139, 0.25);
+  transform-origin: center;
+}
+.section-divider-dot {
+  position: relative;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 18px var(--accent-secondary), 0 0 40px rgba(57, 230, 139, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GLITCH TEXT EFFECT (404 & headings)
+   ═══════════════════════════════════════════════════════════════════ */
+.glitch-text {
+  position: relative;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.glitch-text::before {
+  color: var(--accent-primary);
+  clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+  animation: glitch-before 3s infinite linear;
+  opacity: 0.7;
+}
+.glitch-text::after {
+  color: #22d1ee;
+  clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+  animation: glitch-after 3s infinite linear;
+  opacity: 0.6;
+}
+
+@keyframes glitch-before {
+  0%, 90%, 100%  { transform: none; opacity: 0; }
+  92%            { transform: translate(-3px, 0); opacity: 0.7; }
+  94%            { transform: translate(3px, 0); opacity: 0.7; }
+  96%            { transform: translate(-2px, 0); opacity: 0.5; }
+  98%            { transform: none; opacity: 0; }
+}
+@keyframes glitch-after {
+  0%, 88%, 100%  { transform: none; opacity: 0; }
+  90%            { transform: translate(4px, 0); opacity: 0.6; }
+  93%            { transform: translate(-3px, 0); opacity: 0.6; }
+  95%            { transform: none; opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TYPEWRITER CURSOR
+   ═══════════════════════════════════════════════════════════════════ */
+.typewriter-cursor {
+  display: inline-block;
+  color: var(--accent-secondary);
+  font-weight: 300;
+  animation: blink-cursor 0.8s step-end infinite;
+  margin-left: 1px;
+}
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CHIP SHIMMER ANIMATION
+   ═══════════════════════════════════════════════════════════════════ */
+.chip {
+  position: relative;
+  overflow: hidden;
+}
+.chip::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(57, 230, 139, 0.12), transparent);
+  animation: chip-shimmer 3.5s infinite;
+  pointer-events: none;
+}
+@keyframes chip-shimmer {
+  0%   { left: -100%; }
+  50%  { left: 150%; }
+  100% { left: 150%; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PANEL 3D HOVER — perspective wrapper
+   ═══════════════════════════════════════════════════════════════════ */
+.panel-3d-hover {
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROJECT CARD 3D PERSPECTIVE
+   ═══════════════════════════════════════════════════════════════════ */
+.projects-grid,
+.projects-grid-large {
+  perspective: 1200px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TIMELINE — ANIMATED DRAW LINE
+   ═══════════════════════════════════════════════════════════════════ */
+.timeline-draw-line {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent-secondary), transparent);
+  box-shadow: 0 0 8px rgba(57, 230, 139, 0.3);
+  transform-origin: top;
+}
+/* hide original ::before pseudo-line since we're using the component line */
+.timeline::before { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   DESKTOP / MOBILE NAV SEPARATION
+   ═══════════════════════════════════════════════════════════════════ */
+.desktop-nav {
+  display: flex;
+}
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  background: var(--surface-glass);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px 20px;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 99;
+}
+.mobile-nav.open {
+  display: flex;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTACT ITEM INTERACTIVE HOVER
+   ═══════════════════════════════════════════════════════════════════ */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.contact-interactive:hover {
+  color: var(--accent-secondary);
+}
+.social-links-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SECTION TITLE ROW (home featured builds)
+   ═══════════════════════════════════════════════════════════════════ */
+.section-title {
+  margin-bottom: 40px;
+}
+.section-title h2 { margin-top: 8px; }
+.row-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  letter-spacing: 0.04em;
+  transition: gap 0.25s ease, opacity 0.25s ease;
+  white-space: nowrap;
+}
+.text-link:hover {
+  gap: 12px;
+  opacity: 0.85;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MAGNETIC BUTTON WRAPPER
+   ═══════════════════════════════════════════════════════════════════ */
+.magnetic-wrap {
+  display: inline-block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HERO FLOATING ANIMATION (portrait)
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes float-hero {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ENHANCED BUTTON ACTIVE STATES
+   ═══════════════════════════════════════════════════════════════════ */
+.btn:active {
+  transform: scale(0.97) translateY(1px);
+}
+.btn-primary:active {
+  box-shadow: 0 4px 14px var(--btn-primary-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS ENHANCEMENTS
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .desktop-nav { display: none; }
+  .mobile-nav { display: none; }
+  .mobile-nav.open { display: flex; }
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; }
+  .sfx-toggle-btn, .voice-btn { justify-content: center; margin-top: 6px; }
+  .theme-btn { margin: 6px 0 0; justify-content: center; }
+  .voice-transcript { right: 14px; left: 14px; width: calc(100% - 28px); top: calc(var(--nav-height) + 16px); }
+  .menu-btn { display: grid; place-items: center; }
+  .hero-grid, .about-grid, .contact-grid, .split { grid-template-columns: 1fr; }
+  .hero { min-height: auto; }
+  .hero-visual { order: -1; }
+  .hero-grid { padding-top: 55px; }
+  .hero-visual { max-width: 520px; margin: auto; width: 100%; }
+  .stats-grid, .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .projects-grid, .projects-grid-large { grid-template-columns: 1fr; }
+  .modal-metrics-grid { grid-template-columns: 1fr; }
+  .telemetry-inner { justify-content: center; }
+  .section-divider-wrap { padding: 0 20px; }
+  .section-divider-line { left: 20px; right: 20px; }
+  /* Disable 3D tilt on touch — too jarring on mobile */
+  .project-card {
+    transform: none !important;
+    rotateX: 0 !important;
+    rotateY: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container { width: min(calc(100% - 28px), var(--max)); }
+  .section { padding: 70px 0; }
+  .page-head { padding: 70px 0 30px; }
+  .hero h1 { font-size: 2.8rem; }
+  .hero-terminal { grid-template-columns: 1fr; gap: 4px; }
+  .stats-grid, .feature-grid, .skills-grid { grid-template-columns: 1fr; }
+  .stat { padding: 18px; }
+  .timeline-top, .footer-grid { flex-direction: column; align-items: flex-start; }
+  .education-row { grid-template-columns: 65px 1fr; }
+  .hero-actions .btn { flex: 1; min-width: 140px; }
+  .scroll-cue { display: none; }
+  .row-title { flex-direction: column; align-items: flex-start; }
+  .social-links-row { gap: 8px; }
+  /* Larger tap targets on mobile */
+  .btn { min-height: 50px; padding: 0 18px; }
+  .filter-btn { min-height: 44px; }
+  .nav-link-item { min-height: 44px; display: flex; align-items: center; }
+  .footer-links a { width: 44px; height: 44px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   REDUCED MOTION — keep this LAST
+   ═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .scanline { display: none; }
+  .glitch-text::before, .glitch-text::after { display: none; }
+  .chip::after { display: none; }
+  .typewriter-cursor { animation: none; }
+  .scroll-progress-bar { display: none; }
   html { scroll-behavior: auto; }
 }

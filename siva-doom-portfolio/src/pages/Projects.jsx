@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ExternalLink } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import PageShell from "../components/PageShell";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
@@ -12,6 +13,16 @@ const projectTabs = [
   { id: "DATA", label: "DATA & ML" },
   { id: "CLOUD", label: "CLOUD & WEB" },
 ];
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+
+const fadeSlideUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -64,11 +75,19 @@ export default function Projects() {
       <section className="section" style={{ paddingTop: "10px" }}>
         <div className="container">
           {/* Tactical Project Tabs */}
-          <div className="skills-filter-bar" role="tablist" aria-label="Project filter tabs">
+          <motion.div
+            className="skills-filter-bar"
+            role="tablist"
+            aria-label="Project filter tabs"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             {projectTabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
-                <button
+                <motion.button
                   key={tab.id}
                   role="tab"
                   aria-selected={isActive}
@@ -78,50 +97,80 @@ export default function Projects() {
                     setActiveTab(tab.id);
                   }}
                   onMouseEnter={() => sfx.playHover()}
+                  whileHover={{ y: -2, scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   <span>{`// ${tab.label}`}</span>
                   {tab.highlight && <span className="tab-pill-accent">LIVE</span>}
-                </button>
+                </motion.button>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* SmartPanchayat Quick-Launch Tab Banner */}
-          {activeTab === "smartpanchayat" && (
-            <div className="project-tab-banner panel" style={{ marginBottom: "26px", padding: "20px 24px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-                <div>
-                  <span className="eyebrow" style={{ color: "var(--accent-secondary)", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <span className="badge-pulse" /> LIVE PRODUCTION DAPP // SMARTPANCHAYAT
-                  </span>
-                  <h3 style={{ margin: "6px 0 4px", fontSize: "1.25rem" }}>SmartPanchayat Governance Platform</h3>
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                    Deployed on Vercel: <code style={{ color: "var(--accent-secondary)" }}>https://smart-panchayat-p2tr.vercel.app/</code>
-                  </p>
+          <AnimatePresence mode="wait">
+            {activeTab === "smartpanchayat" && (
+              <motion.div
+                className="project-tab-banner panel"
+                style={{ marginBottom: "26px", padding: "20px 24px" }}
+                key="smartpanchayat-banner"
+                initial={{ opacity: 0, y: -20, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: -20, height: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+                  <div>
+                    <span className="eyebrow" style={{ color: "var(--accent-secondary)", display: "flex", alignItems: "center", gap: "6px" }}>
+                      <span className="badge-pulse" /> LIVE PRODUCTION DAPP // SMARTPANCHAYAT
+                    </span>
+                    <h3 style={{ margin: "6px 0 4px", fontSize: "1.25rem" }}>SmartPanchayat Governance Platform</h3>
+                    <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                      Deployed on Vercel: <code style={{ color: "var(--accent-secondary)" }}>https://smart-panchayat-p2tr.vercel.app/</code>
+                    </p>
+                  </div>
+                  <motion.a
+                    href="https://smart-panchayat-p2tr.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    onClick={() => sfx.playClick()}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <ExternalLink size={16} /> Launch Live Build ↗
+                  </motion.a>
                 </div>
-                <a
-                  href="https://smart-panchayat-p2tr.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary"
-                  onClick={() => sfx.playClick()}
-                >
-                  <ExternalLink size={16} /> Launch Live Build ↗
-                </a>
-              </div>
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <div className="projects-grid projects-grid-large">
-            {filteredProjects.map((p, i) => (
-              <ProjectCard
-                key={p.title}
-                project={p}
-                index={i}
-                onInspect={(project) => setSelectedProject(project)}
-              />
-            ))}
-          </div>
+          <motion.div
+            className="projects-grid projects-grid-large"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            key={activeTab}
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((p, i) => (
+                <motion.div
+                  key={p.id}
+                  layout
+                  initial={{ opacity: 0, y: 30, rotateX: 8 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <ProjectCard
+                    project={p}
+                    index={i}
+                    onInspect={(project) => setSelectedProject(project)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </section>
 

@@ -1,30 +1,65 @@
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+};
+
+const eyebrowVariant = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const titleVariant = {
+  hidden: { opacity: 0, y: 25, skewX: -2 },
+  visible: { opacity: 1, y: 0, skewX: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
+
+const introVariant = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
+};
+
+const pageVariant = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+};
+
 export default function PageShell({ eyebrow, title, intro, children }) {
   const { theme } = useTheme();
 
   return (
     <motion.div
       className="page"
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
+      variants={pageVariant}
+      initial="hidden"
+      animate="visible"
     >
       <section className="page-head container">
-        <span className="eyebrow">{eyebrow}</span>
-        <h1>{title}</h1>
-        {intro && <p>{intro}</p>}
-        {theme === "ironman" && (
-          <div className="status" style={{ marginTop: 16 }}>
-            <span /> ARC REACTOR ONLINE
-          </div>
-        )}
-        {theme === "doom" && (
-          <div className="status" style={{ marginTop: 16 }}>
-            <span /> TERMINAL ACTIVE
-          </div>
-        )}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.span className="eyebrow" variants={eyebrowVariant}>
+            {eyebrow}
+          </motion.span>
+          <motion.h1 variants={titleVariant}>{title}</motion.h1>
+          {intro && (
+            <motion.p variants={introVariant}>{intro}</motion.p>
+          )}
+          {theme === "ironman" && (
+            <motion.div className="status" style={{ marginTop: 16 }} variants={introVariant}>
+              <span /> ARC REACTOR ONLINE
+            </motion.div>
+          )}
+          {theme === "doom" && (
+            <motion.div className="status" style={{ marginTop: 16 }} variants={introVariant}>
+              <span /> TERMINAL ACTIVE
+            </motion.div>
+          )}
+        </motion.div>
       </section>
       {children}
     </motion.div>

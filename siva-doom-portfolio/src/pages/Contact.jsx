@@ -2,9 +2,27 @@ import { useState } from "react";
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Instagram, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import PageShell from "../components/PageShell";
+import MagneticButton from "../components/MagneticButton";
+import SectionDivider from "../components/SectionDivider";
 import { profile } from "../data/portfolio";
 import { sfx } from "../utils/sfx";
 import { sendContactMessage } from "../services/contactService";
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
+};
+
+const fadeSlideUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
+};
+
+const socialLinks = [
+  { href: "socials.github", label: "GitHub", Icon: Github, key: "github" },
+  { href: "socials.linkedin", label: "LinkedIn", Icon: Linkedin, key: "linkedin" },
+  { href: "socials.instagram", label: "Instagram", Icon: Instagram, key: "instagram" },
+];
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -93,13 +111,7 @@ export default function Contact() {
         error: false,
         message: "Message sent successfully. I'll get back to you soon."
       });
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-        honeypot: ""
-      });
+      setFormData({ name: "", email: "", subject: "", message: "", honeypot: "" });
     } else {
       setStatus({
         submitting: false,
@@ -121,72 +133,72 @@ export default function Contact() {
           {/* Direct Channels Column */}
           <motion.div
             className="contact-info"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
           >
-            <span className="eyebrow">TERMINAL COMMS</span>
-            <h2>
+            <motion.span className="eyebrow" variants={fadeSlideUp}>TERMINAL COMMS</motion.span>
+            <motion.h2 variants={fadeSlideUp}>
               YOUR MESSAGE.
               <br />
               <span className="accent">MY TERMINAL.</span>
-            </h2>
-            <p>
+            </motion.h2>
+            <motion.p variants={fadeSlideUp}>
               For DevOps contracts, cloud infrastructure design, and technical collaborations, dispatch a transmission below.
-            </p>
+            </motion.p>
 
-            <div className="contact-stack">
-              <div className="contact-item">
+            <motion.div className="contact-stack" variants={staggerContainer}>
+              <motion.div className="contact-item" variants={fadeSlideUp}>
                 <MapPin size={18} />
                 <span>{profile.location}</span>
-              </div>
-              <a
+              </motion.div>
+              <motion.a
                 href={`mailto:${profile.email}`}
                 className="contact-item contact-interactive"
                 onClick={() => sfx.playClick()}
+                variants={fadeSlideUp}
+                whileHover={{ x: 5, color: "var(--accent-secondary)" }}
               >
                 <Mail size={18} />
                 <span>{profile.email}</span>
-              </a>
-              <a
+              </motion.a>
+              <motion.a
                 href={`tel:${profile.phone}`}
                 className="contact-item contact-interactive"
                 onClick={() => sfx.playClick()}
+                variants={fadeSlideUp}
+                whileHover={{ x: 5, color: "var(--accent-secondary)" }}
               >
                 <Phone size={18} />
                 <span>{profile.phone}</span>
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
 
-            <div className="social-links-row">
-              <a
-                href={profile.socials.github}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-secondary social-btn"
-                onClick={() => sfx.playClick()}
-              >
-                <Github size={16} /> GitHub
-              </a>
-              <a
-                href={profile.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-secondary social-btn"
-                onClick={() => sfx.playClick()}
-              >
-                <Linkedin size={16} /> LinkedIn
-              </a>
-              <a
-                href={profile.socials.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-secondary social-btn"
-                onClick={() => sfx.playClick()}
-              >
-                <Instagram size={16} /> Instagram
-              </a>
-            </div>
+            <motion.div
+              className="social-links-row"
+              variants={staggerContainer}
+            >
+              {[
+                { href: profile.socials.github, label: "GitHub", Icon: Github },
+                { href: profile.socials.linkedin, label: "LinkedIn", Icon: Linkedin },
+                { href: profile.socials.instagram, label: "Instagram", Icon: Instagram },
+              ].map(({ href, label, Icon }) => (
+                <motion.div key={label} variants={fadeSlideUp}>
+                  <MagneticButton>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn btn-secondary social-btn"
+                      onClick={() => sfx.playClick()}
+                    >
+                      <Icon size={16} /> {label}
+                    </a>
+                  </MagneticButton>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
 
           {/* Secure Contact Form Panel */}
@@ -194,9 +206,10 @@ export default function Contact() {
             className="contact-form panel"
             onSubmit={handleSubmit}
             noValidate
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             {/* Honeypot field for bot detection */}
             <div style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
@@ -214,83 +227,76 @@ export default function Contact() {
 
             {/* Inline Status Alerts */}
             {status.success && (
-              <div className="status-banner status-success" role="alert">
+              <motion.div
+                className="status-banner status-success"
+                role="alert"
+                initial={{ opacity: 0, y: -10, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 <ShieldCheck size={20} />
                 <div>
                   <strong>{status.message}</strong>
                   <p>Thank you for reaching out. Your transmission has been dispatched directly to my email address.</p>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {status.error && (
-              <div className="status-banner status-error" role="alert">
+              <motion.div
+                className="status-banner status-error"
+                role="alert"
+                initial={{ opacity: 0, y: -10, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 <AlertTriangle size={20} />
                 <div>
                   <strong>{status.message}</strong>
                   <p>If the issue persists, feel free to reach out directly via email or LinkedIn.</p>
                 </div>
-              </div>
+              </motion.div>
             )}
 
-            <div className="form-group">
-              <label htmlFor="contact_name">Name *</label>
-              <input
-                id="contact_name"
-                name="name"
-                type="text"
-                required
-                disabled={status.submitting}
-                placeholder="e.g. Alex Morgan"
-                value={formData.name}
-                onChange={handleChange}
-                className={validationErrors.name ? "input-invalid" : ""}
-                maxLength={80}
-              />
-              {validationErrors.name && (
-                <span className="field-error">{validationErrors.name}</span>
-              )}
-            </div>
+            {[
+              { id: "contact_name", name: "name", type: "text", label: "Name *", placeholder: "e.g. Alex Morgan", maxLength: 80 },
+              { id: "contact_email", name: "email", type: "email", label: "Email Address *", placeholder: "e.g. alex@company.com", maxLength: 100 },
+              { id: "contact_subject", name: "subject", type: "text", label: "Subject *", placeholder: "e.g. Cloud Architecture Consultation", maxLength: 150 },
+            ].map(({ id, name, type, label, placeholder, maxLength }, i) => (
+              <motion.div
+                className="form-group"
+                key={id}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.45 }}
+              >
+                <label htmlFor={id}>{label}</label>
+                <input
+                  id={id}
+                  name={name}
+                  type={type}
+                  required
+                  disabled={status.submitting}
+                  placeholder={placeholder}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  className={validationErrors[name] ? "input-invalid" : ""}
+                  maxLength={maxLength}
+                />
+                {validationErrors[name] && (
+                  <span className="field-error">{validationErrors[name]}</span>
+                )}
+              </motion.div>
+            ))}
 
-            <div className="form-group">
-              <label htmlFor="contact_email">Email Address *</label>
-              <input
-                id="contact_email"
-                name="email"
-                type="email"
-                required
-                disabled={status.submitting}
-                placeholder="e.g. alex@company.com"
-                value={formData.email}
-                onChange={handleChange}
-                className={validationErrors.email ? "input-invalid" : ""}
-                maxLength={100}
-              />
-              {validationErrors.email && (
-                <span className="field-error">{validationErrors.email}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="contact_subject">Subject *</label>
-              <input
-                id="contact_subject"
-                name="subject"
-                type="text"
-                required
-                disabled={status.submitting}
-                placeholder="e.g. Cloud Architecture Consultation"
-                value={formData.subject}
-                onChange={handleChange}
-                className={validationErrors.subject ? "input-invalid" : ""}
-                maxLength={150}
-              />
-              {validationErrors.subject && (
-                <span className="field-error">{validationErrors.subject}</span>
-              )}
-            </div>
-
-            <div className="form-group">
+            <motion.div
+              className="form-group"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.24, duration: 0.45 }}
+            >
               <label htmlFor="contact_message">Message *</label>
               <textarea
                 id="contact_message"
@@ -307,13 +313,15 @@ export default function Contact() {
               {validationErrors.message && (
                 <span className="field-error">{validationErrors.message}</span>
               )}
-            </div>
+            </motion.div>
 
-            <button
+            <motion.button
               className={`btn btn-primary submit-btn ${status.submitting ? "btn-submitting" : ""}`}
               type="submit"
               disabled={status.submitting}
               aria-label={status.submitting ? "Sending transmission..." : "Send Message"}
+              whileHover={!status.submitting ? { scale: 1.02, boxShadow: "0 0 35px rgba(57,230,139,0.4)" } : {}}
+              whileTap={!status.submitting ? { scale: 0.97 } : {}}
             >
               {status.submitting ? (
                 <>
@@ -326,7 +334,7 @@ export default function Contact() {
                   <Send size={16} />
                 </>
               )}
-            </button>
+            </motion.button>
 
             <div className="form-footer-meta">
               <small>

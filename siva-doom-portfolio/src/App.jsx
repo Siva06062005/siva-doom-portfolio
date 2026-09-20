@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollProgress from "./components/ScrollProgress";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import BackgroundEffects from "./components/BackgroundEffects";
@@ -18,6 +19,7 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <div className="app">
+          <ScrollProgress />
           <BackgroundEffects />
           <ScrollToTop />
           <Navbar />
