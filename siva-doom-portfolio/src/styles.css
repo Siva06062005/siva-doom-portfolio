@@ -3646,6 +3646,7 @@ html {
   top: var(--stack-offset, 100px);
   margin-bottom: 90px;
   transform-origin: top center;
+  will-change: transform;
 }
 
 .cert-stack-item:last-child {
@@ -3658,8 +3659,8 @@ html {
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   padding: 42px 48px;
   display: grid;
   grid-template-columns: 1.25fr 0.75fr;
@@ -3667,6 +3668,8 @@ html {
   gap: 40px;
   min-height: 400px;
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transform: translateZ(0);
+  will-change: transform;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);

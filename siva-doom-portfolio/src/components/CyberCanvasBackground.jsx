@@ -93,14 +93,17 @@ export default function CyberCanvasBackground() {
         const pulse = Math.sin(frame * p.pulseSpeed + p.pulseOffset);
         const currentAlpha = Math.max(0.08, p.baseAlpha + pulse * 0.15);
 
-        // Draw particle glow
+        // Draw particle node
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `${p.colorPrefix}${currentAlpha})`;
-        ctx.shadowColor = `${p.colorPrefix}0.8)`;
-        ctx.shadowBlur = 8;
         ctx.fill();
-        ctx.shadowBlur = 0;
+
+        // Subtle outer aura
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius * 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = `${p.colorPrefix}${currentAlpha * 0.25})`;
+        ctx.fill();
 
         // Connect nearby particles
         for (let j = i + 1; j < particles.length; j++) {

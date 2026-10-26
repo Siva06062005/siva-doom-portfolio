@@ -19,16 +19,28 @@ import Certificates from "./pages/Certificates";
 export default function App() {
   const location = useLocation();
 
-  // Smooth scroll to section if URL has a hash or route like /about, /skills, etc.
+  // Ensure website starts smoothly from the beginning (top) on initial open / reload
   useEffect(() => {
-    const rawHash = window.location.hash.replace("#", "").toLowerCase();
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      // Force instant clean start at top
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+      // Clean any stale hash leftover from previous sessions so it doesn't jump
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, []);
+
+  // Handle in-page navigation if the user clicks a specific path route
+  useEffect(() => {
     const rawPath = location.pathname.replace("/", "").toLowerCase();
-    const target = rawHash || rawPath;
-    if (target && ["home", "about", "skills", "projects", "certificates", "experience", "contact"].includes(target)) {
-      setTimeout(() => {
-        const el = document.getElementById(target);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 200);
+    if (rawPath && ["about", "skills", "projects", "certificates", "experience", "contact"].includes(rawPath)) {
+      const el = document.getElementById(rawPath);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   }, [location.pathname]);
 

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { ShieldCheck } from "lucide-react";
 import PageShell from "../components/PageShell";
 import CertificateShowcaseCard from "../components/CertificateShowcaseCard";
@@ -9,17 +9,21 @@ import { certificates } from "../data/certificates";
 export default function Certificates() {
   const [selectedCert, setSelectedCert] = useState(null);
   const [showContent, setShowContent] = useState(false);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.08 });
 
-  // Allow the cinematic background to take the stage first, then reveal the contents in vibrant motion
+  // When user scrolls to certificates, allow the cinematic ambient background to take the stage first,
+  // then reveal the showcase contents in smooth GPU-accelerated motion
   useEffect(() => {
+    if (!isInView) return;
     const timer = setTimeout(() => {
       setShowContent(true);
-    }, 700);
+    }, 450);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isInView]);
 
   return (
-    <div className="cert-page-wrapper">
+    <div className="cert-page-wrapper" ref={containerRef}>
       {/* ── Persistent Ambient Background (Enters first, remains constant for all cards) ── */}
       <div className="cert-full-ambient-bg" aria-hidden="true">
         <motion.img
@@ -27,9 +31,9 @@ export default function Certificates() {
           alt=""
           className="cert-full-ambient-img"
           loading="eager"
-          initial={{ opacity: 0, scale: 1.06 }}
+          initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 0.82, scale: 1 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         />
         <div className="cert-full-ambient-overlay" />
       </div>
@@ -43,13 +47,14 @@ export default function Certificates() {
         intro="Accredited engineering credentials, cloud architectures, and specialized toolchain proficiencies — verified and authenticated across enterprise platforms."
       >
         <motion.div
-        initial={{ opacity: 0, y: 45, filter: "blur(12px)" }}
+        initial={{ opacity: 0, y: 35 }}
         animate={
           showContent
-            ? { opacity: 1, y: 0, filter: "blur(0px)" }
-            : { opacity: 0, y: 45, filter: "blur(12px)" }
+            ? { opacity: 1, y: 0 }
+            : { opacity: 0, y: 35 }
         }
-        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        style={{ willChange: "transform, opacity" }}
       >
         <section
           className="section"
@@ -105,17 +110,18 @@ export default function Certificates() {
                   }}
                 >
                   <motion.div
-                    initial={{ opacity: 0, y: 65, scale: 0.95, filter: "blur(6px)" }}
+                    initial={{ opacity: 0, y: 40, scale: 0.98 }}
                     animate={
                       showContent
-                        ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
-                        : { opacity: 0, y: 65, scale: 0.95, filter: "blur(6px)" }
+                        ? { opacity: 1, y: 0, scale: 1 }
+                        : { opacity: 0, y: 40, scale: 0.98 }
                     }
                     transition={{
-                      duration: 0.8,
+                      duration: 0.6,
                       ease: [0.16, 1, 0.3, 1],
-                      delay: 0.15 + index * 0.12,
+                      delay: 0.05 + index * 0.08,
                     }}
+                    style={{ willChange: "transform, opacity" }}
                   >
                     <CertificateShowcaseCard
                       certificate={cert}
