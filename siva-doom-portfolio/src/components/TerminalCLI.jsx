@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Terminal, CornerDownLeft } from "lucide-react";
-import { profile, projects, skillGroups } from "../data/portfolio";
+import { profile, projects, skillGroups, certificates } from "../data/portfolio";
 import { sfx } from "../utils/sfx";
 
 export default function TerminalCLI() {
@@ -37,6 +37,7 @@ export default function TerminalCLI() {
   hire       - Recruiter & role uplink telemetry
   skills     - Query full technical arsenal
   projects   - List production engineering builds
+  certs      - View verified certifications & Google Drive links
   loser      - Play / Pause 'Loser.mp3' BGM track 🎵
   music      - Toggle background soundtrack
   coffee     - Check DevOps caffeine telemetry
@@ -100,6 +101,22 @@ PHILOSOPHY: ${profile.philosophy}`,
 • Requirements: High uptime, zero 3 AM production outages, continuous learning.
 • Status: OPEN for engineering roles & collaborations!
 • Contact: Direct email to ${profile.email} or use the Contact page form.`,
+        });
+        break;
+
+      case "certs":
+      case "certificates":
+      case "credentials":
+        newHistory.push({
+          type: "output",
+          text: `[VERIFIED TECHNICAL CREDENTIALS]
+${certificates.map((c, i) => `${i + 1}. ${c.title.toUpperCase()}
+   • Issuer: ${c.issuer}
+   • Code: ${c.code} [${c.status}]
+   • Focus: ${c.badge}
+   • Drive: ${c.credentialUrl}`).join("\n\n")}
+
+Tip: Swipe & stack cards or shuffle deck on the #certificates section!`,
         });
         break;
 

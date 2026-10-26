@@ -77,6 +77,7 @@ export const skillGroups = [
 ];
 
 export { projects } from "./projects";
+export { certificates, getCertificates, getCertificateById } from "./certificates";
 
 export const experience = [
   {

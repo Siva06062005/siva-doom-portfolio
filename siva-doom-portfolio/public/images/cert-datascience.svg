@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradDs" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0312" />
+      <stop offset="40%" stop-color="#180726" />
+      <stop offset="80%" stop-color="#10041a" />
+      <stop offset="100%" stop-color="#05010a" />
+    </linearGradient>
+    <linearGradient id="dsPurple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="50%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#7e22ce" />
+    </linearGradient>
+    <linearGradient id="dsSeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e9d5ff" />
+      <stop offset="50%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#581c87" />
+    </linearGradient>
+    <linearGradient id="cardGradDs" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#230a38" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#12041f" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="dsGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="url(#bgGradDs)" />
+
+  <!-- Grid -->
+  <g stroke="#a855f7" stroke-opacity="0.05" stroke-width="1">
+    <path d="M0 40h800M0 80h800M0 120h800M0 160h800M0 200h800M0 240h800M0 280h800M0 320h800M0 360h800M0 400h800M0 440h800M0 480h800" />
+    <path d="M60 0v520M120 0v520M180 0v520M240 0v520M300 0v520M360 0v520M420 0v520M480 0v520M540 0v520M600 0v520M660 0v520M720 0v520" />
+  </g>
+
+  <!-- Border -->
+  <rect x="20" y="20" width="760" height="480" rx="12" fill="none" stroke="url(#dsPurple)" stroke-width="2" stroke-opacity="0.75" />
+  <rect x="28" y="28" width="744" height="464" rx="8" fill="none" stroke="#a855f7" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="8 4" />
+
+  <!-- Corner Brackets -->
+  <path d="M20 50 V20 H50" fill="none" stroke="#c084fc" stroke-width="3" />
+  <path d="M780 50 V20 H750" fill="none" stroke="#c084fc" stroke-width="3" />
+  <path d="M20 470 V500 H50" fill="none" stroke="#c084fc" stroke-width="3" />
+  <path d="M780 470 V500 H750" fill="none" stroke="#c084fc" stroke-width="3" />
+
+  <!-- Header Bar -->
+  <g transform="translate(45, 42)">
+    <rect x="0" y="0" width="34" height="34" rx="6" fill="#240c38" stroke="#a855f7" stroke-width="1.5" />
+    <polygon points="17,8 26,24 8,24" fill="none" stroke="#c084fc" stroke-width="1.8" />
+    <circle cx="17" cy="18" r="2.5" fill="#39e68b" />
+
+    <text x="44" y="15" fill="#a855f7" font-family="'Orbitron', -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="2">REMARK SKILL EDUCATION // DATA ACADEMY</text>
+    <text x="44" y="30" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1">PREDICTIVE DATA SCIENCE &amp; APPLIED MACHINE LEARNING</text>
+
+    <!-- Top Right Badge -->
+    <rect x="575" y="2" width="135" height="26" rx="4" fill="#140620" stroke="#39e68b" stroke-width="1" />
+    <circle cx="587" cy="15" r="4" fill="#39e68b" filter="url(#dsGlow)" />
+    <text x="597" y="19" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" letter-spacing="1">AUTHENTICATED ✓</text>
+  </g>
+
+  <!-- Title & Recipient Section -->
+  <g transform="translate(400, 115)" text-anchor="middle">
+    <text y="0" fill="#c084fc" font-family="'Orbitron', -apple-system, sans-serif" font-size="13" font-weight="600" letter-spacing="4">CERTIFICATE OF COMPLETION</text>
+    <text y="20" fill="#8c739e" font-family="'Inter', sans-serif" font-size="10" letter-spacing="2">THIS IS PROUDLY CONFERRED UPON</text>
+    
+    <!-- Recipient Name -->
+    <text y="52" fill="#ffffff" font-family="'Orbitron', -apple-system, sans-serif" font-size="26" font-weight="900" letter-spacing="3" filter="url(#dsGlow)">SIVA S</text>
+    <line x1="-150" y1="62" x2="150" y2="62" stroke="url(#dsPurple)" stroke-width="1.5" />
+
+    <!-- Certification Title -->
+    <text y="84" fill="#a855f7" font-family="'Orbitron', -apple-system, sans-serif" font-size="16" font-weight="800" letter-spacing="1.5">DATA SCIENCE &amp; ANALYTICS</text>
+    <text y="101" fill="#c4b0d4" font-family="'Inter', sans-serif" font-size="10">For demonstrated mastery of exploratory data analysis, feature engineering, and supervised machine learning.</text>
+  </g>
+
+  <!-- Section Label: Modules & ML Components -->
+  <g transform="translate(45, 236)">
+    <text x="0" y="0" fill="#a855f7" font-family="'Orbitron', -apple-system, sans-serif" font-size="9" font-weight="700" letter-spacing="2">VERIFIED CURRICULUM MODULES &amp; MACHINE LEARNING PIPELINE</text>
+    <line x1="410" y1="-3" x2="710" y2="-3" stroke="#a855f7" stroke-opacity="0.3" stroke-width="1" />
+  </g>
+
+  <!-- 5 Component Modules Display -->
+  <g transform="translate(45, 248)">
+    <!-- Component 1: Python & NumPy -->
+    <rect x="0" y="0" width="136" height="118" rx="6" fill="url(#cardGradDs)" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="8" y="8" width="22" height="22" rx="4" fill="#2d0e46" stroke="#a855f7" stroke-width="1" />
+    <text x="13" y="24" fill="#c084fc" font-family="'Orbitron', sans-serif" font-size="13" font-weight="700">Py</text>
+    <text x="36" y="23" fill="#c084fc" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">NUMPY ARRAYS</text>
+    <text x="10" y="44" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Vectorized Math</text>
+    <text x="10" y="58" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• N-Dimensional Arrays</text>
+    <text x="10" y="72" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Matrix Transpositions</text>
+    <text x="10" y="86" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Linear Algebra</text>
+    <rect x="10" y="98" width="116" height="12" rx="2" fill="#a855f7" fill-opacity="0.15" />
+    <text x="68" y="107" fill="#a855f7" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 01: NUMPY</text>
+
+    <!-- Component 2: Pandas Data Wrangling -->
+    <rect x="144" y="0" width="136" height="118" rx="6" fill="url(#cardGradDs)" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="152" y="8" width="22" height="22" rx="4" fill="#2d0e46" stroke="#39e68b" stroke-width="1" />
+    <rect x="157" y="13" width="12" height="12" fill="none" stroke="#39e68b" stroke-width="1.2" />
+    <path d="M157 19 h12 M163 13 v12" stroke="#39e68b" stroke-width="1" />
+    <text x="180" y="23" fill="#39e68b" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">PANDAS ETL</text>
+    <text x="154" y="44" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• DataFrames Cleaning</text>
+    <text x="154" y="58" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Missing Imputation</text>
+    <text x="154" y="72" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• GroupBy Aggregations</text>
+    <text x="154" y="86" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Time Series Indexing</text>
+    <rect x="154" y="98" width="116" height="12" rx="2" fill="#39e68b" fill-opacity="0.15" />
+    <text x="212" y="107" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 02: PANDAS</text>
+
+    <!-- Component 3: EDA & Statistics -->
+    <rect x="288" y="0" width="136" height="118" rx="6" fill="url(#cardGradDs)" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="296" y="8" width="22" height="22" rx="4" fill="#2d0e46" stroke="#22d1ee" stroke-width="1" />
+    <path d="M301 22 c2 -6 6 -8 8 -2 s6 4 8 -2" fill="none" stroke="#22d1ee" stroke-width="1.5" stroke-linecap="round" />
+    <text x="324" y="23" fill="#22d1ee" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">EDA STATS</text>
+    <text x="298" y="44" fill="#22d1ee" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Distribution Plots</text>
+    <text x="298" y="58" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Correlation Matrix</text>
+    <text x="298" y="72" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Hypothesis Testing</text>
+    <text x="298" y="86" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Feature Outlier Prune</text>
+    <rect x="298" y="98" width="116" height="12" rx="2" fill="#22d1ee" fill-opacity="0.15" />
+    <text x="356" y="107" fill="#22d1ee" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 03: EDA</text>
+
+    <!-- Component 4: Scikit-Learn ML -->
+    <rect x="432" y="0" width="136" height="118" rx="6" fill="url(#cardGradDs)" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="440" y="8" width="22" height="22" rx="4" fill="#2d0e46" stroke="#ffb74d" stroke-width="1" />
+    <circle cx="447" cy="19" r="2.5" fill="#ffb74d" />
+    <circle cx="458" cy="15" r="2.5" fill="#ffb74d" />
+    <circle cx="458" cy="23" r="2.5" fill="#ffb74d" />
+    <path d="M447 19 L458 15 M447 19 L458 23" stroke="#ffb74d" stroke-width="1.2" />
+    <text x="468" y="23" fill="#ffb74d" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">SCIKIT-LEARN</text>
+    <text x="442" y="44" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Random Forest</text>
+    <text x="442" y="58" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Gradient Boosting</text>
+    <text x="442" y="72" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Logistic Regression</text>
+    <text x="442" y="86" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Hyperparameter Tuning</text>
+    <rect x="442" y="98" width="116" height="12" rx="2" fill="#ffb74d" fill-opacity="0.15" />
+    <text x="500" y="107" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 04: MODELS</text>
+
+    <!-- Component 5: Evaluation & Metrics -->
+    <rect x="576" y="0" width="134" height="118" rx="6" fill="url(#cardGradDs)" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="584" y="8" width="22" height="22" rx="4" fill="#2d0e46" stroke="#e040fb" stroke-width="1" />
+    <path d="M589 23 L593 18 L597 21 L602 14" fill="none" stroke="#e040fb" stroke-width="1.5" stroke-linecap="round" />
+    <text x="612" y="23" fill="#e040fb" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">EVALUATION</text>
+    <text x="586" y="44" fill="#e040fb" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• ROC-AUC Curves</text>
+    <text x="586" y="58" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Precision / Recall</text>
+    <text x="586" y="72" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• Confusion Matrix</text>
+    <text x="586" y="86" fill="#d2bee0" font-family="'JetBrains Mono', monospace" font-size="7.5">• K-Fold Cross Validation</text>
+    <rect x="586" y="98" width="114" height="12" rx="2" fill="#e040fb" fill-opacity="0.15" />
+    <text x="643" y="107" fill="#e040fb" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 05: METRICS</text>
+  </g>
+
+  <!-- Bottom Verification & Signatures Bar -->
+  <g transform="translate(45, 386)">
+    <!-- Official Data Science Academy Seal -->
+    <g transform="translate(40, 48)">
+      <path d="M-10 15 L-18 45 L0 35 L18 45 L10 15" fill="#4a154b" />
+      <path d="M-6 15 L-12 40 L0 32 L12 40 L6 15" fill="#a855f7" />
+      <circle cx="0" cy="0" r="32" fill="url(#dsSeal)" filter="url(#dsGlow)" />
+      <circle cx="0" cy="0" r="28" fill="#180726" stroke="#c084fc" stroke-width="1" />
+      <circle cx="0" cy="0" r="24" fill="none" stroke="#a855f7" stroke-width="1" stroke-dasharray="3 2" />
+      <text x="0" y="-8" fill="#c084fc" font-family="'Orbitron', sans-serif" font-size="6" font-weight="700" text-anchor="middle">ACADEMIC</text>
+      <text x="0" y="4" fill="#ffffff" font-family="'Orbitron', sans-serif" font-size="8.5" font-weight="900" text-anchor="middle">REMARK</text>
+      <text x="0" y="14" fill="#c084fc" font-family="'Orbitron', sans-serif" font-size="6" font-weight="700" text-anchor="middle">CERTIFIED</text>
+    </g>
+
+    <!-- Credential Meta Block -->
+    <g transform="translate(105, 20)">
+      <text x="0" y="15" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="9">CREDENTIAL ID:</text>
+      <text x="110" y="15" fill="#a855f7" font-family="'Orbitron', sans-serif" font-size="11" font-weight="700">RSE-DSA-5521</text>
+      
+      <text x="0" y="35" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="9">ISSUE DATE:</text>
+      <text x="110" y="35" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10">2025 // ACCREDITED DATA SCIENCE</text>
+
+      <text x="0" y="55" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="9">VERIFICATION URL:</text>
+      <text x="110" y="55" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8.5">remarkskills.com/verify/RSE-DSA-5521</text>
+      
+      <text x="0" y="75" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="9">MODEL CHECKSUM:</text>
+      <text x="110" y="75" fill="#c084fc" font-family="'JetBrains Mono', monospace" font-size="8">SHA256: 91b0f5e714ca...39d1</text>
+    </g>
+
+    <!-- Signatory 1 -->
+    <g transform="translate(460, 20)">
+      <path d="M10 25 Q 35 12, 60 26 T 100 16 T 130 26" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" />
+      <line x1="0" y1="42" x2="140" y2="42" stroke="#48225e" stroke-width="1" />
+      <text x="70" y="56" fill="#ffffff" font-family="'Inter', sans-serif" font-size="9" font-weight="600" text-anchor="middle">Dr. Ananya Ray</text>
+      <text x="70" y="68" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle">Chief Data Scientist, Remark Skills</text>
+    </g>
+
+    <!-- Signatory 2 -->
+    <g transform="translate(615, 20)">
+      <path d="M10 28 Q 30 10, 55 24 T 95 16 T 130 27" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" />
+      <line x1="0" y1="42" x2="140" y2="42" stroke="#48225e" stroke-width="1" />
+      <text x="70" y="56" fill="#ffffff" font-family="'Inter', sans-serif" font-size="9" font-weight="600" text-anchor="middle">Academic Council</text>
+      <text x="70" y="68" fill="#9f7ea8" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle">Machine Learning &amp; AI Faculty</text>
+    </g>
+  </g>
+</svg>

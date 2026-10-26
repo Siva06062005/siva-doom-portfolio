@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGradJava" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e0603" />
+      <stop offset="40%" stop-color="#1c0b05" />
+      <stop offset="80%" stop-color="#140703" />
+      <stop offset="100%" stop-color="#060201" />
+    </linearGradient>
+    <linearGradient id="javaGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff7043" />
+      <stop offset="50%" stop-color="#ffab91" />
+      <stop offset="100%" stop-color="#f4511e" />
+    </linearGradient>
+    <linearGradient id="springSeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#69f0ae" />
+      <stop offset="50%" stop-color="#39e68b" />
+      <stop offset="100%" stop-color="#00b0ff" />
+    </linearGradient>
+    <linearGradient id="cardGradJava" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#231008" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#150804" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="javaGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="url(#bgGradJava)" />
+
+  <!-- Cyber Tech Grid -->
+  <g stroke="#ff7043" stroke-opacity="0.05" stroke-width="1">
+    <path d="M0 40h800M0 80h800M0 120h800M0 160h800M0 200h800M0 240h800M0 280h800M0 320h800M0 360h800M0 400h800M0 440h800M0 480h800" />
+    <path d="M60 0v520M120 0v520M180 0v520M240 0v520M300 0v520M360 0v520M420 0v520M480 0v520M540 0v520M600 0v520M660 0v520M720 0v520" />
+  </g>
+
+  <!-- Frame Border -->
+  <rect x="20" y="20" width="760" height="480" rx="12" fill="none" stroke="url(#javaGold)" stroke-width="2" stroke-opacity="0.75" />
+  <rect x="28" y="28" width="744" height="464" rx="8" fill="none" stroke="#39e68b" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="8 4" />
+
+  <!-- Corner Brackets -->
+  <path d="M20 50 V20 H50" fill="none" stroke="#ffab91" stroke-width="3" />
+  <path d="M780 50 V20 H750" fill="none" stroke="#ffab91" stroke-width="3" />
+  <path d="M20 470 V500 H50" fill="none" stroke="#ffab91" stroke-width="3" />
+  <path d="M780 470 V500 H750" fill="none" stroke="#ffab91" stroke-width="3" />
+
+  <!-- Top Header Bar -->
+  <g transform="translate(45, 42)">
+    <!-- Infosys Springboard Crest -->
+    <rect x="0" y="0" width="34" height="34" rx="6" fill="#280f06" stroke="#ff7043" stroke-width="1.5" />
+    <path d="M10 24 L17 10 L24 24 Z" fill="none" stroke="#ff7043" stroke-width="2" stroke-linejoin="round" />
+    <circle cx="17" cy="18" r="2.5" fill="#39e68b" />
+
+    <text x="44" y="15" fill="#ff7043" font-family="'Orbitron', -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="2">INFOSYS SPRINGBOARD // GLOBAL LEARNING</text>
+    <text x="44" y="30" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1">ENTERPRISE FULL STACK SOFTWARE ENGINEERING INITIATIVE</text>
+
+    <!-- Top Right Badge -->
+    <rect x="575" y="2" width="135" height="26" rx="4" fill="#140602" stroke="#39e68b" stroke-width="1" />
+    <circle cx="587" cy="15" r="4" fill="#39e68b" filter="url(#javaGlow)" />
+    <text x="597" y="19" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" letter-spacing="1">AUTHENTICATED ✓</text>
+  </g>
+
+  <!-- Title & Recipient Section -->
+  <g transform="translate(400, 115)" text-anchor="middle">
+    <text y="0" fill="#ffab91" font-family="'Orbitron', -apple-system, sans-serif" font-size="13" font-weight="600" letter-spacing="4">CERTIFICATE OF ACHIEVEMENT</text>
+    <text y="20" fill="#997b72" font-family="'Inter', sans-serif" font-size="10" letter-spacing="2">THIS IS PROUDLY PRESENTED TO</text>
+    
+    <!-- Recipient Name -->
+    <text y="52" fill="#ffffff" font-family="'Orbitron', -apple-system, sans-serif" font-size="26" font-weight="900" letter-spacing="3" filter="url(#javaGlow)">SIVA S</text>
+    <line x1="-150" y1="62" x2="150" y2="62" stroke="url(#javaGold)" stroke-width="1.5" />
+
+    <!-- Certification Title -->
+    <text y="84" fill="#ff7043" font-family="'Orbitron', -apple-system, sans-serif" font-size="16" font-weight="800" letter-spacing="1.5">FULL STACK WITH JAVA &amp; SPRING REST</text>
+    <text y="101" fill="#c9afa7" font-family="'Inter', sans-serif" font-size="10">For demonstrated excellence in developing production-grade Java architectures and Spring microservices.</text>
+  </g>
+
+  <!-- Section Label: Modules & Architecture Components -->
+  <g transform="translate(45, 236)">
+    <text x="0" y="0" fill="#ff7043" font-family="'Orbitron', -apple-system, sans-serif" font-size="9" font-weight="700" letter-spacing="2">VERIFIED CURRICULUM MODULES &amp; BACKEND ARCHITECTURE COMPONENTS</text>
+    <line x1="420" y1="-3" x2="710" y2="-3" stroke="#ff7043" stroke-opacity="0.3" stroke-width="1" />
+  </g>
+
+  <!-- 5 Component Modules Display -->
+  <g transform="translate(45, 248)">
+    <!-- Component 1: Java 17 Core -->
+    <rect x="0" y="0" width="136" height="118" rx="6" fill="url(#cardGradJava)" stroke="#ff7043" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="8" y="8" width="22" height="22" rx="4" fill="#2d1208" stroke="#ff7043" stroke-width="1" />
+    <path d="M19 13 C16 16, 22 18, 19 22" stroke="#ff7043" stroke-width="1.5" fill="none" />
+    <text x="36" y="23" fill="#ffab91" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">JAVA 17+ CORE</text>
+    <text x="10" y="44" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• OOP &amp; Collections</text>
+    <text x="10" y="58" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Streams &amp; Lambdas</text>
+    <text x="10" y="72" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Multithreading</text>
+    <text x="10" y="86" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• JVM Memory Mgmt</text>
+    <rect x="10" y="98" width="116" height="12" rx="2" fill="#ff7043" fill-opacity="0.15" />
+    <text x="68" y="107" fill="#ff7043" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 01: CORE</text>
+
+    <!-- Component 2: Spring Boot 3 -->
+    <rect x="144" y="0" width="136" height="118" rx="6" fill="url(#cardGradJava)" stroke="#ff7043" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="152" y="8" width="22" height="22" rx="4" fill="#2d1208" stroke="#39e68b" stroke-width="1" />
+    <circle cx="163" cy="19" r="6" fill="none" stroke="#39e68b" stroke-width="1.5" />
+    <path d="M160 19 l2 2 l4 -4" stroke="#39e68b" stroke-width="1.5" fill="none" />
+    <text x="180" y="23" fill="#39e68b" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">SPRING BOOT</text>
+    <text x="154" y="44" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• IoC &amp; DI Container</text>
+    <text x="154" y="58" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Auto-Configuration</text>
+    <text x="154" y="72" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Application Context</text>
+    <text x="154" y="86" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Actuator Telemetry</text>
+    <rect x="154" y="98" width="116" height="12" rx="2" fill="#39e68b" fill-opacity="0.15" />
+    <text x="212" y="107" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 02: FRAMEWORK</text>
+
+    <!-- Component 3: REST API -->
+    <rect x="288" y="0" width="136" height="118" rx="6" fill="url(#cardGradJava)" stroke="#ff7043" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="296" y="8" width="22" height="22" rx="4" fill="#2d1208" stroke="#22d1ee" stroke-width="1" />
+    <path d="M301 23 h12 M307 15 v8" stroke="#22d1ee" stroke-width="1.5" stroke-linecap="round" />
+    <text x="324" y="23" fill="#22d1ee" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">SPRING REST</text>
+    <text x="298" y="44" fill="#22d1ee" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• REST Controllers</text>
+    <text x="298" y="58" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• DTO Serialization</text>
+    <text x="298" y="72" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• HTTP RFC Standards</text>
+    <text x="298" y="86" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• JWT Authentication</text>
+    <rect x="298" y="98" width="116" height="12" rx="2" fill="#22d1ee" fill-opacity="0.15" />
+    <text x="356" y="107" fill="#22d1ee" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 03: REST APIS</text>
+
+    <!-- Component 4: JPA / Hibernate -->
+    <rect x="432" y="0" width="136" height="118" rx="6" fill="url(#cardGradJava)" stroke="#ff7043" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="440" y="8" width="22" height="22" rx="4" fill="#2d1208" stroke="#ffb74d" stroke-width="1" />
+    <ellipse cx="451" cy="15" rx="7" ry="3" fill="none" stroke="#ffb74d" stroke-width="1.2" />
+    <path d="M444 15 v8 c0 2 3 3 7 3 s7 -1 7 -3 v-8" fill="none" stroke="#ffb74d" stroke-width="1.2" />
+    <text x="468" y="23" fill="#ffb74d" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">DATA JPA / ORM</text>
+    <text x="442" y="44" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Hibernate Persistence</text>
+    <text x="442" y="58" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• CrudRepository APIs</text>
+    <text x="442" y="72" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Declarative Tx Mgmt</text>
+    <text x="442" y="86" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Relational Schema</text>
+    <rect x="442" y="98" width="116" height="12" rx="2" fill="#ffb74d" fill-opacity="0.15" />
+    <text x="500" y="107" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 04: PERSISTENCE</text>
+
+    <!-- Component 5: Microservices & Testing -->
+    <rect x="576" y="0" width="134" height="118" rx="6" fill="url(#cardGradJava)" stroke="#ff7043" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="584" y="8" width="22" height="22" rx="4" fill="#2d1208" stroke="#e040fb" stroke-width="1" />
+    <path d="M589 19 h12 M595 13 v12" stroke="#e040fb" stroke-width="1.5" stroke-linecap="round" />
+    <text x="612" y="23" fill="#e040fb" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">MICROSERVICES</text>
+    <text x="586" y="44" fill="#e040fb" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Service Discovery</text>
+    <text x="586" y="58" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Circuit Breaking</text>
+    <text x="586" y="72" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• JUnit 5 &amp; Mockito</text>
+    <text x="586" y="86" fill="#d0beb7" font-family="'JetBrains Mono', monospace" font-size="7.5">• Docker Containers</text>
+    <rect x="586" y="98" width="114" height="12" rx="2" fill="#e040fb" fill-opacity="0.15" />
+    <text x="643" y="107" fill="#e040fb" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 05: TESTING</text>
+  </g>
+
+  <!-- Bottom Verification & Signatures Bar -->
+  <g transform="translate(45, 386)">
+    <!-- Official Infosys Learning Seal -->
+    <g transform="translate(40, 48)">
+      <path d="M-10 15 L-18 45 L0 35 L18 45 L10 15" fill="#8d2a09" />
+      <path d="M-6 15 L-12 40 L0 32 L12 40 L6 15" fill="#ff7043" />
+      <circle cx="0" cy="0" r="32" fill="url(#springSeal)" filter="url(#javaGlow)" />
+      <circle cx="0" cy="0" r="28" fill="#1f0a04" stroke="#ffab91" stroke-width="1" />
+      <circle cx="0" cy="0" r="24" fill="none" stroke="#39e68b" stroke-width="1" stroke-dasharray="3 2" />
+      <text x="0" y="-8" fill="#39e68b" font-family="'Orbitron', sans-serif" font-size="6" font-weight="700" text-anchor="middle">VERIFIED</text>
+      <text x="0" y="4" fill="#ffffff" font-family="'Orbitron', sans-serif" font-size="8" font-weight="900" text-anchor="middle">INFOSYS</text>
+      <text x="0" y="14" fill="#ffab91" font-family="'Orbitron', sans-serif" font-size="6" font-weight="700" text-anchor="middle">SPRINGBOARD</text>
+    </g>
+
+    <!-- Credential Meta Block -->
+    <g transform="translate(105, 20)">
+      <text x="0" y="15" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="9">CREDENTIAL ID:</text>
+      <text x="110" y="15" fill="#ff7043" font-family="'Orbitron', sans-serif" font-size="11" font-weight="700">FS-JAVA-REST-901</text>
+      
+      <text x="0" y="35" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="9">ISSUE DATE:</text>
+      <text x="110" y="35" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10">2025 // ACCREDITED CERTIFICATION</text>
+
+      <text x="0" y="55" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="9">VALIDATION HOST:</text>
+      <text x="110" y="55" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8.5">springboard.infosys.com/verify/FS-JAVA-REST-901</text>
+      
+      <text x="0" y="75" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="9">SECURITY TOKEN:</text>
+      <text x="110" y="75" fill="#ffab91" font-family="'JetBrains Mono', monospace" font-size="8">HMAC-SHA256: e3b0c44298fc1c...b855</text>
+    </g>
+
+    <!-- Signatory 1 -->
+    <g transform="translate(460, 20)">
+      <path d="M10 25 Q 35 12, 60 26 T 100 18 T 130 27" fill="none" stroke="#ffab91" stroke-width="2" stroke-linecap="round" />
+      <line x1="0" y1="42" x2="140" y2="42" stroke="#5d3023" stroke-width="1" />
+      <text x="70" y="56" fill="#ffffff" font-family="'Inter', sans-serif" font-size="9" font-weight="600" text-anchor="middle">Thirumala Arohi</text>
+      <text x="70" y="68" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle">Head - ETA, Infosys Limited</text>
+    </g>
+
+    <!-- Signatory 2 -->
+    <g transform="translate(615, 20)">
+      <path d="M10 28 Q 30 8, 55 24 T 95 16 T 130 25" fill="none" stroke="#39e68b" stroke-width="2" stroke-linecap="round" />
+      <line x1="0" y1="42" x2="140" y2="42" stroke="#5d3023" stroke-width="1" />
+      <text x="70" y="56" fill="#ffffff" font-family="'Inter', sans-serif" font-size="9" font-weight="600" text-anchor="middle">Infosys Springboard</text>
+      <text x="70" y="68" fill="#a47a6d" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle">Board of Technical Certifications</text>
+    </g>
+  </g>
+</svg>

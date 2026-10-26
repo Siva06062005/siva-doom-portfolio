@@ -1,0 +1,209 @@
+%-------------------------
+% Resume in Latex — FAANGPath Template
+% Candidate: Siva S
+% Profile: DevOps Engineer & Computer Science Graduate
+% Compatible with Overleaf & standard pdflatex (ATS-friendly)
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+%----------PAGE SETUP & MARGINS----------
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Standard ATS Margins (0.5 in)
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.0in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generated PDF is machine readable / ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Siva S} \\ \vspace{3pt}
+    \small Tamil Nadu, India $|$ 
+    \href{tel:+917373628589}{+91 7373628589} $|$ 
+    \href{mailto:sivasathiya0606@gmail.com}{\underline{sivasathiya0606@gmail.com}} $|$ 
+    \href{https://www.linkedin.com/in/siva-selvaraj-0472432a1}{\underline{linkedin.com/in/siva-selvaraj}} $|$ 
+    \href{https://github.com/SIva06062005}{\underline{github.com/SIva06062005}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Sriram Engineering College}{Perumalpattu, Tamil Nadu, India}
+      {Bachelor of Engineering in Computer Science \& Engineering (CGPA: 8.0 / 10.0)}{Aug 2022 -- May 2026}
+      \resumeItemListStart
+        \resumeItem{\textbf{Relevant Coursework:} Operating Systems, Distributed Systems, Cloud Architecture, Computer Networks, Database Management Systems (DBMS), Linux Systems Administration.}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Govt. Boys Higher Secondary School}{Perambakkam, Tamil Nadu, India}
+      {Higher Secondary Certificate (HSC) -- Science \& Mathematics Stream (Score: 62.6\%)}{Jun 2020 -- May 2022}
+  \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Cloud \& Infrastructure}{: AWS (EC2, S3, Elastic Beanstalk, RDS), Google Cloud Platform, Terraform (IaC), Jenkins, Docker, Docker Compose, Nginx Reverse Proxy, Hostinger Cloud} \\
+     \textbf{Systems \& DevOps Disciplines}{: Linux (Ubuntu, Kali), Bash Scripting, CI/CD Workflows, Linux Kernel Tuning, Sysctl, High Availability, Root-Cause Analysis (RCA), Zero-Downtime Deployments} \\
+     \textbf{Languages}{: Python, Java, SQL, Solidity, JavaScript (ES6+), Bash, HTML5, CSS3} \\
+     \textbf{Frameworks \& Libraries}{: React.js, Flask, Scikit-Learn, Pandas, NumPy, Web3.js, Hardhat, RESTful APIs, Matplotlib} \\
+     \textbf{Developer Tools \& Databases}{: Git, GitHub, MySQL, Postman, Linux systemd, Ethereum Testnet (EVM)}
+    }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {DevOps Intern}{Jan 2026 -- Mar 2026}
+      {Burj Tech Consultancy}{Tiruvallur, Tamil Nadu, India}
+      \resumeItemListStart
+        \resumeItem{Automated cloud infrastructure provisioning using declarative \textbf{Terraform (IaC)} templates, slashing recurring staging and production environment setup times by over \textbf{40\%}.}
+        \resumeItem{Configured end-to-end \textbf{Jenkins CI/CD} deployment pipelines to automate containerized unit tests, linting scans, and artifact builds on each Git pull request.}
+        \resumeItem{Orchestrated multi-container development and staging topologies using \textbf{Docker Compose}, standardizing runtime parity across local and server environments.}
+        \resumeItem{Fine-tuned \textbf{Ubuntu Linux kernel} parameters (\texttt{sysctl} socket buffers, file descriptors) and conducted structured Root Cause Analysis (\textbf{RCA}) on critical bottlenecks to enforce zero downtime.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Data Science \& AI Intern}{Jun 2025 -- Jul 2025}
+      {Rasa AI Labs}{Chennai, Tamil Nadu, India}
+      \resumeItemListStart
+        \resumeItem{Configured high-availability staging and compute environments for low-latency, real-time AI model inference pipelines.}
+        \resumeItem{Optimized Linux server resource allocation and compute workloads, preventing memory threshold spikes during batch model runs.}
+        \resumeItem{Authored custom \textbf{Bash automation scripts} for proactive monitoring of GPU/CPU utilization, swap activity, and memory footprints.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Data Science Intern}{Apr 2025 -- May 2025}
+      {Remark Skill Education}{Remote}
+      \resumeItemListStart
+        \resumeItem{Developed modular \textbf{Python} data extraction and preprocessing pipelines, boosting data transformation throughput.}
+        \resumeItem{Trained and validated predictive classification models using \textbf{Scikit-Learn} and \textbf{Pandas} to deliver data-backed intelligence reports.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Key Engineering Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{SmartPanchayat -- Decentralized Governance Platform} $|$ \emph{React.js, Solidity, Ethereum, Java, Hardhat, Web3.js}}{May 2026}
+          \resumeItemListStart
+            \resumeItem{Architected a decentralized governance dApp to ensure 100\% tamper-proof civic grant tracking and automated fund disbursement.}
+            \resumeItem{Authored and deployed gas-optimized \textbf{Solidity smart contracts} via Hardhat on Ethereum testnet with sub-12 second transaction confirmation speeds.}
+            \resumeItem{Built an interactive \textbf{React.js} Web3 wallet dashboard integrated with a secure \textbf{Java microservices} middleware connecting legacy municipal records.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Fake News Detection \& End-to-End ETL Pipeline} $|$ \emph{Python, MySQL, Scikit-Learn, Pandas, TF-IDF, NumPy}}{2026}
+          \resumeItemListStart
+            \resumeItem{Engineered an end-to-end ETL pipeline processing \textbf{44,898 records}, eliminating duplicates and empty records to load \textbf{44,058 verified entries} into MySQL with \textbf{99.1\% pipeline accuracy}.}
+            \resumeItem{Engineered linguistic text features using \textbf{TF-IDF vectorization} and performed comprehensive Exploratory Data Analysis (EDA) on text distribution patterns.}
+            \resumeItem{Trained and benchmarked multiple ML classifiers (\textbf{Random Forest, Gradient Boosting, Logistic Regression}) achieving high precision in detecting fabricated articles.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Scalable Cloud E-Commerce Platform} $|$ \emph{AWS S3, Flask, MySQL, Docker, Nginx, Python}}{Apr 2025}
+          \resumeItemListStart
+            \resumeItem{Built a resilient web platform containerized with \textbf{Docker} and reverse-proxied using \textbf{Nginx} to target \textbf{99.9\% service availability}.}
+            \resumeItem{Offloaded static media and product assets directly to \textbf{AWS S3}, slashing web server disk I/O and accelerating asset loading latency.}
+            \resumeItem{Hardened application security through CSRF protection, parameterized SQL queries, connection pooling, and automated server provisioning scripts.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Genious Shoppy -- Customer Analytics \& Explainable AI} $|$ \emph{Python, RFM Segmentation, SHAP, LIME, Scikit-Learn}}{Jul 2025}
+          \resumeItemListStart
+            \resumeItem{Formulated a 5-tier \textbf{RFM (Recency, Frequency, Monetary)} customer segmentation matrix over transactional records to pinpoint churn risk cohorts.}
+            \resumeItem{Integrated Explainable AI (\textbf{SHAP \& LIME}) into predictive churn pipelines to supply actionable, transparent business justifications for automated alert triggers.}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+      \textbf{Full Stack with Java \& Spring REST} --- Infosys Springboard \hfill \href{https://drive.google.com/file/d/13_bpDUgPFBBF_0hLtFAVINLMgtSF3utn/view?usp=sharing}{\underline{Certificate}} \\ \vspace{1.5pt}
+      \textbf{AWS Cloud Foundations} --- Smartbridge \hfill 
+      \href{https://drive.google.com/file/d/1d0-UkQF3vwfkg7pUSCcFkc-5KzUCoOC6/view?usp=sharing}{\underline{Certificate}} \\ \vspace{1.5pt}
+      \textbf{Experience-Based Project Learning} --- HCL \hfill 
+      \href{https://drive.google.com/file/d/1sHZMyB1UFVKu_qEySsCGYpfewoJ5TWp-/view?usp=drive_link}{\underline{Certificate}} \\ \vspace{1.5pt}
+      \textbf{Microsoft Office Essentials} --- TNSDC \hfill 
+      \href{https://drive.google.com/file/d/1yn6wcJA4NThWc4ga5P6Grmypx0FQmlgc/view?usp=sharing}{\underline{Certificate}} \\ \vspace{1.5pt}
+      \textbf{Data Science \& Analytics} --- Remark Skill Education \hfill 
+      \href{https://drive.google.com/file/d/1PZckw10izSikFNheUkwxkytJ8lrdYOcz/view?usp=drive_link}{\underline{Certificate}} \\ \vspace{1.5pt}
+      \textbf{Unity 3D \& Spatial AI Development} --- E16 AI XR Technology Pvt Ltd. \hfill 
+      \href{https://drive.google.com/file/d/1EyvjSGgK7ajcHJq8UmETMw3N-yZM8oyc/view?usp=sharing}{\underline{Certificate}}
+    }}
+  \end{itemize}
+
+%-------------------------------------------
+\end{document}

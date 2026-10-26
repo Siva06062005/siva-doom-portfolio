@@ -200,6 +200,19 @@ class SoundEngine {
   playPinClick() {
     this.playTone(950 + Math.random() * 200, 0.03, "sine", 0.03);
   }
+
+  playSwipe() {
+    this.playTone(380, 0.05, "sine", 0.04);
+    setTimeout(() => this.playTone(620, 0.06, "triangle", 0.04), 45);
+  }
+
+  playShuffle() {
+    [0, 50, 100, 150, 200].forEach((delay, idx) => {
+      setTimeout(() => {
+        this.playTone(320 + idx * 75, 0.03, "sine", 0.025);
+      }, delay);
+    });
+  }
 }
 
 export const sfx = new SoundEngine();

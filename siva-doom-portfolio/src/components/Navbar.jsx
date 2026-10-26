@@ -10,6 +10,7 @@ const navSections = [
   ["About", "about"],
   ["Skills", "skills"],
   ["Projects", "projects"],
+  ["Certificates", "certificates"],
   ["Experience", "experience"],
   ["Contact", "contact"],
 ];
@@ -53,7 +54,7 @@ export default function Navbar() {
 
   // Scroll spy to detect current active section in single-page layout
   useEffect(() => {
-    const sectionIds = ["home", "about", "skills", "projects", "experience", "contact"];
+    const sectionIds = ["home", "about", "skills", "projects", "certificates", "experience", "contact"];
     const handleScroll = () => {
       const scrollPos = window.scrollY + 160;
       for (let i = sectionIds.length - 1; i >= 0; i--) {

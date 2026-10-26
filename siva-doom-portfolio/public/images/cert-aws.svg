@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c0702" />
+      <stop offset="40%" stop-color="#190e04" />
+      <stop offset="80%" stop-color="#120902" />
+      <stop offset="100%" stop-color="#050301" />
+    </linearGradient>
+    <linearGradient id="awsGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff9900" />
+      <stop offset="50%" stop-color="#ffb74d" />
+      <stop offset="100%" stop-color="#ff8c00" />
+    </linearGradient>
+    <linearGradient id="goldSeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe082" />
+      <stop offset="50%" stop-color="#ff9900" />
+      <stop offset="100%" stop-color="#bf6000" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f1306" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#140a02" stop-opacity="0.95" />
+    </linearGradient>
+    <!-- Glow Filters -->
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Certificate Outer Background -->
+  <rect width="800" height="520" fill="url(#bgGrad)" />
+
+  <!-- Subtle Blueprint Tech Grid -->
+  <g stroke="#ff9900" stroke-opacity="0.05" stroke-width="1">
+    <path d="M0 40h800M0 80h800M0 120h800M0 160h800M0 200h800M0 240h800M0 280h800M0 320h800M0 360h800M0 400h800M0 440h800M0 480h800" />
+    <path d="M60 0v520M120 0v520M180 0v520M240 0v520M300 0v520M360 0v520M420 0v520M480 0v520M540 0v520M600 0v520M660 0v520M720 0v520" />
+  </g>
+
+  <!-- Certificate Border Framing -->
+  <rect x="20" y="20" width="760" height="480" rx="12" fill="none" stroke="url(#awsGold)" stroke-width="2" stroke-opacity="0.75" />
+  <rect x="28" y="28" width="744" height="464" rx="8" fill="none" stroke="#ff9900" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="8 4" />
+
+  <!-- Corner Tech Brackets -->
+  <path d="M20 50 V20 H50" fill="none" stroke="#ffb74d" stroke-width="3" />
+  <path d="M780 50 V20 H750" fill="none" stroke="#ffb74d" stroke-width="3" />
+  <path d="M20 470 V500 H50" fill="none" stroke="#ffb74d" stroke-width="3" />
+  <path d="M780 470 V500 H750" fill="none" stroke="#ffb74d" stroke-width="3" />
+
+  <!-- Top Header Bar -->
+  <g transform="translate(45, 42)">
+    <!-- AWS Academy / Smartbridge Crest -->
+    <rect x="0" y="0" width="34" height="34" rx="6" fill="#241505" stroke="#ff9900" stroke-width="1.5" />
+    <path d="M8 22 C14 26, 20 26, 26 22" fill="none" stroke="#ff9900" stroke-width="2.5" stroke-linecap="round" />
+    <polygon points="23,20 27,22 24,24" fill="#ff9900" />
+    <path d="M12 12 L17 18 L22 12" fill="none" stroke="#ffe082" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+    <text x="44" y="15" fill="#ff9900" font-family="'Orbitron', -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="2">SMARTBRIDGE // AWS ACADEMY</text>
+    <text x="44" y="30" fill="#a0856c" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1">CLOUD ARCHITECTURE ACCREDITATION PROGRAM</text>
+
+    <!-- Top Right Verification Badge -->
+    <rect x="575" y="2" width="135" height="26" rx="4" fill="#140a02" stroke="#39e68b" stroke-width="1" />
+    <circle cx="587" cy="15" r="4" fill="#39e68b" filter="url(#goldGlow)" />
+    <text x="597" y="19" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" letter-spacing="1">AUTHENTICATED ✓</text>
+  </g>
+
+  <!-- Title & Recipient Section -->
+  <g transform="translate(400, 115)" text-anchor="middle">
+    <text y="0" fill="#ffb74d" font-family="'Orbitron', -apple-system, sans-serif" font-size="13" font-weight="600" letter-spacing="4">CERTIFICATE OF ACHIEVEMENT</text>
+    <text y="20" fill="#8c7866" font-family="'Inter', sans-serif" font-size="10" letter-spacing="2">THIS IS PROUDLY PRESENTED TO</text>
+    
+    <!-- Recipient Name -->
+    <text y="52" fill="#ffffff" font-family="'Orbitron', -apple-system, sans-serif" font-size="26" font-weight="900" letter-spacing="3" filter="url(#goldGlow)">SIVA S</text>
+    <line x1="-140" y1="62" x2="140" y2="62" stroke="url(#awsGold)" stroke-width="1.5" />
+
+    <!-- Certification Title -->
+    <text y="84" fill="#ff9900" font-family="'Orbitron', -apple-system, sans-serif" font-size="16" font-weight="800" letter-spacing="1.5">AWS CLOUD FOUNDATIONS</text>
+    <text y="101" fill="#c4aa8e" font-family="'Inter', sans-serif" font-size="10">For demonstrating proficiency across Amazon Web Services core cloud architecture and security principles.</text>
+  </g>
+
+  <!-- Section Label: Certificate Architectural Components -->
+  <g transform="translate(45, 236)">
+    <text x="0" y="0" fill="#ff9900" font-family="'Orbitron', -apple-system, sans-serif" font-size="9" font-weight="700" letter-spacing="2">VERIFIED CURRICULUM MODULES & ARCHITECTURAL COMPONENTS</text>
+    <line x1="380" y1="-3" x2="710" y2="-3" stroke="#ff9900" stroke-opacity="0.3" stroke-width="1" />
+  </g>
+
+  <!-- 5 Component Modules Display -->
+  <g transform="translate(45, 248)">
+    <!-- Component 1: EC2 Compute -->
+    <rect x="0" y="0" width="136" height="118" rx="6" fill="url(#cardGrad)" stroke="#ff9900" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="8" y="8" width="22" height="22" rx="4" fill="#2a1705" stroke="#ff9900" stroke-width="1" />
+    <path d="M13 19 h12 M19 13 v12" stroke="#ff9900" stroke-width="1.5" stroke-linecap="round" />
+    <text x="36" y="23" fill="#ffb74d" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">EC2 COMPUTE</text>
+    <text x="10" y="44" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Auto-Scaling Fleets</text>
+    <text x="10" y="58" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Elastic Load Balancing</text>
+    <text x="10" y="72" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Virtual Server Clusters</text>
+    <text x="10" y="86" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• AMI Golden Images</text>
+    <rect x="10" y="98" width="116" height="12" rx="2" fill="#ff9900" fill-opacity="0.15" />
+    <text x="68" y="107" fill="#ff9900" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 01: COMPUTE</text>
+
+    <!-- Component 2: S3 Storage -->
+    <rect x="144" y="0" width="136" height="118" rx="6" fill="url(#cardGrad)" stroke="#ff9900" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="152" y="8" width="22" height="22" rx="4" fill="#2a1705" stroke="#39e68b" stroke-width="1" />
+    <path d="M157 16 h12 M157 20 h12 M157 24 h12" stroke="#39e68b" stroke-width="1.5" stroke-linecap="round" />
+    <text x="180" y="23" fill="#39e68b" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">S3 STORAGE</text>
+    <text x="154" y="44" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Encrypted Buckets</text>
+    <text x="154" y="58" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Lifecycle Management</text>
+    <text x="154" y="72" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Multi-Region Sync</text>
+    <text x="154" y="86" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Object Versioning</text>
+    <rect x="154" y="98" width="116" height="12" rx="2" fill="#39e68b" fill-opacity="0.15" />
+    <text x="212" y="107" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 02: STORAGE</text>
+
+    <!-- Component 3: VPC Networking -->
+    <rect x="288" y="0" width="136" height="118" rx="6" fill="url(#cardGrad)" stroke="#ff9900" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="296" y="8" width="22" height="22" rx="4" fill="#2a1705" stroke="#22d1ee" stroke-width="1" />
+    <circle cx="307" cy="19" r="6" fill="none" stroke="#22d1ee" stroke-width="1.5" />
+    <path d="M307 13 v12 M301 19 h12" stroke="#22d1ee" stroke-width="1" />
+    <text x="324" y="23" fill="#22d1ee" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">VPC & NETWORK</text>
+    <text x="298" y="44" fill="#22d1ee" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Public/Private Subnets</text>
+    <text x="298" y="58" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Internet Gateways</text>
+    <text x="298" y="72" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Route Tables & NAT</text>
+    <text x="298" y="86" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Security Groups & ACL</text>
+    <rect x="298" y="98" width="116" height="12" rx="2" fill="#22d1ee" fill-opacity="0.15" />
+    <text x="356" y="107" fill="#22d1ee" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 03: NETWORK</text>
+
+    <!-- Component 4: IAM Security -->
+    <rect x="432" y="0" width="136" height="118" rx="6" fill="url(#cardGrad)" stroke="#ff9900" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="440" y="8" width="22" height="22" rx="4" fill="#2a1705" stroke="#e040fb" stroke-width="1" />
+    <path d="M447 24 v-6 c0 -3 2 -5 5 -5 s5 2 5 5 v6" fill="none" stroke="#e040fb" stroke-width="1.5" />
+    <rect x="446" y="18" width="12" height="9" rx="1.5" fill="#e040fb" />
+    <text x="468" y="23" fill="#e040fb" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">IAM & SECURITY</text>
+    <text x="442" y="44" fill="#e040fb" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• Role-Based Access</text>
+    <text x="442" y="58" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Least Privilege Policy</text>
+    <text x="442" y="72" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Multi-Factor (MFA)</text>
+    <text x="442" y="86" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Zero-Trust Architecture</text>
+    <rect x="442" y="98" width="116" height="12" rx="2" fill="#e040fb" fill-opacity="0.15" />
+    <text x="500" y="107" fill="#e040fb" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 04: SECURITY</text>
+
+    <!-- Component 5: CloudWatch & Architecture -->
+    <rect x="576" y="0" width="134" height="118" rx="6" fill="url(#cardGrad)" stroke="#ff9900" stroke-width="1.2" stroke-opacity="0.6" />
+    <rect x="584" y="8" width="22" height="22" rx="4" fill="#2a1705" stroke="#ffb74d" stroke-width="1" />
+    <path d="M589 23 L593 18 L597 21 L602 14" fill="none" stroke="#ffb74d" stroke-width="1.5" stroke-linecap="round" />
+    <text x="612" y="23" fill="#ffb74d" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700">MONITORING</text>
+    <text x="586" y="44" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">• CloudWatch Alarms</text>
+    <text x="586" y="58" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• CloudTrail Log Audits</text>
+    <text x="586" y="72" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• SNS Alert Triggers</text>
+    <text x="586" y="86" fill="#c4b09e" font-family="'JetBrains Mono', monospace" font-size="7.5">• Well-Architected 5P</text>
+    <rect x="586" y="98" width="114" height="12" rx="2" fill="#ffb74d" fill-opacity="0.15" />
+    <text x="643" y="107" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" text-anchor="middle">MODULE 05: OPS</text>
+  </g>
+
+  <!-- Bottom Verification & Signatures Bar -->
+  <g transform="translate(45, 386)">
+    <!-- Official Golden Verification Seal -->
+    <g transform="translate(40, 48)">
+      <!-- Seal Ribbons -->
+      <path d="M-10 15 L-18 45 L0 35 L18 45 L10 15" fill="#bf6000" />
+      <path d="M-6 15 L-12 40 L0 32 L12 40 L6 15" fill="#ff9900" />
+      <!-- Star Rosette -->
+      <circle cx="0" cy="0" r="32" fill="url(#goldSeal)" filter="url(#goldGlow)" />
+      <circle cx="0" cy="0" r="28" fill="#1b1005" stroke="#ffe082" stroke-width="1" />
+      <circle cx="0" cy="0" r="24" fill="none" stroke="#ff9900" stroke-width="1" stroke-dasharray="3 2" />
+      <text x="0" y="-8" fill="#ffe082" font-family="'Orbitron', sans-serif" font-size="6" font-weight="700" text-anchor="middle">VERIFIED</text>
+      <text x="0" y="4" fill="#ffffff" font-family="'Orbitron', sans-serif" font-size="9" font-weight="900" text-anchor="middle">AWS</text>
+      <text x="0" y="14" fill="#ffe082" font-family="'Orbitron', sans-serif" font-size="6" font-weight="700" text-anchor="middle">ACADEMY</text>
+    </g>
+
+    <!-- Credential Meta Block -->
+    <g transform="translate(105, 20)">
+      <text x="0" y="15" fill="#a0856c" font-family="'JetBrains Mono', monospace" font-size="9">CREDENTIAL ID:</text>
+      <text x="110" y="15" fill="#ff9900" font-family="'Orbitron', sans-serif" font-size="11" font-weight="700">AWS-CF-4402</text>
+      
+      <text x="0" y="35" fill="#a0856c" font-family="'JetBrains Mono', monospace" font-size="9">ISSUE DATE:</text>
+      <text x="110" y="35" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10">JANUARY 2025 // RECERT: 2028</text>
+
+      <text x="0" y="55" fill="#a0856c" font-family="'JetBrains Mono', monospace" font-size="9">VERIFICATION URL:</text>
+      <text x="110" y="55" fill="#39e68b" font-family="'JetBrains Mono', monospace" font-size="8.5">aws.amazon.com/verification/AWS-CF-4402</text>
+      
+      <text x="0" y="75" fill="#a0856c" font-family="'JetBrains Mono', monospace" font-size="9">SECURITY HASH:</text>
+      <text x="110" y="75" fill="#ffb74d" font-family="'JetBrains Mono', monospace" font-size="8">SHA-256: 8a4f91b7e4c2...09e2</text>
+    </g>
+
+    <!-- Signatory 1 -->
+    <g transform="translate(460, 20)">
+      <!-- Simulated Signature Curve -->
+      <path d="M10 28 Q 30 10, 50 25 T 90 20 T 130 25" fill="none" stroke="#ffb74d" stroke-width="2" stroke-linecap="round" />
+      <line x1="0" y1="42" x2="140" y2="42" stroke="#554433" stroke-width="1" />
+      <text x="70" y="56" fill="#ffffff" font-family="'Inter', sans-serif" font-size="9" font-weight="600" text-anchor="middle">Amresh Kumar</text>
+      <text x="70" y="68" fill="#8c7866" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle">Program Lead, Smartbridge</text>
+    </g>
+
+    <!-- Signatory 2 -->
+    <g transform="translate(615, 20)">
+      <path d="M10 25 Q 35 8, 60 22 T 100 15 T 130 28" fill="none" stroke="#ff9900" stroke-width="2" stroke-linecap="round" />
+      <line x1="0" y1="42" x2="140" y2="42" stroke="#554433" stroke-width="1" />
+      <text x="70" y="56" fill="#ffffff" font-family="'Inter', sans-serif" font-size="9" font-weight="600" text-anchor="middle">AWS Academy</text>
+      <text x="70" y="68" fill="#8c7866" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle">Global Training &amp; Certifications</text>
+    </g>
+  </g>
+</svg>

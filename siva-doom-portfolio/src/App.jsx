@@ -14,6 +14,7 @@ import Skills from "./pages/Skills";
 import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
 import Contact from "./pages/Contact";
+import Certificates from "./pages/Certificates";
 
 export default function App() {
   const location = useLocation();
@@ -23,7 +24,7 @@ export default function App() {
     const rawHash = window.location.hash.replace("#", "").toLowerCase();
     const rawPath = location.pathname.replace("/", "").toLowerCase();
     const target = rawHash || rawPath;
-    if (target && ["home", "about", "skills", "projects", "experience", "contact"].includes(target)) {
+    if (target && ["home", "about", "skills", "projects", "certificates", "experience", "contact"].includes(target)) {
       setTimeout(() => {
         const el = document.getElementById(target);
         if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -62,13 +63,19 @@ export default function App() {
               <Projects />
             </section>
 
-            <SectionDivider nextTarget="experience" nextLabel="05 // SERVICE TIMELINE" />
+            <SectionDivider nextTarget="certificates" nextLabel="05 // CREDENTIAL VERIFICATION" />
+
+            <section id="certificates" className="page-section">
+              <Certificates />
+            </section>
+
+            <SectionDivider nextTarget="experience" nextLabel="06 // SERVICE TIMELINE" />
 
             <section id="experience" className="page-section">
               <Experience />
             </section>
 
-            <SectionDivider nextTarget="contact" nextLabel="06 // TRANSMISSION UPLINK" />
+            <SectionDivider nextTarget="contact" nextLabel="07 // TRANSMISSION UPLINK" />
 
             <section id="contact" className="page-section">
               <Contact />
