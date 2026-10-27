@@ -259,9 +259,9 @@ export default function Contact() {
             )}
 
             {[
-              { id: "contact_name", name: "name", type: "text", label: "Name *", placeholder: "e.g. Alex Morgan", maxLength: 80 },
-              { id: "contact_email", name: "email", type: "email", label: "Email Address *", placeholder: "e.g. alex@company.com", maxLength: 100 },
-              { id: "contact_subject", name: "subject", type: "text", label: "Subject *", placeholder: "e.g. Cloud Architecture Consultation", maxLength: 150 },
+              { id: "contact_name", name: "name", type: "text", label: "Name *", placeholder: "e.g. Tony Stark", maxLength: 80 },
+              { id: "contact_email", name: "email", type: "email", label: "Email Address *", placeholder: "e.g. tony@starkindustries.com", maxLength: 100 },
+              { id: "contact_subject", name: "subject", type: "text", label: "Subject *", placeholder: "e.g. Project Veronica // Cloud Architecture Consultation", maxLength: 150 },
             ].map(({ id, name, type, label, placeholder, maxLength }, i) => (
               <motion.div
                 className="form-group"
@@ -304,7 +304,7 @@ export default function Contact() {
                 required
                 rows={5}
                 disabled={status.submitting}
-                placeholder="Describe the system or infrastructure challenge you are solving..."
+                placeholder="e.g. Need a DevOps specialist to automate Project Veronica deployment pipelines, fine-tune server telemetry, and ensure zero-downtime reliability across Stark Industries..."
                 value={formData.message}
                 onChange={handleChange}
                 className={validationErrors.message ? "input-invalid" : ""}
