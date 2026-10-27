@@ -13,6 +13,10 @@ function apiDevPlugin() {
 
         // Handle both /api/contact and /api/veronica POST endpoints
         if ((url === "/api/contact" || url === "/api/veronica") && req.method === "POST") {
+          // Dynamically sync env vars so .env.local edits take effect immediately
+          const currentEnv = loadEnv(server.config.mode || "development", process.cwd(), "");
+          Object.assign(process.env, currentEnv);
+
           let body = "";
           req.on("data", (chunk) => {
             body += chunk;

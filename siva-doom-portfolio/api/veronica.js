@@ -133,61 +133,80 @@ Keep your responses concise — ideally 2-4 sentences, max 6 sentences unless th
 - If asked about topics outside Siva's profile, politely redirect: "That's outside my dossier, but I can tell you everything about Siva's DevOps stack!"`;
 
 // ─── Gemini API Configuration ────────────────────────────────────
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODELS = [
+  "gemini-3.8-flash",
+  "gemini-flash-latest",
+];
 
 async function queryGemini(prompt, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+  let lastError = null;
 
-  const payload = {
-    system_instruction: {
-      parts: [{ text: VERONICA_SYSTEM_PROMPT }],
-    },
-    contents: [
-      {
-        role: "user",
-        parts: [{ text: prompt }],
-      },
-    ],
-    generationConfig: {
-      temperature: 0.7,
-      topP: 0.9,
-      topK: 40,
-      maxOutputTokens: 512,
-    },
-    safetySettings: [
-      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
-      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
-      {
-        category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        threshold: "BLOCK_ONLY_HIGH",
-      },
-      {
-        category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-        threshold: "BLOCK_ONLY_HIGH",
-      },
-    ],
-  };
+  for (const model of GEMINI_MODELS) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+      const payload = {
+        system_instruction: {
+          parts: [{ text: VERONICA_SYSTEM_PROMPT }],
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: prompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.9,
+          topK: 40,
+          maxOutputTokens: 512,
+        },
+        safetySettings: [
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+          {
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            threshold: "BLOCK_ONLY_HIGH",
+          },
+          {
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_ONLY_HIGH",
+          },
+        ],
+      };
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    console.error("[Veronica/Gemini] API Error:", response.status, errorData);
-    throw new Error(`Gemini API error: ${response.status}`);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.warn(`[Veronica/Gemini] Model ${model} returned ${response.status}:`, errorData?.error?.message || response.statusText);
+        lastError = new Error(`Gemini ${model} error: ${response.status} - ${errorData?.error?.message || response.statusText}`);
+        continue;
+      }
+
+      const data = await response.json();
+      const parts = data?.candidates?.[0]?.content?.parts || [];
+      const textParts = parts
+        .filter((p) => !p.thought && typeof p.text === "string")
+        .map((p) => p.text);
+      const text = textParts.length > 0 ? textParts.join("\n") : parts[0]?.text;
+
+      if (!text) {
+        throw new Error("No text content returned from Gemini model");
+      }
+
+      return { text: text.trim(), model };
+    } catch (err) {
+      lastError = err;
+      console.warn(`[Veronica/Gemini] Attempt with model ${model} failed:`, err.message);
+    }
   }
 
-  const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-  if (!text) {
-    throw new Error("No content generated from Gemini");
-  }
-
-  return text.trim();
+  throw lastError || new Error("All Gemini models failed to respond");
 }
 
 // ─── Main Handler ────────────────────────────────────────────────
@@ -277,14 +296,29 @@ export default async function handler(req, res) {
       return;
     }
 
+    // Fast healthcheck / probe ping (does not consume API quota or risk timeouts)
+    if (prompt.toLowerCase() === "ping" || body.ping === true) {
+      res.statusCode = 200;
+      res.end(
+        JSON.stringify({
+          success: true,
+          status: "online",
+          engine: "gemini",
+          message: "Veronica neural link online and operational.",
+        })
+      );
+      return;
+    }
+
     // 4. Query Gemini
-    const responseText = await queryGemini(prompt, apiKey);
+    const result = await queryGemini(prompt, apiKey);
 
     res.statusCode = 200;
     res.end(
       JSON.stringify({
         success: true,
-        response: responseText,
+        response: result.text,
+        model: result.model,
         engine: "gemini",
       })
     );
@@ -296,6 +330,7 @@ export default async function handler(req, res) {
         success: false,
         error:
           "Veronica encountered a neural processing fault. The tactical engine remains operational.",
+        details: err.message || String(err),
         engine: "error",
       })
     );

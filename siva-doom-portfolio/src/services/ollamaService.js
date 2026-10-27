@@ -98,7 +98,7 @@ export async function detectBestEngine() {
 export async function queryGeminiVeronica(prompt) {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const timeout = setTimeout(() => controller.abort(), 20000);
 
     const res = await fetch(GEMINI_ENDPOINT, {
       method: "POST",
@@ -155,21 +155,20 @@ export async function queryOllamaVeronica(prompt) {
  * Returns { text: string, engine: string } or { text: null, engine: "tactical" }
  */
 export async function queryVeronica(prompt) {
-  // 1. Try Gemini (cloud — works on Vercel)
-  if (activeEngine === "gemini") {
+  // 1. Try Gemini (cloud — works on Vercel production) unless explicitly in local Ollama dev mode
+  if (activeEngine !== "ollama") {
     const geminiResponse = await queryGeminiVeronica(prompt);
     if (geminiResponse) {
+      activeEngine = "gemini";
       return { text: geminiResponse, engine: "gemini" };
     }
   }
 
-  // 2. Try Ollama (local — works in dev)
-  if (activeEngine === "ollama" || activeEngine === "gemini") {
-    const ollamaResponse = await queryOllamaVeronica(prompt);
-    if (ollamaResponse) {
-      activeEngine = "ollama";
-      return { text: ollamaResponse, engine: "ollama" };
-    }
+  // 2. Try Ollama (local — works in dev with Ollama running)
+  const ollamaResponse = await queryOllamaVeronica(prompt);
+  if (ollamaResponse) {
+    activeEngine = "ollama";
+    return { text: ollamaResponse, engine: "ollama" };
   }
 
   // 3. Tactical fallback — handled by voiceCommands.js
