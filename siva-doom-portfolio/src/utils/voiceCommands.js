@@ -65,6 +65,14 @@ export function processVoiceCommand(rawTranscript) {
     };
   }
 
+  // GROK / VERONICA Identity & Comparison
+  if (hasMatch(input, ["grok", "like grok", "are you grok", "grok for x", "elon", "xai"])) {
+    return {
+      text: "Spot on! Think of me as Grok, but forged inside Siva's Doom universe. While Grok roams X, I oversee this entire portfolio: monitoring cloud telemetry, dispatching missions, roasting bottlenecks, and answering all your questions about Siva's code with zero fluff. What would you like to inspect?",
+      action: null,
+    };
+  }
+
   // JARVIS / VERONICA Identity
   if (
     hasMatch(input, [
@@ -81,18 +89,18 @@ export function processVoiceCommand(rawTranscript) {
   ) {
     if (hasMatch(input, ["who are you", "what is your name", "what are you", "introduce yourself"])) {
       return {
-        text: `${greeting}, sir. I am Veronica, Siva's tactical AI assistant, engineered alongside his DevOps telemetry. I hold autonomous control over navigation, visual protocols, audio playback, project inspections, and system diagnostics. At your service.`,
+        text: `${greeting}! I am Veronica — the resident AI of Siva's Doom Portfolio. Think of me like Grok for X: sharp, witty, all-knowing, and armed with full telemetry across Siva's DevOps stack, projects, and cloud deployments. What's on your mind?`,
         action: null,
       };
     }
     if (hasMatch(input, ["how are you", "how are you doing", "how do you do", "operational"])) {
       return {
-        text: `${greeting}, sir. I am operating at 100% capacity. Arc reactor telemetry and cloud pipelines are fully synchronized. How may I direct the system?`,
+        text: `${greeting}, sir. Operating at 100% capacity with Grok-level sharpness! Telemetry across AWS, Terraform pipelines, and Docker containers is completely green. Ready for your directive.`,
         action: null,
       };
     }
     return {
-      text: `${greeting}, sir. Veronica online. Awaiting your directive. You can say "drop a needle" for music, "status report", "inspect SmartPanchayat", or "pitch Siva".`,
+      text: `${greeting}! Veronica online. The Grok of this Doom portfolio at your service. Ask me to 'pitch Siva', 'roast Siva', 'inspect SmartPanchayat', or 'drop a needle' for music!`,
       action: null,
     };
   }
@@ -525,26 +533,33 @@ export function processVoiceCommand(rawTranscript) {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 11. EXPERIENCE & INTERNSHIPS
+  // 11. EXPERIENCE & CREDENTIALS
   // ─────────────────────────────────────────────────────────────
   if (hasMatch(input, ["burj tech", "burj"])) {
     return {
-      text: "At Burj Tech Consultancy, Siva automated cloud provisioning using Terraform, configured Jenkins CI/CD pipelines, and tuned Ubuntu kernel parameters for high throughput.",
+      text: "At Burj Tech Consultancy, Siva automated cloud provisioning using Terraform, slashing setup times by 40%, built Jenkins CI/CD pipelines, and tuned Ubuntu kernel parameters for zero downtime.",
       action: { type: "navigate", payload: "/experience" },
     };
   }
 
-  if (hasMatch(input, ["rasa ai", "rasa"])) {
+  if (hasMatch(input, ["rasa ai", "rasa", "rasaai", "jkv"])) {
     return {
-      text: "At Rasa AI Labs, Siva deployed high-availability AI inference pipelines and built automated resource monitoring scripts for GPU and CPU allocation.",
+      text: "At Rasa.ai Labs (JKV Research), Siva deployed high-availability staging and compute environments for low-latency AI inference pipelines with custom Bash telemetry.",
       action: { type: "navigate", payload: "/experience" },
     };
   }
 
-  if (hasMatch(input, ["remark", "remark skill"])) {
+  if (hasMatch(input, ["remark", "remark skill", "iit hyderabad"])) {
     return {
-      text: "At Remark Skill Education, Siva authored modular Python ETL data scripts and predictive machine learning classifiers.",
+      text: "At Remark Skill Education (IIT Hyderabad Partner), Siva developed modular Python ETL pipelines and built predictive classification models with Scikit-Learn and Pandas.",
       action: { type: "navigate", payload: "/experience" },
+    };
+  }
+
+  if (hasMatch(input, ["certificate", "certificates", "credentials", "diploma", "accreditations", "verified certs"])) {
+    return {
+      text: "Deploying the Credential Verification Vault. Siva holds 6 authenticated engineering credentials across Full-Stack Java Spring REST, AWS Cloud Foundations, Industrial HCL Project Learning, TNSDC, Data Science, and Spatial XR AI — each backed by verified Google Drive documents.",
+      action: { type: "navigate", payload: "/certificates" },
     };
   }
 
@@ -614,23 +629,29 @@ export function processVoiceCommand(rawTranscript) {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 15. FUN / TRIVIA / CASUAL
+  // 15. FUN / ROAST / GROK WIT & TRIVIA
   // ─────────────────────────────────────────────────────────────
+  if (hasMatch(input, ["roast siva", "roast", "make fun of siva", "burn siva", "tell me a flaw", "critique siva"])) {
+    return {
+      text: "Roast Siva? Gladly! The man treats a 3-millisecond latency spike like a personal betrayal, consumes enough caffeine to power an Arc Reactor, and writes declarative Terraform scripts in his sleep. His only real flaw? He refuses to accept that 99.9% uptime is good enough — he won't rest until it's 100%!",
+      action: null,
+    };
+  }
   if (hasMatch(input, ["joke", "funny", "make me laugh", "tell a joke"])) {
     return {
-      text: "Why do DevOps engineers prefer dark mode? Because light attracts bugs, and Doom mode looks unstoppable!",
+      text: "Why do DevOps engineers prefer dark mode? Because light attracts bugs, and Doom Industrial Cyber looks unstoppable!",
       action: null,
     };
   }
   if (hasMatch(input, ["coffee", "caffeine"])) {
     return {
-      text: "Sensors indicate caffeine reserves are optimal. One espresso translates into 500 lines of clean Terraform code and zero 3 AM production alerts!",
+      text: "Telemetry check: Caffeine reserves at 98.4%. One espresso converts directly into 500 lines of clean Terraform code and zero 3 AM production alerts!",
       action: null,
     };
   }
   if (hasMatch(input, ["who created you", "who made you", "who built you"])) {
     return {
-      text: "I was engineered by Siva S as his tactical AI counterpart to guide visitors through his DevOps infrastructure and projects.",
+      text: "I was engineered by Siva S as his tactical AI counterpart — his personal Grok for this Doom portfolio — giving visitors unfiltered insight into his engineering.",
       action: null,
     };
   }
@@ -698,10 +719,32 @@ export function processVoiceCommand(rawTranscript) {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 18. CONTEXTUAL FALLBACK
+  // 18. CONTEXTUAL GROK-LEVEL INTELLIGENT ROUTING & FALLBACK
   // ─────────────────────────────────────────────────────────────
+  if (hasMatch(input, ["salary", "pay", "rate", "cost", "compensation"])) {
+    return {
+      text: "Siva offers flexible, market-competitive rates for high-impact DevOps, Cloud Architecture, and Full-Stack development roles. Connect with him directly on the contact form to discuss packages!",
+      action: { type: "navigate", payload: "/contact" },
+    };
+  }
+
+  if (hasMatch(input, ["best project", "favorite project", "top project"])) {
+    return {
+      text: "SmartPanchayat is arguably his crowning achievement: a decentralized governance platform utilizing Solidity smart contracts, React, and Java middleware with sub-12s confirmation speeds. Opening the projects showcase!",
+      action: { type: "navigate", payload: "/projects" },
+    };
+  }
+
+  if (hasMatch(input, ["hire", "availability", "available", "looking for job", "open for work"])) {
+    return {
+      text: "Siva graduated in May 2026 and is actively available for high-velocity DevOps, SRE, and Full-Stack Engineering roles. Deploying the direct contact uplink for you now!",
+      action: { type: "focus-contact" },
+    };
+  }
+
+  // Fallback with witty Grok-style response
   return {
-    text: `Directive received: "${rawTranscript}". Try asking for a "status report", "pitch Siva", "inspect SmartPanchayat", or "drop a needle".`,
+    text: `Interesting directive: "${rawTranscript}". As the Grok of Siva's Doom Universe, I can pitch Siva, roast his code, inspect his projects, breakdown his tech stack, or drop a needle for some tunes. What would you like to explore?`,
     action: null,
   };
 }

@@ -1,15 +1,18 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import contactHandler from "./api/contact.js";
+import veronicaHandler from "./api/veronica.js";
 
-// Vite plugin to simulate serverless /api/contact endpoint during local development
+// Vite plugin to simulate serverless endpoints during local development
 function apiDevPlugin() {
   return {
     name: "api-dev-server",
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ? req.url.split("?")[0] : "";
-        if (url === "/api/contact" && req.method === "POST") {
+
+        // Handle both /api/contact and /api/veronica POST endpoints
+        if ((url === "/api/contact" || url === "/api/veronica") && req.method === "POST") {
           let body = "";
           req.on("data", (chunk) => {
             body += chunk;
@@ -20,7 +23,8 @@ function apiDevPlugin() {
             } catch {
               req.body = {};
             }
-            await contactHandler(req, res);
+            const handler = url === "/api/veronica" ? veronicaHandler : contactHandler;
+            await handler(req, res);
           });
           return;
         }
@@ -37,7 +41,17 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), apiDevPlugin()],
-    server: { port: 5173, host: true },
+    server: {
+      port: 5173,
+      host: true,
+      proxy: {
+        "/api/ollama": {
+          target: "http://localhost:11434",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/ollama/, ""),
+        },
+      },
+    },
     build: { sourcemap: false }
   };
 });

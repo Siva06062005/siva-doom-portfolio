@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mic, MicOff, Volume2, VolumeX, X, Send, Bot, MessageSquare } from "lucide-react";
+import { Mic, MicOff, Volume2, VolumeX, X, Send, Bot, MessageSquare, Cpu } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { sfx } from "../utils/sfx";
 import { processVoiceCommand } from "../utils/voiceCommands";
+import { detectBestEngine, queryVeronica, activeEngine } from "../services/ollamaService";
 
 // ═══════════════════════════════════════════════════════════════════
 // SIVA S PORTFOLIO — VERONICA AI VOICE ASSISTANT & CHATBOT
-// Dual Accessibility: Live Voice Speech Recognition + Interactive Text Chat
+// Dual Engine: Local Ollama LLM ('veronica') + Tactical Built-in Fallback
 // ═══════════════════════════════════════════════════════════════════
 
 const SpeechRecognition = typeof window !== "undefined"
@@ -23,7 +24,14 @@ export default function VoiceAssistant() {
   const [status, setStatus] = useState("idle"); // idle | listening | speaking
   const [isOpen, setIsOpen] = useState(false);
   const [voiceMuted, setVoiceMuted] = useState(false);
+  const [currentEngine, setCurrentEngine] = useState("tactical");
+  const [isThinking, setIsThinking] = useState(false);
   const [textInput, setTextInput] = useState("");
+
+  // Detect best AI engine on mount (Gemini → Ollama → Tactical)
+  useEffect(() => {
+    detectBestEngine().then((engine) => setCurrentEngine(engine));
+  }, []);
 
   // Dynamic time-aware initial greeting
   const [messages, setMessages] = useState(() => {
@@ -32,7 +40,7 @@ export default function VoiceAssistant() {
     return [{
       id: "init",
       sender: "ai",
-      text: `${timeGreet}, sir. I am Veronica, your tactical AI assistant. Type or speak any directive — I can navigate the portfolio, run diagnostics, inspect projects, play music, explain technical concepts, or connect you directly with Siva.`,
+      text: `${timeGreet}! I'm Veronica, the resident AI of Siva's Doom Portfolio — think Grok for X, but tailored for Siva's DevOps stack, cloud infrastructure, and mission deployments. Ask me anything, tell me to roast his code, pitch his skills, or drop a needle for music! ⚡`,
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     }];
   });
@@ -263,7 +271,13 @@ export default function VoiceAssistant() {
       return;
     }
 
-    synthRef.current.cancel();
+    try {
+      synthRef.current.cancel();
+      if (synthRef.current.paused) {
+        synthRef.current.resume();
+      }
+    } catch {}
+
     clearInterval(resumeTimerRef.current);
 
     // Immediately mark as speaking to block onend race condition
@@ -277,10 +291,17 @@ export default function VoiceAssistant() {
       recognitionRef.current = null;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // Clean text of markdown, bullet symbols and raw URLs so speech sounds human and clean
+    const cleanText = (text || "")
+      .replace(/[*_#`~\[\]]/g, "")
+      .replace(/https?:\/\/\S+/g, "link provided in the dossier")
+      .replace(/[•\-\–]/g, " ")
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.rate = 1.02;
     utterance.pitch = 1.15;
-    utterance.volume = 0.92;
+    utterance.volume = 0.95;
 
     // Use preloaded cached voice (fixes Chrome async voice loading bug)
     const chosenVoice = pickFemaleVoice();
@@ -302,7 +323,7 @@ export default function VoiceAssistant() {
         } else {
           clearInterval(resumeTimerRef.current);
         }
-      }, 5000);
+      }, 3000);
     };
 
     utterance.onend = () => {
@@ -330,6 +351,7 @@ export default function VoiceAssistant() {
     utterance.onerror = (e) => {
       clearInterval(resumeTimerRef.current);
       console.warn("[Veronica] Speech error:", e.error);
+      executeAction(action);
       if (isSessionActiveRef.current) {
         setTimeout(() => {
           if (isSessionActiveRef.current) {
@@ -344,11 +366,19 @@ export default function VoiceAssistant() {
       }
     };
 
-    synthRef.current.speak(utterance);
+    // Safe delay to ensure Chrome speech synthesis buffer is ready
+    setTimeout(() => {
+      if (synthRef.current) {
+        if (synthRef.current.paused) {
+          synthRef.current.resume();
+        }
+        synthRef.current.speak(utterance);
+      }
+    }, 45);
   }, [executeAction, stopSession, pickFemaleVoice]);
 
-  // Dispatch directive (from voice, typing, or quick chips)
-  const dispatchDirective = useCallback((rawQuery) => {
+  // Dispatch directive (from voice, typing, or quick chips) with Ollama + Tactical hybrid
+  const dispatchDirective = useCallback(async (rawQuery) => {
     const query = (rawQuery || "").trim();
     if (!query) return;
 
@@ -360,17 +390,44 @@ export default function VoiceAssistant() {
       { id: Date.now(), sender: "user", text: query, time },
     ]);
 
-    const result = processVoiceCommand(query);
-    if (result) {
-      // Append AI response
+    // 1. Direct tactical action or quick command
+    const directResult = processVoiceCommand(query);
+
+    // If it's a UI control action like music, navigate, or modal, execute immediately
+    if (directResult && directResult.action) {
       setTimeout(() => {
         setMessages((prev) => [
           ...prev,
-          { id: Date.now() + 1, sender: "ai", text: result.text, time },
+          { id: Date.now() + 1, sender: "ai", text: directResult.text, time },
         ]);
-        speak(result.text, result.action);
+        speak(directResult.text, directResult.action);
       }, 100);
+      return;
     }
+
+    // 2. Query AI engine (Gemini Cloud → Ollama Local → Tactical)
+    setIsThinking(true);
+    let responseText = null;
+    let usedEngine = "tactical";
+
+    try {
+      const result = await queryVeronica(query);
+      responseText = result.text;
+      usedEngine = result.engine;
+      setCurrentEngine(usedEngine);
+    } catch {
+      setCurrentEngine("tactical");
+    } finally {
+      setIsThinking(false);
+    }
+
+    const finalText = responseText || (directResult ? directResult.text : "Directive received. As Veronica, the resident AI of Siva's Doom Universe, ask me anything about his DevOps stack, mission projects, or certificates!");
+
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now() + 1, sender: "ai", text: finalText, time, engine: usedEngine },
+    ]);
+    speak(finalText, directResult?.action);
   }, [speak]);
 
   // Low-level recognition runner
@@ -528,11 +585,12 @@ export default function VoiceAssistant() {
           {/* Header Controls */}
           <div className="voice-transcript-header">
             <div className="voice-chatbot-header-left">
-              <span className="voice-access-badge">
-                ● VERONICA AI ONLINE
+              <span className="voice-access-badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: currentEngine === "gemini" ? "#8b5cf6" : currentEngine === "ollama" ? "var(--accent-secondary)" : "#22d1ee", boxShadow: `0 0 8px ${currentEngine === "gemini" ? "#8b5cf6" : currentEngine === "ollama" ? "var(--accent-secondary)" : "#22d1ee"}` }} />
+                {currentEngine === "gemini" ? "● VERONICA AI // GEMINI" : currentEngine === "ollama" ? "● VERONICA AI // OLLAMA" : "● VERONICA AI ONLINE"}
               </span>
               <span className="voice-mode-tag">
-                {isSessionActive ? "VOICE ACTIVE" : "CHATBOT MODE"}
+                {isSessionActive ? "VOICE ACTIVE" : currentEngine !== "tactical" ? "LLM ENGINE" : "CHATBOT MODE"}
               </span>
             </div>
 
@@ -592,26 +650,42 @@ export default function VoiceAssistant() {
                 </div>
               </div>
             ))}
+
+            {isThinking && (
+              <div className="voice-chat-bubble-row ai-row">
+                <div className="voice-chat-bubble ai" style={{ opacity: 0.85, borderLeft: `2px solid ${currentEngine === "gemini" ? "#8b5cf6" : "var(--accent-secondary)"}` }}>
+                  <div className="voice-chat-bubble-meta">
+                    <span className="voice-chat-author" style={{ color: currentEngine === "gemini" ? "#8b5cf6" : "var(--accent-secondary)" }}>
+                      VERONICA // {currentEngine === "gemini" ? "GEMINI AI" : currentEngine === "ollama" ? "OLLAMA LLM" : "TACTICAL"}
+                    </span>
+                    <span className="voice-chat-time">GENERATING...</span>
+                  </div>
+                  <p className="voice-chat-text" style={{ fontStyle: "italic", margin: 0, color: currentEngine === "gemini" ? "#8b5cf6" : "var(--accent-secondary)" }}>
+                    ⚡ {currentEngine === "gemini" ? "Querying Gemini neural cores..." : currentEngine === "ollama" ? "Analyzing dossier with Ollama..." : "Processing tactical response..."}
+                  </p>
+                </div>
+              </div>
+            )}
             <div ref={chatBottomRef} />
           </div>
 
-          {/* Quick Directives Bar — top 6 most impactful for recruiters */}
+          {/* Quick Directives Bar — top 6 most impactful for recruiters & visitors */}
           <div className="voice-quick-chips">
             <div className="voice-chips-row">
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("pitch siva")}>
                 💼 Pitch Siva
               </button>
-              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("how can i contact siva")}>
-                📬 Contact Siva
+              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("roast siva")}>
+                🔥 Roast Siva
+              </button>
+              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("certificates")}>
+                🎓 Credentials
               </button>
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("status report")}>
                 📊 Status Report
               </button>
-              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("inspect smartpanchayat")}>
-                🔎 Inspect Project
-              </button>
-              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("open encyclopedia")}>
-                📚 Encyclopedia
+              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("how can i contact siva")}>
+                📬 Contact Siva
               </button>
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("drop a needle")}>
                 🎵 Play Music
@@ -624,7 +698,7 @@ export default function VoiceAssistant() {
             <input
               type="text"
               className="voice-chat-input"
-              placeholder="Ask Veronica anything (or speak)..."
+              placeholder="Ask Veronica anything (Grok style)..."
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
               aria-label="Type a directive for Veronica"
