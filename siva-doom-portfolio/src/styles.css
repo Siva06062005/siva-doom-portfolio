@@ -1524,6 +1524,43 @@ h2 {
 .timeline-top { display: flex; justify-content: space-between; gap: 20px; }
 .timeline-card h3 { margin: 10px 0 0; font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; }
 .timeline-card h4 { color: var(--accent-secondary); font-family: var(--font-mono); margin: 2px 0 16px; font-size: 0.85rem; }
+.timeline-cred-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(57, 230, 139, 0.08);
+  border: 1px solid rgba(57, 230, 139, 0.45);
+  color: var(--accent-secondary) !important;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(57, 230, 139, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.timeline-cred-badge:hover {
+  background: var(--accent-secondary) !important;
+  color: #030a10 !important;
+  box-shadow: 0 0 20px var(--accent-secondary);
+  border-color: var(--accent-secondary);
+  transform: translateY(-2px);
+}
+[data-theme="ironman"] .timeline-cred-badge {
+  background: rgba(255, 59, 48, 0.08);
+  border-color: rgba(255, 59, 48, 0.45);
+  color: var(--accent-primary) !important;
+  box-shadow: 0 0 10px rgba(255, 59, 48, 0.15);
+}
+[data-theme="ironman"] .timeline-cred-badge:hover {
+  background: var(--accent-primary) !important;
+  color: #fff !important;
+  box-shadow: 0 0 20px var(--accent-primary);
+  border-color: var(--accent-primary);
+}
 .timeline-card ul { margin: 0; padding-left: 18px; color: var(--text-secondary); list-style: disc; }
 .timeline-card li { margin: 7px 0; }
 

@@ -28,7 +28,7 @@ ${profile.summary}
 ${education.map((e) => `- ${e.year} | ${e.title}, ${e.place} (${e.detail})`).join("\n")}
 
 ## EXPERIENCE
-${experience.map((exp) => `### ${exp.role} — ${exp.company} (${exp.period})
+${experience.map((exp) => `### ${exp.role} — ${exp.company} (${exp.period})${exp.link ? `\nCredential: ${exp.link}` : ""}
 ${exp.bullets.map((b) => `- ${b}`).join("\n")}`).join("\n\n")}
 
 ## KEY PROJECTS
@@ -172,13 +172,47 @@ ${skillGroups.map((g) => `- **${g.title}**: ${g.items.join(", ")}`).join("\n")}
               </h3>
               {experience.map((exp) => (
                 <div key={exp.company} style={{ marginBottom: "16px", paddingLeft: "12px", borderLeft: "2px solid var(--accent-secondary)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "8px" }}>
                     <h4 style={{ margin: 0, fontSize: "0.95rem", color: "var(--text-primary)" }}>
-                      {exp.role} <span style={{ color: "var(--accent-secondary)" }}>@ {exp.company}</span>
+                      {exp.role}{" "}
+                      <span style={{ color: "var(--accent-secondary)" }}>
+                        @{" "}
+                        {exp.link ? (
+                          <a
+                            href={exp.link}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{ color: "var(--accent-secondary)", textDecoration: "underline" }}
+                            title="Open Google Drive verification document"
+                          >
+                            {exp.company}
+                          </a>
+                        ) : (
+                          exp.company
+                        )}
+                      </span>
                     </h4>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-muted)" }}>
-                      {exp.period}
-                    </span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      {exp.link && (
+                        <a
+                          href={exp.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{
+                            fontSize: "0.7rem",
+                            color: "var(--accent-secondary)",
+                            fontFamily: "var(--font-mono)",
+                            textDecoration: "underline",
+                            fontWeight: 600,
+                          }}
+                        >
+                          [Verify ↗]
+                        </a>
+                      )}
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-muted)" }}>
+                        {exp.period}
+                      </span>
+                    </div>
                   </div>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>{exp.mode}</span>
                   <ul style={{ margin: "8px 0 0", paddingLeft: "18px", listStyle: "disc" }}>

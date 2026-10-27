@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ExternalLink, ShieldCheck } from "lucide-react";
 
 export default function TimelineItem({ item, index }) {
   return (
@@ -43,7 +44,47 @@ export default function TimelineItem({ item, index }) {
           <span className="muted">// {item.mode}</span>
         </div>
         <h3>{item.role}</h3>
-        <h4 style={{ color: "var(--accent-secondary)" }}>{item.company}</h4>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", margin: "4px 0 16px" }}>
+          <h4 style={{ color: "var(--accent-secondary)", margin: 0 }}>
+            {item.link ? (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  color: "var(--accent-secondary)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "4px"
+                }}
+                title={`Verify experience credentials for ${item.company}`}
+              >
+                {item.company}
+                <ExternalLink size={13} />
+              </a>
+            ) : (
+              item.company
+            )}
+          </h4>
+
+          {item.link && (
+            <motion.a
+              href={item.link}
+              target="_blank"
+              rel="noreferrer"
+              className="timeline-cred-badge"
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              title="View Official Experience Letter / Certificate on Google Drive"
+            >
+              <ShieldCheck size={13} />
+              <span>EXPERIENCE LETTER</span>
+              <ExternalLink size={11} />
+            </motion.a>
+          )}
+        </div>
         <motion.ul
           initial="hidden"
           whileInView="visible"

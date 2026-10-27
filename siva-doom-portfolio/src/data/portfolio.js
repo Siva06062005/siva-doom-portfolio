@@ -83,34 +83,35 @@ export const experience = [
   {
     company: "Burj Tech Consultancy",
     role: "DevOps Intern",
-    mode: "In-person • Tiruvallur, India",
-    period: "Jan 2026 — Mar 2026",
+    mode: "In-person • Tiruvallur, Tamil Nadu, India",
+    period: "Dec 2025 — Mar 2026",
+    link: "https://drive.google.com/file/d/1h8JgB1kVwcsl5Tqb1w2rAhSE-BQhyQYc/view?usp=sharing",
     bullets: [
-      "Automated cloud infrastructure provisioning using Terraform scripts, cutting environment deployment setup time significantly.",
-      "Configured CI/CD pipelines in Jenkins to automate containerized build testing and deployment workflows.",
-      "Utilized Docker Compose for multi-container orchestration and optimized Ubuntu server kernel configurations for high performance.",
-      "Conducted root-cause analysis (RCA) on production incidents to prevent recurring infrastructure bottlenecks."
+      "Automated cloud infrastructure provisioning using declarative Terraform, slashing environment setup times by over 40%.",
+      "Configured end-to-end Jenkins CI/CD pipelines to automate containerized testing and builds on each pull request.",
+      "Fine-tuned Ubuntu Linux kernel parameters (sysctl) and executed Root Cause Analysis (RCA) to ensure zero downtime."
     ]
   },
   {
-    company: "Rasa AI Labs",
+    company: "Rasa.ai Labs (JKV Research)",
     role: "Data Science & AI Intern",
-    mode: "Chennai, India",
-    period: "Jun 2025 — Jul 2025",
+    mode: "Chennai, Tamil Nadu, India",
+    period: "Jul 2025 — Aug 2025",
+    link: "https://drive.google.com/file/d/1VgJxdMA_A5iKLXN1bdQyhP30_oTsyxDq/view?usp=sharing",
     bullets: [
-      "Configured high-availability deployment environments for real-time AI model inference pipelines.",
-      "Collaborated on server infrastructure tuning and resource allocation for compute-intensive data processing workloads.",
-      "Built automated monitoring shell scripts to track GPU/CPU consumption and memory footprints during model runs."
+      "Configured high-availability staging and compute environments for low-latency, real-time AI model inference pipelines.",
+      "Authored custom Bash automation scripts for proactive monitoring of CPU/GPU utilization and memory footprints."
     ]
   },
   {
-    company: "Remark Skill Education",
+    company: "Remark Skill Education (IIT Hyderabad Partner)",
     role: "Data Science Intern",
     mode: "Remote",
     period: "Apr 2025 — May 2025",
+    link: "https://drive.google.com/file/d/1GsY_LV3kwjT_IlbKdxRLPnntNPwJBIkW/view?usp=sharing",
     bullets: [
-      "Developed modular Python data extraction and preprocessing scripts, improving data pipeline throughput.",
-      "Built predictive machine learning classifiers using Scikit-Learn to provide actionable business intelligence."
+      "Executed customer segmentation models using K-Means clustering and built modular Python data extraction pipelines.",
+      "Trained predictive classification models using Scikit-Learn and Pandas to deliver actionable business intelligence."
     ]
   }
 ];
