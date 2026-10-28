@@ -233,9 +233,17 @@ export function lookupEncyclopedia(query) {
   // Minimum query length to avoid false positives (e.g. "a" matching everything)
   if (q.length < 3) return null;
 
-  // 1. Exact keyword match — query must contain the keyword OR keyword must contain the query
+  // 1. Exact keyword match with word-boundary awareness to avoid substring false positives (e.g. "ha" inside "what")
   for (const entry of encyclopedia) {
-    if (entry.keywords.some((kw) => q.includes(kw) || (q.length >= 4 && kw.includes(q)))) {
+    if (
+      entry.keywords.some((kw) => {
+        if (kw.length <= 4) {
+          const regex = new RegExp(`(^|\\s|[.,!?;])${kw}($|\\s|[.,!?;])`, "i");
+          return regex.test(q);
+        }
+        return q.includes(kw) || (q.length >= 4 && kw.includes(q));
+      })
+    ) {
       return entry;
     }
   }
