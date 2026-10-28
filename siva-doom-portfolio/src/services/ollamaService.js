@@ -91,6 +91,10 @@ export async function detectBestEngine() {
   return "tactical";
 }
 
+// ─── Client-side In-Memory Cache ────────────────────────────────
+const clientQueryCache = new Map();
+const CLIENT_CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
+
 /**
  * Queries the Gemini-powered Vercel serverless endpoint.
  * Returns the AI response text, or null on failure.
@@ -98,7 +102,8 @@ export async function detectBestEngine() {
 export async function queryGeminiVeronica(prompt) {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
+    // 4.5s total browser timeout (covers 3.5s serverless execution + network transfer)
+    const timeout = setTimeout(() => controller.abort(), 4500);
 
     const res = await fetch(GEMINI_ENDPOINT, {
       method: "POST",
@@ -113,7 +118,7 @@ export async function queryGeminiVeronica(prompt) {
     const data = await res.json();
     return data?.response?.trim() || null;
   } catch (err) {
-    console.info("[Veronica AI] Gemini query failed, trying next engine.", err.message);
+    console.info("[Veronica AI] Gemini query timeout or offline:", err.message);
     return null;
   }
 }
@@ -144,7 +149,7 @@ export async function queryOllamaVeronica(prompt) {
 
     const data = await res.json();
     return data?.response?.trim() || null;
-  } catch (err) {
+  } catch {
     console.info("[Veronica AI] Ollama query bypassed or offline, using tactical engine.");
     return null;
   }
@@ -155,23 +160,32 @@ export async function queryOllamaVeronica(prompt) {
  * Returns { text: string, engine: string } or { text: null, engine: "tactical" }
  */
 export async function queryVeronica(prompt) {
-  // 1. Try Gemini (cloud — works on Vercel production) unless explicitly in local Ollama dev mode
+  const cacheKey = (prompt || "").toLowerCase().trim();
+  const cached = clientQueryCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CLIENT_CACHE_TTL_MS) {
+    return { text: cached.text, engine: cached.engine };
+  }
+
+  // 1. Try Gemini (cloud — works on Vercel production and local dev)
   if (activeEngine !== "ollama") {
     const geminiResponse = await queryGeminiVeronica(prompt);
     if (geminiResponse) {
       activeEngine = "gemini";
+      clientQueryCache.set(cacheKey, { text: geminiResponse, engine: "gemini", timestamp: Date.now() });
       return { text: geminiResponse, engine: "gemini" };
     }
   }
 
-  // 2. Try Ollama (local — works in dev with Ollama running)
-  const ollamaResponse = await queryOllamaVeronica(prompt);
-  if (ollamaResponse) {
-    activeEngine = "ollama";
-    return { text: ollamaResponse, engine: "ollama" };
+  // 2. Try Ollama ONLY if confirmed online/active to avoid dead connection stalls
+  if (activeEngine === "ollama") {
+    const ollamaResponse = await queryOllamaVeronica(prompt);
+    if (ollamaResponse) {
+      clientQueryCache.set(cacheKey, { text: ollamaResponse, engine: "ollama", timestamp: Date.now() });
+      return { text: ollamaResponse, engine: "ollama" };
+    }
   }
 
-  // 3. Tactical fallback — handled by voiceCommands.js
+  // 3. Tactical fallback — handled immediately by voiceCommands.js
   activeEngine = "tactical";
   return { text: null, engine: "tactical" };
 }

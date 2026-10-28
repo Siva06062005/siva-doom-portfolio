@@ -299,7 +299,7 @@ export default function VoiceAssistant() {
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.rate = 1.02;
+    utterance.rate = 1.14; // Snappier, dynamic cyber-assistant pace (up from 1.02)
     utterance.pitch = 1.15;
     utterance.volume = 0.95;
 
@@ -382,6 +382,11 @@ export default function VoiceAssistant() {
     const query = (rawQuery || "").trim();
     if (!query) return;
 
+    // Immediately stop any previous in-flight speech when a new directive is given
+    if (synthRef.current && synthRef.current.speaking) {
+      synthRef.current.cancel();
+    }
+
     const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
     // Append user message
@@ -390,22 +395,20 @@ export default function VoiceAssistant() {
       { id: Date.now(), sender: "user", text: query, time },
     ]);
 
-    // 1. Direct tactical action or quick command
+    // 1. Instant Tactical Action or Handcrafted Portfolio Directives (0ms latency)
     const directResult = processVoiceCommand(query);
 
-    // If it's a UI control action like music, navigate, or modal, execute immediately
-    if (directResult && directResult.action) {
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { id: Date.now() + 1, sender: "ai", text: directResult.text, time },
-        ]);
-        speak(directResult.text, directResult.action);
-      }, 100);
+    // If it's a recognized directive or tactical action, respond immediately
+    if (directResult && directResult.matched) {
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, sender: "ai", text: directResult.text, time, engine: "tactical" },
+      ]);
+      speak(directResult.text, directResult.action);
       return;
     }
 
-    // 2. Query AI engine (Gemini Cloud → Ollama Local → Tactical)
+    // 2. Query AI engine (Gemini Cloud Race → Ollama Local → Tactical Fallback)
     setIsThinking(true);
     let responseText = null;
     let usedEngine = "tactical";

@@ -37,12 +37,9 @@ function hasMatch(input, phrases) {
 }
 
 /**
- * Processes a voice transcript and returns { text, action }.
+ * Internal matcher for all specific tactical, status, Grok, and portfolio directives.
  */
-export function processVoiceCommand(rawTranscript) {
-  const input = cleanSpeech(rawTranscript);
-  if (!input) return null;
-
+function evaluateVoiceCommand(input, rawTranscript) {
   const greeting = getTimeBasedGreeting();
 
   // ─────────────────────────────────────────────────────────────
@@ -742,9 +739,28 @@ export function processVoiceCommand(rawTranscript) {
     };
   }
 
-  // Fallback with witty Grok-style response
+  return null;
+}
+
+/**
+ * Processes a voice transcript and returns { text, action, matched }.
+ */
+export function processVoiceCommand(rawTranscript) {
+  const input = cleanSpeech(rawTranscript);
+  if (!input) return null;
+
+  const matched = evaluateVoiceCommand(input, rawTranscript);
+  if (matched) {
+    return {
+      ...matched,
+      matched: true,
+    };
+  }
+
+  // Fallback with witty Grok-style response (not a recognized tactical command)
   return {
     text: `Interesting directive: "${rawTranscript}". As the Grok of Siva's Doom Universe, I can pitch Siva, roast his code, inspect his projects, breakdown his tech stack, or drop a needle for some tunes. What would you like to explore?`,
     action: null,
+    matched: false,
   };
 }

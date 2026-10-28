@@ -131,81 +131,125 @@ Keep your responses concise — ideally 2-4 sentences, max 6 sentences unless th
 - Use brief emoji accents sparingly for energy (⚡, 🔥, 💻, 🚀) but don't overdo it.
 - If asked about topics outside Siva's profile, politely redirect: "That's outside my dossier, but I can tell you everything about Siva's DevOps stack!"`;
 
+// ─── Fast In-Memory Response Cache ───────────────────────────────
+const responseCache = new Map();
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour TTL
+const MAX_CACHE_ENTRIES = 200;
+
+function getCachedResponse(prompt) {
+  const key = prompt.toLowerCase().trim();
+  const entry = responseCache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+    responseCache.delete(key);
+    return null;
+  }
+  return entry;
+}
+
+function setCachedResponse(prompt, text, model) {
+  const key = prompt.toLowerCase().trim();
+  if (responseCache.size >= MAX_CACHE_ENTRIES) {
+    const oldestKey = responseCache.keys().next().value;
+    if (oldestKey) responseCache.delete(oldestKey);
+  }
+  responseCache.set(key, { text, model, timestamp: Date.now() });
+}
+
 // ─── Gemini API Configuration ────────────────────────────────────
-const GEMINI_MODELS = [
-  "gemini-3.8-flash",
+// Using fast, lightweight production models; raced concurrently via Promise.any
+const PRIMARY_MODELS = [
+  "gemini-3.5-flash-lite",
   "gemini-flash-latest",
 ];
+const FALLBACK_MODEL = "gemini-flash-lite-latest";
+const MODEL_TIMEOUT_MS = 3500; // Strict 3.5s timeout per request
+
+async function querySingleModel(model, prompt, apiKey, timeoutMs = MODEL_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+    const payload = {
+      system_instruction: {
+        parts: [{ text: VERONICA_SYSTEM_PROMPT }],
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        topP: 0.9,
+        topK: 40,
+        maxOutputTokens: 250,
+      },
+      safetySettings: [
+        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
+        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
+      ],
+    };
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`Gemini ${model} ${response.status}: ${errorData?.error?.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const textParts = parts
+      .filter((p) => !p.thought && typeof p.text === "string")
+      .map((p) => p.text);
+    const text = textParts.length > 0 ? textParts.join("\n") : parts[0]?.text;
+
+    if (!text) {
+      throw new Error(`Empty text from model ${model}`);
+    }
+
+    return { text: text.trim(), model };
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 async function queryGemini(prompt, apiKey) {
-  let lastError = null;
-
-  for (const model of GEMINI_MODELS) {
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-      const payload = {
-        system_instruction: {
-          parts: [{ text: VERONICA_SYSTEM_PROMPT }],
-        },
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: prompt }],
-          },
-        ],
-        generationConfig: {
-          temperature: 0.7,
-          topP: 0.9,
-          topK: 40,
-          maxOutputTokens: 512,
-        },
-        safetySettings: [
-          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
-          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
-          {
-            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            threshold: "BLOCK_ONLY_HIGH",
-          },
-          {
-            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-            threshold: "BLOCK_ONLY_HIGH",
-          },
-        ],
-      };
-
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.warn(`[Veronica/Gemini] Model ${model} returned ${response.status}:`, errorData?.error?.message || response.statusText);
-        lastError = new Error(`Gemini ${model} error: ${response.status} - ${errorData?.error?.message || response.statusText}`);
-        continue;
-      }
-
-      const data = await response.json();
-      const parts = data?.candidates?.[0]?.content?.parts || [];
-      const textParts = parts
-        .filter((p) => !p.thought && typeof p.text === "string")
-        .map((p) => p.text);
-      const text = textParts.length > 0 ? textParts.join("\n") : parts[0]?.text;
-
-      if (!text) {
-        throw new Error("No text content returned from Gemini model");
-      }
-
-      return { text: text.trim(), model };
-    } catch (err) {
-      lastError = err;
-      console.warn(`[Veronica/Gemini] Attempt with model ${model} failed:`, err.message);
-    }
+  // Check instant in-memory cache first
+  const cached = getCachedResponse(prompt);
+  if (cached) {
+    return { text: cached.text, model: `${cached.model} (cached)` };
   }
 
-  throw lastError || new Error("All Gemini models failed to respond");
+  // Race primary low-latency models concurrently
+  try {
+    const winner = await Promise.any(
+      PRIMARY_MODELS.map((model) => querySingleModel(model, prompt, apiKey, MODEL_TIMEOUT_MS))
+    );
+    setCachedResponse(prompt, winner.text, winner.model);
+    return winner;
+  } catch (raceErr) {
+    console.warn("[Veronica/Gemini] Primary models race failed, attempting fallback model:", raceErr?.errors || raceErr?.message);
+    try {
+      const fallbackResult = await querySingleModel(FALLBACK_MODEL, prompt, apiKey, MODEL_TIMEOUT_MS);
+      setCachedResponse(prompt, fallbackResult.text, fallbackResult.model);
+      return fallbackResult;
+    } catch (fallbackErr) {
+      console.error("[Veronica/Gemini] Fallback model also failed:", fallbackErr.message);
+      throw new Error("All Gemini neural links are currently unavailable. Tactical offline engine is operational.");
+    }
+  }
 }
 
 // ─── Main Handler ────────────────────────────────────────────────
