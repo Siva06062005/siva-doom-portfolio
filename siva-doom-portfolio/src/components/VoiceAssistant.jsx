@@ -40,7 +40,7 @@ export default function VoiceAssistant() {
     return [{
       id: "init",
       sender: "ai",
-      text: `${timeGreet}! I'm Veronica, the resident AI of Siva's Doom Portfolio — think Grok for X, but tailored for Siva's DevOps stack, cloud infrastructure, and mission deployments. Ask me anything, tell me to roast his code, pitch his skills, or drop a needle for music! ⚡`,
+      text: `${timeGreet}! I'm Veronica, Siva's AI assistant. Ask me anything about Siva's engineering skills, cloud projects, DevOps experience, or certifications. ⚡`,
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     }];
   });
@@ -586,11 +586,11 @@ export default function VoiceAssistant() {
           <div className="voice-transcript-header">
             <div className="voice-chatbot-header-left">
               <span className="voice-access-badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: currentEngine === "gemini" ? "#8b5cf6" : currentEngine === "ollama" ? "var(--accent-secondary)" : "#22d1ee", boxShadow: `0 0 8px ${currentEngine === "gemini" ? "#8b5cf6" : currentEngine === "ollama" ? "var(--accent-secondary)" : "#22d1ee"}` }} />
-                {currentEngine === "gemini" ? "● VERONICA AI // GEMINI" : currentEngine === "ollama" ? "● VERONICA AI // OLLAMA" : "● VERONICA AI ONLINE"}
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22d1ee", boxShadow: "0 0 8px #22d1ee" }} />
+                VERONICA
               </span>
               <span className="voice-mode-tag">
-                {isSessionActive ? "VOICE ACTIVE" : currentEngine !== "tactical" ? "LLM ENGINE" : "CHATBOT MODE"}
+                {isSessionActive ? "VOICE ACTIVE" : "ONLINE"}
               </span>
             </div>
 
@@ -624,7 +624,7 @@ export default function VoiceAssistant() {
                 type="button"
                 className="voice-transcript-close"
                 onClick={() => setIsOpen(false)}
-                aria-label="Close Veronica AI panel"
+                aria-label="Close Veronica panel"
                 title="Close panel"
               >
                 <X size={13} />
@@ -642,7 +642,7 @@ export default function VoiceAssistant() {
                 <div className={`voice-chat-bubble ${msg.sender}`}>
                   <div className="voice-chat-bubble-meta">
                     <span className="voice-chat-author">
-                      {msg.sender === "user" ? "YOU" : "VERONICA AI"}
+                      {msg.sender === "user" ? "YOU" : "VERONICA"}
                     </span>
                     <span className="voice-chat-time">{msg.time}</span>
                   </div>
@@ -653,15 +653,15 @@ export default function VoiceAssistant() {
 
             {isThinking && (
               <div className="voice-chat-bubble-row ai-row">
-                <div className="voice-chat-bubble ai" style={{ opacity: 0.85, borderLeft: `2px solid ${currentEngine === "gemini" ? "#8b5cf6" : "var(--accent-secondary)"}` }}>
+                <div className="voice-chat-bubble ai" style={{ opacity: 0.9, borderLeft: "2px solid #22d1ee" }}>
                   <div className="voice-chat-bubble-meta">
-                    <span className="voice-chat-author" style={{ color: currentEngine === "gemini" ? "#8b5cf6" : "var(--accent-secondary)" }}>
-                      VERONICA // {currentEngine === "gemini" ? "GEMINI AI" : currentEngine === "ollama" ? "OLLAMA LLM" : "TACTICAL"}
+                    <span className="voice-chat-author" style={{ color: "#22d1ee" }}>
+                      VERONICA
                     </span>
-                    <span className="voice-chat-time">GENERATING...</span>
+                    <span className="voice-chat-time">THINKING...</span>
                   </div>
-                  <p className="voice-chat-text" style={{ fontStyle: "italic", margin: 0, color: currentEngine === "gemini" ? "#8b5cf6" : "var(--accent-secondary)" }}>
-                    ⚡ {currentEngine === "gemini" ? "Querying Gemini neural cores..." : currentEngine === "ollama" ? "Analyzing dossier with Ollama..." : "Processing tactical response..."}
+                  <p className="voice-chat-text" style={{ fontStyle: "italic", margin: 0, color: "#22d1ee" }}>
+                    ⚡ Analyzing inquiry...
                   </p>
                 </div>
               </div>
@@ -675,20 +675,20 @@ export default function VoiceAssistant() {
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("pitch siva")}>
                 💼 Pitch Siva
               </button>
-              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("roast siva")}>
-                🔥 Roast Siva
+              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("projects")}>
+                🚀 Projects
               </button>
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("certificates")}>
                 🎓 Credentials
+              </button>
+              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("tech stack")}>
+                🛠️ Tech Arsenal
               </button>
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("status report")}>
                 📊 Status Report
               </button>
               <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("how can i contact siva")}>
                 📬 Contact Siva
-              </button>
-              <button type="button" className="voice-chip-btn" onClick={() => dispatchDirective("drop a needle")}>
-                🎵 Play Music
               </button>
             </div>
           </div>
@@ -698,17 +698,17 @@ export default function VoiceAssistant() {
             <input
               type="text"
               className="voice-chat-input"
-              placeholder="Ask Veronica anything (Grok style)..."
+              placeholder="Ask Veronica anything about Siva..."
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
-              aria-label="Type a directive for Veronica"
+              aria-label="Type a question for Veronica"
             />
             <button
               type="submit"
               className="voice-chat-send-btn"
               disabled={!textInput.trim()}
-              aria-label="Send directive to Veronica"
-              title="Send directive"
+              aria-label="Send question to Veronica"
+              title="Send question"
             >
               <Send size={13} />
             </button>
