@@ -605,11 +605,23 @@ function evaluateVoiceCommand(input, rawTranscript) {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 14. TERMINAL CLI COMMANDS
+  // 14. TERMINAL CLI COMMANDS & 0x_KERNEL_PANIC
   // ─────────────────────────────────────────────────────────────
-  if (hasMatch(input, ["terminal", "cli", "command line", "shell"])) {
+  if (
+    hasMatch(input, [
+      "terminal",
+      "cli",
+      "command line",
+      "shell",
+      "kernel panic",
+      "0x_kernel_panic",
+      "cyber terminal",
+      "cyber deck",
+      "cyber workstation"
+    ])
+  ) {
     return {
-      text: "Deploying interactive command line shell.",
+      text: "Deploying 0x_KERNEL_PANIC Cyber Terminal Workstation, sir. Systems encrypted and Level 5 clearance engaged.",
       action: { type: "terminal", payload: "help" },
     };
   }

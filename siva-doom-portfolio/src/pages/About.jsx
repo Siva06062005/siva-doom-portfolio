@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Phone, ArrowRight, Download, ShieldCheck, Award, FileText } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowRight, Download, ShieldCheck, Award, FileText, SquareTerminal } from "lucide-react";
 import { motion } from "framer-motion";
 import PageShell from "../components/PageShell";
 import ResumeModal from "../components/ResumeModal";
@@ -57,7 +57,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              <span className="badge-pulse" /> SIVA S // DEVOPS OPERATOR
+              <span className="badge-pulse" /> SIVA S // 0x_KERNEL_PANIC
             </motion.div>
           </motion.div>
 
@@ -130,6 +130,21 @@ export default function About() {
                 >
                   <FileText size={16} /> View Dossier
                 </button>
+              </MagneticButton>
+              <MagneticButton>
+                <a
+                  href="#skills"
+                  className="btn btn-secondary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    sfx.playClick();
+                    const el = document.getElementById("terminal-section") || document.querySelector(".terminal-cli-container");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  title="Launch 0x_KERNEL_PANIC Cyber Terminal"
+                >
+                  <SquareTerminal size={16} /> Cyber Terminal
+                </a>
               </MagneticButton>
             </motion.div>
           </motion.div>

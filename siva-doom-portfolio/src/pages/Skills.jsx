@@ -191,7 +191,7 @@ export default function Skills() {
       <SectionDivider />
 
       {/* Interactive Command Shell */}
-      <section className="section section-dark">
+      <section className="section section-dark" id="terminal-section">
         <div className="container">
           <motion.div
             className="section-title"
@@ -200,10 +200,10 @@ export default function Skills() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="eyebrow"><TermIcon size={14} /> COMMAND INTERFACE</span>
-            <h2>TERMINAL SHELL</h2>
+            <span className="eyebrow"><TermIcon size={14} /> 0x_KERNEL_PANIC // OPERATIONAL WORKSTATION</span>
+            <h2>CYBER TERMINAL SUITE</h2>
             <p className="large-copy">
-              Type real commands into the terminal below (`help`, `whoami`, `skills`, `projects`, `music`, `matrix`, `coffee`, `sudo`).
+              Explore the interactive low-level Linux CLI terminal, operational identity dossier, system architecture matrix, and production DevOps aliases below.
             </p>
           </motion.div>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Volume2, VolumeX, Music } from "lucide-react";
+import { Menu, X, Volume2, VolumeX, Music, SquareTerminal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SystemTelemetry from "./SystemTelemetry";
 import VoiceAssistant from "./VoiceAssistant";
@@ -205,6 +205,29 @@ export default function Navbar() {
 
           <motion.button
             className="sfx-toggle-btn"
+            onClick={() => {
+              sfx.playClick();
+              const termEl = document.getElementById("terminal-section") || document.querySelector(".terminal-cli-container");
+              if (termEl) {
+                termEl.scrollIntoView({ behavior: "smooth" });
+                setTimeout(() => {
+                  const input = termEl.querySelector("input");
+                  if (input) input.focus();
+                }, 400);
+              }
+            }}
+            onMouseEnter={() => sfx.playHover()}
+            title="Open 0x_KERNEL_PANIC Cyber Terminal"
+            aria-label="Open 0x_KERNEL_PANIC Cyber Terminal"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <SquareTerminal size={16} />
+            <span>TERMINAL</span>
+          </motion.button>
+
+          <motion.button
+            className="sfx-toggle-btn"
             onClick={toggleSfx}
             onMouseEnter={() => sfx.playHover()}
             title={sfxOn ? "Disable Sound Effects" : "Enable HUD Sound Effects"}
@@ -246,9 +269,31 @@ export default function Navbar() {
 
               <motion.div variants={mobileLinkVariants}>
                 <button
+                  className="sfx-toggle-btn"
+                  onClick={() => {
+                    sfx.playClick();
+                    setOpen(false);
+                    const termEl = document.getElementById("terminal-section") || document.querySelector(".terminal-cli-container");
+                    if (termEl) {
+                      termEl.scrollIntoView({ behavior: "smooth" });
+                      setTimeout(() => {
+                        const input = termEl.querySelector("input");
+                        if (input) input.focus();
+                      }, 400);
+                    }
+                  }}
+                  style={{ justifyContent: "center", marginTop: "6px" }}
+                >
+                  <SquareTerminal size={16} />
+                  <span>0x_KERNEL // TERMINAL</span>
+                </button>
+              </motion.div>
+
+              <motion.div variants={mobileLinkVariants}>
+                <button
                   className={`sfx-toggle-btn ${musicOn ? "music-active" : ""}`}
                   onClick={toggleMusic}
-                  style={{ justifyContent: "center", marginTop: "6px" }}
+                  style={{ justifyContent: "center" }}
                 >
                   {musicOn ? (
                     <span className="equalizer-bars" aria-hidden="true">

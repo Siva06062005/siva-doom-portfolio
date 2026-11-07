@@ -71,7 +71,9 @@ export default function VoiceAssistant() {
   // Scroll chat to bottom when messages update
   useEffect(() => {
     if (isOpen && chatBottomRef.current) {
-      chatBottomRef.current.scrollIntoView({ behavior: "smooth" });
+      if (typeof chatBottomRef.current.scrollIntoView === "function") {
+        chatBottomRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }, [messages, isOpen]);
 
