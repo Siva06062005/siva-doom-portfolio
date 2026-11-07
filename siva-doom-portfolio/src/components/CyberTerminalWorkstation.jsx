@@ -22,7 +22,7 @@ import {
   HardDrive,
   CloudCog,
   FileCode,
-  Music,
+  Flame,
 } from "lucide-react";
 import { profile, projects, skillGroups, certificates } from "../data/portfolio";
 import { sfx } from "../utils/sfx";
@@ -30,19 +30,116 @@ import "./CyberTerminalWorkstation.css";
 
 // ── SHELL ALIAS MATRIX CONFIGURATION ──────────────────────────
 const ALIAS_DATA = [
-  { alias: "rootenv", cmd: "sudo -i", desc: "Instantly elevate to root interactive shell mode.", category: "SysAdmin" },
-  { alias: "kpanic", cmd: "sudo sysctl -w kernel.panic=10", desc: "Force kernel reboot 10 seconds after system panic.", category: "Kernel" },
-  { alias: "devnull", cmd: "cat /dev/null >", desc: "Instantly wipe target log file without deleting inode.", category: "Forensics" },
-  { alias: "ghostnet", cmd: "sudo nmap -sS -PN -n --randomize-hosts", desc: "Stealth SYN scan with disabled ping & DNS resolution.", category: "Security" },
-  { alias: "dockclean", cmd: "docker system prune -af --volumes", desc: "Purge all stopped containers, unused networks & volumes.", category: "DevOps" },
-  { alias: "tfapply", cmd: "terraform apply -auto-approve", desc: "Bypass confirmation to rapidly spin cloud infrastructure.", category: "Cloud" },
-  { alias: "tfplan", cmd: "terraform plan -out=tfplan.binary", desc: "Generate speculative declarative infrastructure execution plan.", category: "Cloud" },
-  { alias: "k8spods", cmd: "kubectl get pods -A -o wide --watch", desc: "Live monitor all Kubernetes cluster pods across namespaces.", category: "DevOps" },
-  { alias: "klogs", cmd: "kubectl logs -f --tail=100 -n production", desc: "Follow trailing 100 log lines from production namespace.", category: "DevOps" },
-  { alias: "myip", cmd: "curl -s https://icanhazip.com", desc: "Fetch public IP address directly to standard output.", category: "Network" },
-  { alias: "listenports", cmd: "sudo netstat -tulpn | grep LISTEN", desc: "Display all active listening TCP/UDP sockets with PIDs.", category: "Security" },
-  { alias: "memtop", cmd: "ps aux --sort=-%mem | head -n 10", desc: "Filter top 10 memory-consuming active processes.", category: "SysAdmin" },
+  // Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
+  {
+    alias: "cook",
+    cmd: "docker compose up --build -d",
+    desc: "Start the lab (Spin production microservices with Heisenberg precision).",
+    category: "BreakingBad",
+  },
+  {
+    alias: "mayhem",
+    cmd: "sudo rm -rf /tmp/* && history -c",
+    desc: "Soap factory cleanup (Purge ephemeral state & wipe command history).",
+    category: "FightClub",
+  },
+  {
+    alias: "fsociety",
+    cmd: "nmap -p- -sV -sC",
+    desc: "Systemic network recon (Deep port scanning & daemon banner grabbing).",
+    category: "MrRobot",
+  },
+  {
+    alias: "blue_sky",
+    cmd: "python3 -m py_compile",
+    desc: "Check code purity (AST compilation test for 99.1% pure code).",
+    category: "BreakingBad",
+  },
+
+  // Production DevOps & Low-level Systems
+  {
+    alias: "rootenv",
+    cmd: "sudo -i",
+    desc: "Instantly elevate to root interactive shell mode.",
+    category: "SysAdmin",
+  },
+  {
+    alias: "kpanic",
+    cmd: "sudo sysctl -w kernel.panic=10",
+    desc: "Force kernel reboot 10 seconds after system panic.",
+    category: "Kernel",
+  },
+  {
+    alias: "devnull",
+    cmd: "cat /dev/null >",
+    desc: "Instantly wipe target log file without deleting inode.",
+    category: "Forensics",
+  },
+  {
+    alias: "ghostnet",
+    cmd: "sudo nmap -sS -PN -n --randomize-hosts",
+    desc: "Stealth SYN scan with disabled ping & DNS resolution.",
+    category: "Security",
+  },
+  {
+    alias: "dockclean",
+    cmd: "docker system prune -af --volumes",
+    desc: "Purge all stopped containers, unused networks & volumes.",
+    category: "DevOps",
+  },
+  {
+    alias: "tfapply",
+    cmd: "terraform apply -auto-approve",
+    desc: "Bypass confirmation to rapidly spin cloud infrastructure.",
+    category: "Cloud",
+  },
+  {
+    alias: "tfplan",
+    cmd: "terraform plan -out=tfplan.binary",
+    desc: "Generate speculative declarative infrastructure execution plan.",
+    category: "Cloud",
+  },
+  {
+    alias: "k8spods",
+    cmd: "kubectl get pods -A -o wide --watch",
+    desc: "Live monitor all Kubernetes cluster pods across namespaces.",
+    category: "DevOps",
+  },
+  {
+    alias: "klogs",
+    cmd: "kubectl logs -f --tail=100 -n production",
+    desc: "Follow trailing 100 log lines from production namespace.",
+    category: "DevOps",
+  },
+  {
+    alias: "myip",
+    cmd: "curl -s https://icanhazip.com",
+    desc: "Fetch public IP address directly to standard output.",
+    category: "Network",
+  },
+  {
+    alias: "listenports",
+    cmd: "sudo netstat -tulpn | grep LISTEN",
+    desc: "Display all active listening TCP/UDP sockets with PIDs.",
+    category: "Security",
+  },
+  {
+    alias: "memtop",
+    cmd: "ps aux --sort=-%mem | head -n 10",
+    desc: "Filter top 10 memory-consuming active processes.",
+    category: "SysAdmin",
+  },
 ];
+
+const BASH_RC_CONFIG = `# Add this to your ~/.bashrc or ~/.zshrc
+export HACKER_ALIAS="Heisen_Elliot_Durden"
+export PS1="\\[\\e[1;31m\\][99.1% PURE] \\[\\e[1;32m\\]\\u@HeisenElliotDurden\\[\\e[0m\\]:\\[\\e[1;34m\\]\\w\\[\\e[0m\\]\\$ "
+
+# Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
+alias cook="docker compose up --build -d"              # Start the lab
+alias mayhem="sudo rm -rf /tmp/* && history -c"         # Soap factory cleanup
+alias fsociety="nmap -p- -sV -sC"                       # Systemic network recon
+alias blue_sky="python3 -m py_compile"                  # Check code purity`;
 
 export default function CyberTerminalWorkstation({ id = "cyber-workstation", initialTab = "terminal" }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -63,25 +160,29 @@ export default function CyberTerminalWorkstation({ id = "cyber-workstation", ini
   const [terminalLogs, setTerminalLogs] = useState([
     {
       type: "banner",
-      content: `  ___ x _ K E R N E L _ P A N I C ___ 
- / _ \\__  _/ ___|/ _ \\/ ___| ____/ ___|
-| | | \\ \\/ /|  _| | | |  _|  _|  \\___ \\
-| |_| |>  < | |___| |_| |___ |___  ___) |
- \\___//_/\\_\\|_____|\\___/|_____|_____|____/ `,
+      content: ` _  _ ___ ___ ___ ___ _  _   ___ _    _    ___ ___ _____ 
+| || | __|_ _/ __| __| \\| | | __| |  | |  |_ _/ _ |_   _|
+| __ | _| | |\\__ \\ _|| .\` | | _|| |__| |__ | | (_) || |  
+|_||_|___|___|___/___|_|\\_| |___|____|____|___\\___/ |_|  
+ ___  _   _ ___ ___  ___ _  _ 
+|   \\| | | | _ |   \\| __| \\| |
+| |) | |_| |   / |) | _|| .\` |
+|___/ \\___/|_|_|___/|___|_|\\_|  [99.1% PURE]`,
     },
     {
       type: "welcome",
-      content: `Welcome to 0x_KERNEL_PANIC interactive terminal workspace.
-Type 'help' to inspect available system commands or press Tab for auto-completion.
-DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
+      content: `Welcome to Heisen_Elliot_Durden Cyber Terminal Workspace.
+[99.1% PURE] DevOps Architecture // fsociety Security // Project Mayhem Immutability.
+Type 'help' to inspect available system commands or try 'cook', 'mayhem', 'fsociety', 'blue_sky'.`,
     },
   ]);
 
   const canvasRef = useRef(null);
-  const terminalBottomRef = useRef(null);
+  const terminalOutputRef = useRef(null);
   const terminalInputRef = useRef(null);
   const audioCtxRef = useRef(null);
   const matrixIntervalRef = useRef(null);
+  const isInitialMount = useRef(true);
   const startTimeRef = useRef(Date.now() - (42 * 86400 + 8 * 3600 + 14 * 60 + 20) * 1000);
 
   // ── WEB AUDIO SYNTHESIZER ───────────────────────────────────
@@ -156,10 +257,10 @@ DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
 
   // ── TOAST HELPER ─────────────────────────────────────────────
   const showToast = (message, type = "info") => {
-    const id = Date.now() + Math.random();
-    setToasts((prev) => [...prev, { id, message, type }]);
+    const toastId = Date.now() + Math.random();
+    setToasts((prev) => [...prev, { id: toastId, message, type }]);
     setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
+      setToasts((prev) => prev.filter((t) => t.id !== toastId));
     }, 2800);
   };
 
@@ -206,16 +307,16 @@ DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
 
   // ── ESCAPE KEY TO EXIT FULLSCREEN ───────────────────────────
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleGlobalKeyDown = (e) => {
       if (e.key === "Escape" && isFullscreen) {
         setIsFullscreen(false);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, [isFullscreen]);
 
-  // Lock body scroll when in fullscreen
+  // Lock body scroll ONLY when in fullscreen
   useEffect(() => {
     if (isFullscreen) {
       document.body.style.overflow = "hidden";
@@ -283,10 +384,15 @@ DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
     };
   }, [matrixActive, isFullscreen]);
 
-  // Scroll terminal to bottom on update
+  // ── STRICT INTERNAL TERMINAL SCROLLING (PREVENTS WINDOW SCROLL ON ENTER/STARTUP) ──
   useEffect(() => {
-    if (activeTab === "terminal") {
-      terminalBottomRef.current?.scrollIntoView?.({ behavior: "smooth" });
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    // Only scroll the internal terminal container, NEVER the window!
+    if (activeTab === "terminal" && terminalOutputRef.current) {
+      terminalOutputRef.current.scrollTop = terminalOutputRef.current.scrollHeight;
     }
   }, [terminalLogs, activeTab]);
 
@@ -308,12 +414,71 @@ DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
     const newLogs = [...terminalLogs, { type: "user", content: trimmed }];
 
     switch (cmd) {
+      // ── BREAKING BAD + MR. ROBOT + FIGHT CLUB SPECIALS ──
+      case "cook":
+        newLogs.push({
+          type: "result",
+          content: `[+] Running 4/4
+ ✔ Network lab_heisenberg_net        Created                          0.1s
+ ✔ Container siva-api-gateway         Started                          0.3s
+ ✔ Container fsociety-daemon-recon    Started                          0.4s
+ ✔ Container mayhem-cache-redis       Started                          0.2s
+[99.1% PURE] The lab is online. Containers orchestrated with Heisenberg precision.
+"Say my name. — You're Heisenberg. — You're goddamn right."`,
+        });
+        break;
+
+      case "mayhem":
+        newLogs.push({
+          type: "result",
+          content: `[PROJECT MAYHEM] Soap factory cleanup initiated.
+✔ Purging /tmp/* ephemeral artifacts... Done.
+✔ Wiping active session bash history buffer... Done.
+✔ Zero forensic traces left behind.
+"It's only after we've lost everything that we're free to do anything." — Tyler Durden`,
+        });
+        break;
+
+      case "fsociety":
+        newLogs.push({
+          type: "result",
+          content: `Starting Nmap 7.94 ( https://nmap.org ) at 2026-11-07 17:00 UTC
+Nmap scan report for node-us-east-fsociety-09 (10.0.4.1)
+Host is up (0.00012s latency).
+PORT     STATE SERVICE       VERSION
+22/tcp   open  ssh           OpenSSH 9.6p1 (protocol 2.0)
+80/tcp   open  http          nginx/1.24.0 (99.1% Pure Cloud Edge)
+443/tcp  open  ssl/https     nginx/1.24.0 (AES-256-GCM)
+3000/tcp open  react-ui      Siva Doom Workstation
+8080/tcp open  jenkins-ci    Automated Pipeline Engine
+Service detection performed. 0 vulnerabilities exposed. Node secure.
+"Control is an illusion. We exist in the memory gaps between binary executions." — Elliot`,
+        });
+        break;
+
+      case "blue_sky":
+      case "bluesky":
+        newLogs.push({
+          type: "result",
+          content: `[BLUE SKY] Testing code purity...
+Compiling AST & checking Python bytecode across deployment modules...
+✔ Syntax validation: PASSED
+✔ Zero memory leaks detected
+✔ Purity rating: 99.1% PURE (Grade: Heisenberg Standard)
+No contaminants. No unhandled promise rejections. Bulletproof execution.`,
+        });
+        break;
+
       case "help":
       case "?":
         newLogs.push({
           type: "help",
           content: [
-            { cmd: "whoami", desc: "Display detailed hacker identity & bio profile" },
+            { cmd: "cook", desc: "Start the lab (docker compose up --build -d)" },
+            { cmd: "mayhem", desc: "Project Mayhem soap factory cleanup (/tmp purge & history wipe)" },
+            { cmd: "fsociety", desc: "Systemic network recon (nmap -p- -sV -sC)" },
+            { cmd: "blue_sky", desc: "Check code purity (AST compilation verification)" },
+            { cmd: "whoami", desc: "Display detailed Heisen_Elliot_Durden identity & dossier" },
             { cmd: "handles", desc: "List all registered dark-web codenames & handles" },
             { cmd: "stack", desc: "Show DevOps, Cloud, C & Security tech matrix" },
             { cmd: "aliases", desc: "Print production bash alias configurations" },
@@ -326,7 +491,7 @@ DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
             { cmd: "loser", desc: "Play / Pause 'Loser.mp3' background track 🎵" },
             { cmd: "coffee", desc: "Check DevOps caffeine telemetry & teapot 418" },
             { cmd: "docker", desc: "Query active container status and ports" },
-            { cmd: "matrix", desc: "Trigger visual Matrix Rain overlay speed toggle" },
+            { cmd: "matrix", desc: "Trigger visual Matrix Rain overlay toggle" },
             { cmd: "clear", desc: "Clear terminal console buffer (Or Ctrl+L)" },
             { cmd: "banner", desc: "Re-print initial system welcome banner ASCII" },
           ],
@@ -336,12 +501,14 @@ DevOps Infrastructure // Low-Level Kernel Diagnostics // Zero-Trust Security.`,
       case "whoami":
         newLogs.push({
           type: "result",
-          content: `USER: ${profile.name} // 0x_KERNEL_PANIC
-ROLE: ${profile.role} (DevOps & Cloud Systems Architect)
+          content: `HACKER_ALIAS: Heisen_Elliot_Durden [99.1% PURE]
+ARCHETYPE: Walter White (Heisenberg) + Elliot Alderson (fsociety) + Tyler Durden (Fight Club)
+OPERATOR: ${profile.name} (DevOps & Cloud Systems Architect)
 LOCATION: ${profile.location}
 EMAIL: ${profile.email}
-PHILOSOPHY: ${profile.philosophy}
-CLEARANCE: LEVEL 5 // SEC_STATE: ENCRYPTED (AES-256-GCM)`,
+PS1: [99.1% PURE] siva@HeisenElliotDurden:~$
+CLEARANCE: LEVEL 5 // SEC_STATE: ENCRYPTED (AES-256-GCM)
+PHILOSOPHY: 99.1% Pure Code. Zero tolerance for impurities in production.`,
         });
         break;
 
@@ -349,18 +516,19 @@ CLEARANCE: LEVEL 5 // SEC_STATE: ENCRYPTED (AES-256-GCM)`,
         newLogs.push({
           type: "result",
           content: `// REGISTERED ALIAS HANDLES:
-1. 0x_KERNEL_PANIC   - Primary Handle // Low-level C & Kernel Fault Tracing
-2. ROOT_GHOST        - Privilege Escalation & Root Security Hardening
-3. DEV_NULL_VOID     - Forensic Log Neutralization & Ephemeral Containers
-4. SUDO_SPECTRE      - Superuser Automation & Hardware Exploits
-5. INIT_ZERO         - Complete System Teardown & Immutability`,
+1. Heisen_Elliot_Durden - Primary Alias // 99.1% Pure DevOps Mastermind
+2. HEISENBERG           - Cloud Lab Automation & High-Precision Infrastructure
+3. FSOCIETY_ELLIOT      - Zero-Day Defense, Root Access & Deep Network Recon
+4. TYLER_DURDEN         - Project Mayhem // Soap Factory Cleanup & Immutability
+5. 0x_KERNEL_PANIC      - Low-Level C & Linux Kernel Fault Diagnostics
+6. ROOT_GHOST           - Silent Privilege Escalation & Sandbox Hardening`,
         });
         break;
 
       case "stack":
         newLogs.push({
           type: "result",
-          content: `// TECH MATRIX ARSENAL:
+          content: `// TECH MATRIX ARSENAL [99.1% PURE]:
 • Languages: C / Kernel C (95%), Python (90%), Bash/POSIX (98%), Go (85%), Solidity, SQL
 • Cloud & Hosting: AWS (EC2, S3, Beanstalk, IAM), GCP Cloud Engine, Hostinger Cloud
 • Infrastructure & DevOps: Terraform (IaC), Docker, Kubernetes, Jenkins Pipelines, Ansible
@@ -380,9 +548,10 @@ CLEARANCE: LEVEL 5 // SEC_STATE: ENCRYPTED (AES-256-GCM)`,
         newLogs.push({
           type: "result",
           content: `OS: Linux kernel-fsociety 6.8.0-custom-x86_64
-HOST: Cyber-Node-FSOCIETY-9 (node-us-east-fsociety-09)
+HOST: Cyber-Node-FSOCIETY-9 (HeisenElliotDurden)
+PURITY: 99.1% PURE (No contaminants detected)
 UPTIME: ${uptimeStr}
-SHELL: zsh 5.9 (x86_64-pc-linux-gnu)
+SHELL: zsh 5.9 (x86_64-pc-linux-gnu) / Bash 5.2
 SECURITY: Level 5 // Zero-Trust Memory Isolation Active
 CPU: Quantum Thread Processor @ 4.80GHz (16 Cores)
 MEMORY: 4.2 GB / 16.0 GB Allocated (26% Used)
@@ -393,9 +562,9 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
       case "logs":
         newLogs.push({
           type: "result",
-          content: `[INFO] 01:42:10 SSH login attempt from 192.168.1.105 - ACCEPTED (Key: ed25519)
-[WARN] 01:43:05 Port scan detected on eth0 from 45.33.32.156 -> DROPPED BY IPTABLES
-[INFO] 01:44:00 Docker container 'k8s_api_server' healthcheck: OPTIMAL
+          content: `[INFO] 01:42:10 SSH login accepted for siva@HeisenElliotDurden (ed25519)
+[WARN] 01:43:05 Port probe detected from untrusted subnet -> DROPPED BY IPTABLES
+[INFO] 01:44:00 Docker lab healthcheck: 99.1% PURE // ALL CONTAINERS NOMINAL
 [CRIT] 01:44:22 Syscall sys_ptrace trapped from unverified PID 4092 -> TERMINATED BY eBPF PROBE
 [INFO] 01:45:00 Continuous telemetry telemetry synced with Prometheus daemon.`,
         });
@@ -440,7 +609,8 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
         newLogs.push({
           type: "result",
           content: `[RECRUITER UPLINK DETECTED]
-• Candidate: Siva S (Handle: 0x_KERNEL_PANIC)
+• Candidate: Siva S (Alias: Heisen_Elliot_Durden)
+• Purity Grade: 99.1% PURE DevOps Engineering
 • Target Roles: DevOps Engineer / Cloud Infrastructure / Platform Reliability
 • Core Disciplines: Terraform IaC, Jenkins CI/CD, Docker/K8s, Linux Kernel Tuning, Zero-Downtime RCA
 • Contact: ${profile.email} | Phone: ${profile.phone}
@@ -468,7 +638,7 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
           type: "result",
           content: `[CAFFEINE TELEMETRY]
 • HTTP Status Code: 418 (I'm a teapot)
-• Fuel Level: 98.6% Optimal
+• Fuel Level: 99.1% Optimal
 • Conversion Rate: 1 Cup Filter Coffee ➔ 500 Lines of Clean Terraform & Zero Production Bugs`,
         });
         break;
@@ -477,12 +647,12 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
       case "docker ps":
         newLogs.push({
           type: "result",
-          content: `CONTAINER ID   IMAGE                      STATUS         PORTS
-9b2a4c8e1f     siva/smartpanchayat-dapp   Up 42 days     3000/tcp, 8545/tcp (Hardhat)
-3c5d7e9a2b     siva/scalable-ecommerce    Up 18 days     80/tcp -> 5000/tcp (Flask)
-4e1f7a8b9c     siva/automation-ci:v2      Up 14 days     8080/tcp (Jenkins)
-5a6b7c8d9e     siva/fakenews-ml-pipeline  Up 10 days     8000/tcp, 3306/tcp (MySQL/TF-IDF)
-STATUS: All containers healthy. Automated restart policies enabled.`,
+          content: `CONTAINER ID   IMAGE                          STATUS         PORTS
+9b2a4c8e1f     siva/smartpanchayat-dapp       Up 42 days     3000/tcp, 8545/tcp (Hardhat)
+3c5d7e9a2b     siva/scalable-ecommerce        Up 18 days     80/tcp -> 5000/tcp (Flask)
+4e1f7a8b9c     siva/automation-ci:v2          Up 14 days     8080/tcp (Jenkins)
+5a6b7c8d9e     siva/fakenews-ml-pipeline      Up 10 days     8000/tcp, 3306/tcp (MySQL/TF-IDF)
+STATUS: All containers 99.1% pure. Automated restart policies enabled.`,
         });
         break;
 
@@ -505,14 +675,15 @@ STATUS: All containers healthy. Automated restart policies enabled.`,
           type: "error",
           content: `[CRITICAL WARNING]
 rm: cannot remove '/': Permission denied.
-Did you really think I'd let you wipe out production? That's what immutable infrastructure backups are for!`,
+Did you really think I'd let you wipe out production? That's what immutable infrastructure backups are for!
+(Try 'mayhem' for Tyler Durden's soap factory cleanup instead).`,
         });
         break;
 
       case "git blame":
         newLogs.push({
           type: "result",
-          content: `f8a3c21 (Siva S  2026-03-01): const uptime = 99.99; // "It worked in staging, and it works in prod."`,
+          content: `f8a3c21 (Siva S  2026-03-01): const purity = 99.1; // "Say my name."`,
         });
         break;
 
@@ -536,11 +707,14 @@ Did you really think I'd let you wipe out production? That's what immutable infr
       case "banner":
         newLogs.push({
           type: "banner",
-          content: `  ___ x _ K E R N E L _ P A N I C ___ 
- / _ \\__  _/ ___|/ _ \\/ ___| ____/ ___|
-| | | \\ \\/ /|  _| | | |  _|  _|  \\___ \\
-| |_| |>  < | |___| |_| |___ |___  ___) |
- \\___//_/\\_\\|_____|\\___/|_____|_____|____/ `,
+          content: ` _  _ ___ ___ ___ ___ _  _   ___ _    _    ___ ___ _____ 
+| || | __|_ _/ __| __| \\| | | __| |  | |  |_ _/ _ |_   _|
+| __ | _| | |\\__ \\ _|| .\` | | _|| |__| |__ | | (_) || |  
+|_||_|___|___|___/___|_|\\_| |___|____|____|___\\___/ |_|  
+ ___  _   _ ___ ___  ___ _  _ 
+|   \\| | | | _ |   \\| __| \\| |
+| |) | |_| |   / |) | _|| .\` |
+|___/ \\___/|_|_|___/|___|_|\\_|  [99.1% PURE]`,
         });
         break;
 
@@ -553,7 +727,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
         playSynthBeep(300, 0.12);
         newLogs.push({
           type: "error",
-          content: `zsh: command not found: '${trimmed}'. Type 'help' to view valid system commands.`,
+          content: `bash: ${trimmed}: command not found. Type 'help' to view valid system commands.`,
         });
     }
 
@@ -563,7 +737,12 @@ Did you really think I'd let you wipe out production? That's what immutable infr
 
   const handleTerminalSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     executeCommand(inputVal);
+    // Directly scroll ONLY the terminal internal viewport
+    if (terminalOutputRef.current) {
+      terminalOutputRef.current.scrollTop = terminalOutputRef.current.scrollHeight;
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -593,6 +772,10 @@ Did you really think I'd let you wipe out production? That's what immutable infr
       const val = inputVal.trim().toLowerCase();
       if (!val) return;
       const cmdList = [
+        "cook",
+        "mayhem",
+        "fsociety",
+        "blue_sky",
         "help",
         "whoami",
         "handles",
@@ -637,6 +820,21 @@ Did you really think I'd let you wipe out production? That's what immutable infr
     copyToClipboard(fullBlock, "All Shell Aliases", "all-aliases");
   };
 
+  const copyBashrc = () => {
+    copyToClipboard(BASH_RC_CONFIG, "Bashrc Hacker Configuration", "bashrc-cfg");
+  };
+
+  // PS1 Prompt Component
+  const renderPS1Prompt = () => (
+    <span className="cyber-prompt-line">
+      <span className="cyber-purity-tag">[99.1% PURE]</span>
+      <span className="cyber-prompt-user">siva@HeisenElliotDurden</span>
+      <span className="cyber-prompt-sep">:</span>
+      <span className="cyber-prompt-path">~</span>
+      <span className="cyber-prompt-dollar">$</span>
+    </span>
+  );
+
   return (
     <div
       id={id}
@@ -666,14 +864,15 @@ Did you really think I'd let you wipe out production? That's what immutable infr
             </div>
             <div className="cyber-header-titles">
               <div className="cyber-header-title-row">
-                <h1 className="cyber-sys-title neon-glow-green">0x_KERNEL_PANIC</h1>
-                <span className="cyber-clearance-badge">CLEARANCE: LEVEL 5</span>
+                <h1 className="cyber-sys-title neon-glow-green">Heisen_Elliot_Durden</h1>
+                <span className="cyber-pure-badge">[99.1% PURE]</span>
+                <span className="cyber-clearance-badge">LEVEL 5</span>
               </div>
               <p className="cyber-header-subtext">
                 <span className="cyber-ping-dot" />
                 SYS_ID: <span style={{ color: "var(--cyber-cyan)" }}>node-us-east-fsociety-09</span>
                 <span style={{ color: "#334155" }}>|</span>
-                SEC_STATE: <span style={{ color: "var(--cyber-accent)" }}>ENCRYPTED</span>
+                ARCHETYPE: <span style={{ color: "var(--cyber-accent)" }}>BREAKING BAD // MR. ROBOT // FIGHT CLUB</span>
               </p>
             </div>
           </div>
@@ -794,18 +993,18 @@ Did you really think I'd let you wipe out production? That's what immutable infr
               <div className="cyber-identity-top">
                 <div className="cyber-identity-profile">
                   <div className="cyber-handle-avatar neon-glow-green">
-                    0x
+                    HD
                     <div className="cyber-avatar-status-dot" title="Node Online" />
                   </div>
                   <div className="cyber-identity-names">
-                    <h3>0x_KERNEL_PANIC</h3>
-                    <p>DevOps // SecOps // Low-Level</p>
+                    <h3>Heisen_Elliot_Durden</h3>
+                    <p>Breaking Bad // Mr. Robot // Fight Club</p>
                   </div>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() => copyToClipboard("0x_KERNEL_PANIC", "Hacker Handle", "handle-main")}
+                  onClick={() => copyToClipboard("Heisen_Elliot_Durden", "Hacker Alias", "handle-main")}
                   className="cyber-icon-btn"
                   title="Copy Handle"
                 >
@@ -821,7 +1020,13 @@ Did you really think I'd let you wipe out production? That's what immutable infr
               <div className="cyber-handles-section">
                 <span className="cyber-handles-label">Registered Codenames</span>
                 <div className="cyber-handles-tags">
-                  {["ROOT_GHOST", "DEV_NULL_VOID", "SUDO_SPECTRE", "INIT_ZERO"].map((alias) => (
+                  {[
+                    "HEISENBERG",
+                    "FSOCIETY_ELLIOT",
+                    "TYLER_DURDEN",
+                    "0x_KERNEL_PANIC",
+                    "ROOT_GHOST",
+                  ].map((alias) => (
                     <span
                       key={alias}
                       onClick={() => copyToClipboard(alias, "Alias", alias)}
@@ -845,6 +1050,16 @@ Did you really think I'd let you wipe out production? That's what immutable infr
 
                 <div className="cyber-gauge-item">
                   <div className="cyber-gauge-header">
+                    <span>CODE PURITY DEGREE:</span>
+                    <strong style={{ color: "var(--cyber-magenta)" }}>99.1% PURE</strong>
+                  </div>
+                  <div className="cyber-progress-track">
+                    <div className="cyber-progress-fill fill-green" style={{ width: "99.1%" }} />
+                  </div>
+                </div>
+
+                <div className="cyber-gauge-item">
+                  <div className="cyber-gauge-header">
                     <span>MEMORY ALLOCATION:</span>
                     <strong style={{ color: "var(--cyber-accent)" }}>4.2 GB / 16.0 GB</strong>
                   </div>
@@ -864,25 +1079,25 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                 </div>
               </div>
 
-              {/* Quick Execute Help in Terminal */}
+              {/* Quick Execute Cook / Lab in Terminal */}
               <button
                 type="button"
                 onClick={() => {
                   setActiveTab("terminal");
-                  executeCommand("help");
+                  executeCommand("cook");
                   setTimeout(() => terminalInputRef.current?.focus(), 60);
                 }}
                 className="cyber-quick-exec-btn"
               >
-                <TermIcon size={14} />
-                EXECUTE 'help' IN TERMINAL
+                <Flame size={14} color="#ff3355" />
+                EXECUTE 'cook' (START THE LAB)
               </button>
             </div>
 
-            {/* Cyberpunk Manifesto Quote */}
+            {/* Cyberpunk / Anti-Hero Manifesto Quote */}
             <div className="cyber-panel cyber-manifesto-card">
-              "Control is an illusion. Software is fragile. We exist in the memory gaps between binary executions."
-              <div className="cyber-manifesto-author">-- 0x_KERNEL_PANIC // Manifesto</div>
+              "We synthesize infrastructure with Heisenberg's purity, breach vulnerabilities with Elliot's zero-trust code, and tear down legacy monoliths with Tyler Durden's Project Mayhem."
+              <div className="cyber-manifesto-author">-- Heisen_Elliot_Durden // Manifesto</div>
             </div>
           </aside>
 
@@ -907,7 +1122,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                       <span className="cyber-term-dot dot-green" />
                       <span className="cyber-term-prompt-info">
                         <Shield size={13} color="var(--cyber-accent)" />
-                        bash - root@0x_KERNEL_PANIC:~ (pty/1)
+                        bash - siva@HeisenElliotDurden:~ (pty/1)
                       </span>
                     </div>
 
@@ -937,8 +1152,8 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                     </div>
                   </div>
 
-                  {/* Terminal Output Area */}
-                  <div className="cyber-terminal-output">
+                  {/* Terminal Output Area — PURE INTERNAL SCROLL ONLY */}
+                  <div className="cyber-terminal-output" ref={terminalOutputRef}>
                     {terminalLogs.map((log, idx) => {
                       if (log.type === "banner") {
                         return (
@@ -958,7 +1173,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                       if (log.type === "user") {
                         return (
                           <div key={idx} className="cyber-echo-line">
-                            <span className="cyber-prompt-tag">root@0x_KERNEL_PANIC:~#</span>
+                            {renderPS1Prompt()}
                             <span>{log.content}</span>
                           </div>
                         );
@@ -967,7 +1182,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         return (
                           <div key={idx} style={{ marginTop: "4px" }}>
                             <div style={{ color: "var(--cyber-accent)", fontWeight: 700, marginBottom: "4px" }}>
-                              AVAILABLE SYSTEM COMMANDS:
+                              AVAILABLE SYSTEM COMMANDS [99.1% PURE]:
                             </div>
                             <table className="cyber-term-table">
                               <tbody>
@@ -995,21 +1210,18 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         </pre>
                       );
                     })}
-                    <div ref={terminalBottomRef} />
                   </div>
 
                   {/* Terminal Interactive Input Line */}
                   <form onSubmit={handleTerminalSubmit} className="cyber-terminal-inputline">
-                    <span className="cyber-prompt-tag" style={{ fontWeight: 800 }}>
-                      root@0x_KERNEL_PANIC:~#
-                    </span>
+                    {renderPS1Prompt()}
                     <input
                       ref={terminalInputRef}
                       type="text"
                       value={inputVal}
                       onChange={(e) => setInputVal(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder="Type 'help' or press Tab for auto-completion..."
+                      placeholder="Type 'cook', 'mayhem', 'fsociety', 'blue_sky' or 'help'..."
                       className="cyber-cli-input"
                       autoComplete="off"
                       spellCheck="false"
@@ -1033,12 +1245,36 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         <Fingerprint size={20} color="var(--cyber-accent)" />
                         OPERATIONAL IDENTITY DOSSIER
                       </h2>
-                      <p>Classification: CLASSIFIED // LEVEL 5 SECURITY CLEARANCE</p>
+                      <p>Hacker Alias: Heisen_Elliot_Durden // 99.1% PURE ARCHITECTURE</p>
                     </div>
                     <div className="cyber-header-badges">
+                      <span className="cyber-pure-badge">[99.1% PURE]</span>
                       <span className="cyber-badge-green">STATUS: ACTIVE</span>
                       <span className="cyber-badge-cyan">DARK-NET NODE</span>
                     </div>
+                  </div>
+
+                  {/* BASH CONFIGURATION COPY CARD */}
+                  <div className="cyber-env-box">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--cyber-cyan)" }}>
+                        // BASH SHELL CONFIGURATION (~/.bashrc / ~/.zshrc)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={copyBashrc}
+                        className="cyber-ctrl-btn"
+                        style={{ padding: "4px 10px" }}
+                      >
+                        {copiedKey === "bashrc-cfg" ? (
+                          <Check size={13} color="var(--cyber-accent)" />
+                        ) : (
+                          <Copy size={13} />
+                        )}
+                        COPY BASH CONFIG
+                      </button>
+                    </div>
+                    <pre className="cyber-env-code">{BASH_RC_CONFIG}</pre>
                   </div>
 
                   {/* Bio & Principles */}
@@ -1048,11 +1284,11 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         // CORE BIO & ALIAS ORIGINS
                       </span>
                       <p className="cyber-dossier-text">
-                        Operating under the handle{" "}
-                        <strong style={{ color: "var(--cyber-accent)" }}>0x_KERNEL_PANIC</strong>, inspired by
-                        low-level Linux fault handles, Elliot Alderson (<em>Mr. Robot</em>), Benjamin Engel (
-                        <em>Who Am I</em>), and White Devil (<em>Irumbu Thirai</em>). Engineered with a battle-hardened
-                        DevOps mindset: cloud automation, immutable infrastructure, and deep root-cause reliability.
+                        Operating under the composite identity{" "}
+                        <strong style={{ color: "var(--cyber-accent)" }}>Heisen_Elliot_Durden</strong>: combining
+                        Walter White's ruthless obsession for chemical code purity (99.1% Pure), Elliot Alderson's
+                        deep network reconnaissance & cybersecurity discipline (fsociety), and Tyler Durden's
+                        fearless project mayhem philosophy (stateless, transient, immutable cloud infrastructure).
                       </p>
                     </div>
 
@@ -1061,11 +1297,14 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         // OPERATIONAL PRINCIPLES
                       </span>
                       <ul className="cyber-principles-list">
-                        <li>Automate everything, leave zero manual toil.</li>
-                        <li>Treat infrastructure as transient immutable code.</li>
-                        <li>Verify, sandbox, and log with zero-trust assumptions.</li>
                         <li>
-                          Redirect noise traffic directly to <code style={{ color: "var(--cyber-cyan)" }}>/dev/null</code>.
+                          <strong>99.1% Pure Code:</strong> Zero tolerance for contaminants, memory leaks, or runtime flakiness.
+                        </li>
+                        <li>
+                          <strong>fsociety Root Recon:</strong> Zero-trust network scanning, proactive eBPF defenses, and encrypted telemetry.
+                        </li>
+                        <li>
+                          <strong>Project Mayhem Immutability:</strong> Infrastructure is disposable code. Wipe state without fear.
                         </li>
                       </ul>
                     </div>
@@ -1093,100 +1332,75 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                     <div className="cyber-handles-grid">
                       <div className="cyber-handle-card">
                         <div>
-                          <div className="cyber-handle-title" style={{ color: "var(--cyber-accent)" }}>
-                            0x_KERNEL_PANIC
+                          <div className="cyber-handle-title" style={{ color: "var(--cyber-magenta)" }}>
+                            Heisen_Elliot_Durden
                           </div>
-                          <div className="cyber-handle-sub">Primary Handle // Low-level C & Kernel</div>
+                          <div className="cyber-handle-sub">Master Triad // 99.1% PURE Operator</div>
                         </div>
                         <button
                           type="button"
-                          onClick={() => copyToClipboard("0x_KERNEL_PANIC", "Handle", "h-0x")}
+                          onClick={() => copyToClipboard("Heisen_Elliot_Durden", "Handle", "h-hed")}
                           className="cyber-icon-btn"
                         >
-                          {copiedKey === "h-0x" ? <Check size={14} color="var(--cyber-accent)" /> : <Copy size={14} />}
+                          {copiedKey === "h-hed" ? (
+                            <Check size={14} color="var(--cyber-accent)" />
+                          ) : (
+                            <Copy size={14} />
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="cyber-handle-card">
+                        <div>
+                          <div className="cyber-handle-title" style={{ color: "var(--cyber-accent)" }}>
+                            HEISENBERG
+                          </div>
+                          <div className="cyber-handle-sub">Cloud Lab Automation & Purity</div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard("HEISENBERG", "Handle", "h-hb")}
+                          className="cyber-icon-btn"
+                        >
+                          {copiedKey === "h-hb" ? <Check size={14} color="var(--cyber-accent)" /> : <Copy size={14} />}
                         </button>
                       </div>
 
                       <div className="cyber-handle-card">
                         <div>
                           <div className="cyber-handle-title" style={{ color: "var(--cyber-cyan)" }}>
-                            ROOT_GHOST
+                            FSOCIETY_ELLIOT
                           </div>
-                          <div className="cyber-handle-sub">Privilege Escalation & Root Sec</div>
+                          <div className="cyber-handle-sub">Dark-Net Cyber Sec & Network Recon</div>
                         </div>
                         <button
                           type="button"
-                          onClick={() => copyToClipboard("ROOT_GHOST", "Handle", "h-rg")}
+                          onClick={() => copyToClipboard("FSOCIETY_ELLIOT", "Handle", "h-fe")}
                           className="cyber-icon-btn"
                         >
-                          {copiedKey === "h-rg" ? <Check size={14} color="var(--cyber-cyan)" /> : <Copy size={14} />}
+                          {copiedKey === "h-fe" ? <Check size={14} color="var(--cyber-cyan)" /> : <Copy size={14} />}
                         </button>
                       </div>
 
                       <div className="cyber-handle-card">
                         <div>
                           <div className="cyber-handle-title" style={{ color: "var(--cyber-amber)" }}>
-                            DEV_NULL_VOID
+                            TYLER_DURDEN
                           </div>
-                          <div className="cyber-handle-sub">Stealth Log Avoidance & Ephemeral</div>
+                          <div className="cyber-handle-sub">Project Mayhem // Soap Factory Cleanup</div>
                         </div>
                         <button
                           type="button"
-                          onClick={() => copyToClipboard("DEV_NULL_VOID", "Handle", "h-dn")}
+                          onClick={() => copyToClipboard("TYLER_DURDEN", "Handle", "h-td")}
                           className="cyber-icon-btn"
                         >
-                          {copiedKey === "h-dn" ? <Check size={14} color="var(--cyber-amber)" /> : <Copy size={14} />}
-                        </button>
-                      </div>
-
-                      <div className="cyber-handle-card">
-                        <div>
-                          <div className="cyber-handle-title" style={{ color: "var(--cyber-magenta)" }}>
-                            SUDO_SPECTRE
-                          </div>
-                          <div className="cyber-handle-sub">Hardware & Superuser Exploits</div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard("SUDO_SPECTRE", "Handle", "h-ss")}
-                          className="cyber-icon-btn"
-                        >
-                          {copiedKey === "h-ss" ? (
-                            <Check size={14} color="var(--cyber-magenta)" />
+                          {copiedKey === "h-td" ? (
+                            <Check size={14} color="var(--cyber-amber)" />
                           ) : (
                             <Copy size={14} />
                           )}
                         </button>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Archetypal Inspirations */}
-                  <div className="cyber-inspirations-box">
-                    <span
-                      style={{
-                        fontSize: "0.68rem",
-                        fontWeight: 700,
-                        color: "#64748b",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                      }}
-                    >
-                      // ARCHETYPAL INSPIRATIONS & CITATIONS
-                    </span>
-                    <div className="cyber-inspirations-tags">
-                      {[
-                        "Elliot Alderson (Mr. Robot)",
-                        "Benjamin Engel (Who Am I)",
-                        "White Devil (Irumbu Thirai)",
-                        "Zero Cool (Hackers 1995)",
-                        "Neo (The Matrix)",
-                        "Linus Torvalds (Kernel Architect)",
-                      ].map((item) => (
-                        <span key={item} className="cyber-inspire-pill">
-                          {item}
-                        </span>
-                      ))}
                     </div>
                   </div>
                 </div>
@@ -1203,7 +1417,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         <Cpu size={20} color="var(--cyber-cyan)" />
                         SYSTEM ARCHITECTURE & TECH MATRIX
                       </h2>
-                      <p>Low-level systems, DevOps infrastructure, and cyber security toolkit</p>
+                      <p>99.1% Pure low-level systems, DevOps infrastructure, and cyber security toolkit</p>
                     </div>
                   </div>
 
@@ -1325,7 +1539,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         <FileCode size={20} color="var(--cyber-accent)" />
                         SHELL ALIAS MATRIX (.bashrc / .zshrc)
                       </h2>
-                      <p>Custom production DevOps & dark-web command shortcuts</p>
+                      <p>Breaking Bad + Mr. Robot + Fight Club DevOps command shortcuts</p>
                     </div>
 
                     <button
@@ -1409,7 +1623,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
           <div className="cyber-footer-left">
             <span className="cyber-footer-status">
               <span className="cyber-ping-dot" />
-              NODE_STATUS: ONLINE
+              NODE_STATUS: ONLINE [99.1% PURE]
             </span>
             <span className="cyber-footer-pipe">|</span>
             <span>
@@ -1417,11 +1631,11 @@ Did you really think I'd let you wipe out production? That's what immutable infr
             </span>
             <span className="cyber-footer-pipe">|</span>
             <span>
-              SHELL: <strong style={{ color: "var(--cyber-cyan)" }}>zsh 5.9 (x86_64-pc-linux-gnu)</strong>
+              PS1: <strong style={{ color: "var(--cyber-cyan)" }}>[99.1% PURE] siva@HeisenElliotDurden:~$</strong>
             </span>
           </div>
 
-          <div className="cyber-footer-hint">ENTER 'help' FOR COMMAND LIST</div>
+          <div className="cyber-footer-hint">TRY 'cook', 'mayhem', 'fsociety', 'blue_sky' OR 'help'</div>
         </footer>
       </div>
     </div>

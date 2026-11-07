@@ -57,7 +57,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              <span className="badge-pulse" /> SIVA S // 0x_KERNEL_PANIC
+              <span className="badge-pulse" /> SIVA S // HEISEN_ELLIOT_DURDEN
             </motion.div>
           </motion.div>
 

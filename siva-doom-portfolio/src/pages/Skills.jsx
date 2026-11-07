@@ -200,10 +200,10 @@ export default function Skills() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="eyebrow"><TermIcon size={14} /> 0x_KERNEL_PANIC // OPERATIONAL WORKSTATION</span>
+            <span className="eyebrow"><TermIcon size={14} /> HEISEN_ELLIOT_DURDEN // [99.1% PURE] WORKSTATION</span>
             <h2>CYBER TERMINAL SUITE</h2>
             <p className="large-copy">
-              Explore the interactive low-level Linux CLI terminal, operational identity dossier, system architecture matrix, and production DevOps aliases below.
+              Breaking Bad + Mr. Robot + Fight Club DevOps architecture. Explore the interactive Bash terminal, operational dossier, and production aliases below.
             </p>
           </motion.div>
 

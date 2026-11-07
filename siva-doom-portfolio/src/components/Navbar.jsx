@@ -217,8 +217,8 @@ export default function Navbar() {
               }
             }}
             onMouseEnter={() => sfx.playHover()}
-            title="Open 0x_KERNEL_PANIC Cyber Terminal"
-            aria-label="Open 0x_KERNEL_PANIC Cyber Terminal"
+            title="Open Heisen_Elliot_Durden Cyber Terminal"
+            aria-label="Open Heisen_Elliot_Durden Cyber Terminal"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -285,7 +285,7 @@ export default function Navbar() {
                   style={{ justifyContent: "center", marginTop: "6px" }}
                 >
                   <SquareTerminal size={16} />
-                  <span>0x_KERNEL // TERMINAL</span>
+                  <span>BASH // TERMINAL</span>
                 </button>
               </motion.div>
 
