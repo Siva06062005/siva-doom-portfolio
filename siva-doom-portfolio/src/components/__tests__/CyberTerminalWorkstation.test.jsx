@@ -3,20 +3,20 @@ import { describe, it, expect } from 'vitest';
 import CyberTerminalWorkstation from '../CyberTerminalWorkstation';
 
 describe('CyberTerminalWorkstation', () => {
-  it('renders terminal workstation with Heisen_Elliot_Durden personality and allows switching tabs', () => {
+  it('renders guest workstation with 0x_KERNEL_PANIC and allows switching tabs', () => {
     render(<CyberTerminalWorkstation />);
 
     // Header and brand should be visible
-    expect(screen.getAllByText(/Heisen_Elliot_Durden/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/99.1% PURE/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/LEVEL 5/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/0x_KERNEL_PANIC/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/GUEST EXPLORER/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/LEVEL 1 ACCESS/i)).toBeInTheDocument();
 
     // Switch to Identity Profile Tab
     fireEvent.click(screen.getByRole('button', { name: /identity profile/i }));
-    expect(screen.getByText(/OPERATIONAL IDENTITY DOSSIER/i)).toBeInTheDocument();
-    expect(screen.getByText(/BASH SHELL CONFIGURATION/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/HEISENBERG/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/TYLER_DURDEN/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/OPERATIONAL ARCHITECT DOSSIER/i)).toBeInTheDocument();
+    expect(screen.getByText(/PRODUCTION DEVOPS BASH CONFIGURATION/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Terraform & IaC/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Kubernetes & Docker/i).length).toBeGreaterThan(0);
 
     // Switch to Tech Stack Tab
     fireEvent.click(screen.getByRole('button', { name: /tech stack/i }));
@@ -26,19 +26,24 @@ describe('CyberTerminalWorkstation', () => {
     // Switch to Shell Aliases Tab
     fireEvent.click(screen.getByRole('button', { name: /shell aliases/i }));
     expect(screen.getByText(/SHELL ALIAS MATRIX/i)).toBeInTheDocument();
-    expect(screen.getByText(/alias cook/i)).toBeInTheDocument();
-    expect(screen.getByText(/alias mayhem/i)).toBeInTheDocument();
-    expect(screen.getByText(/alias fsociety/i)).toBeInTheDocument();
-    expect(screen.getByText(/alias blue_sky/i)).toBeInTheDocument();
+    expect(screen.getByText(/alias dockclean/i)).toBeInTheDocument();
+    expect(screen.getByText(/alias k8spods/i)).toBeInTheDocument();
+    expect(screen.getByText(/alias tfapply/i)).toBeInTheDocument();
   });
 
-  it('executes cook command and displays output', () => {
+  it('executes help and about commands and displays output for visitors', () => {
     render(<CyberTerminalWorkstation initialTab="terminal" />);
 
-    const input = screen.getByPlaceholderText(/type 'cook', 'mayhem'/i);
-    fireEvent.change(input, { target: { value: 'cook' } });
-    fireEvent.submit(input.closest('form'));
+    const input = screen.getByPlaceholderText(/type 'help', 'neofetch'/i);
 
-    expect(screen.getAllByText(/The lab is online/i).length).toBeGreaterThan(0);
+    // Run 'about'
+    fireEvent.change(input, { target: { value: 'about' } });
+    fireEvent.submit(input.closest('form'));
+    expect(screen.getAllByText(/SIVA S — DEVOPS & CLOUD ARCHITECT/i).length).toBeGreaterThan(0);
+
+    // Run 'help'
+    fireEvent.change(input, { target: { value: 'help' } });
+    fireEvent.submit(input.closest('form'));
+    expect(screen.getAllByText(/AVAILABLE SYSTEM COMMANDS/i).length).toBeGreaterThan(0);
   });
 });

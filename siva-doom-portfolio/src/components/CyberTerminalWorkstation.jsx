@@ -30,33 +30,73 @@ import "./CyberTerminalWorkstation.css";
 
 // ── SHELL ALIAS MATRIX CONFIGURATION ──────────────────────────
 const ALIAS_DATA = [
-  // Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
+  // Cloud & DevOps Essentials
   {
-    alias: "cook",
-    cmd: "docker compose up --build -d",
-    desc: "Start the lab (Spin production microservices with Heisenberg precision).",
-    category: "BreakingBad",
+    alias: "dockclean",
+    cmd: "docker system prune -af --volumes",
+    desc: "Purge all stopped containers, unused networks & volumes.",
+    category: "DevOps",
   },
   {
-    alias: "mayhem",
-    cmd: "sudo rm -rf /tmp/* && history -c",
-    desc: "Soap factory cleanup (Purge ephemeral state & wipe command history).",
-    category: "FightClub",
+    alias: "k8spods",
+    cmd: "kubectl get pods -A -o wide --watch",
+    desc: "Live monitor all Kubernetes cluster pods across all namespaces.",
+    category: "DevOps",
   },
   {
-    alias: "fsociety",
-    cmd: "nmap -p- -sV -sC",
-    desc: "Systemic network recon (Deep port scanning & daemon banner grabbing).",
-    category: "MrRobot",
+    alias: "klogs",
+    cmd: "kubectl logs -f --tail=100 -n production",
+    desc: "Follow trailing 100 log lines from production namespace.",
+    category: "DevOps",
   },
   {
-    alias: "blue_sky",
-    cmd: "python3 -m py_compile",
-    desc: "Check code purity (AST compilation test for 99.1% pure code).",
-    category: "BreakingBad",
+    alias: "tfapply",
+    cmd: "terraform apply -auto-approve",
+    desc: "Apply declarative infrastructure changes without confirmation prompt.",
+    category: "Cloud",
   },
-
-  // Production DevOps & Low-level Systems
+  {
+    alias: "tfplan",
+    cmd: "terraform plan -out=tfplan.binary",
+    desc: "Generate speculative declarative infrastructure execution plan.",
+    category: "Cloud",
+  },
+  {
+    alias: "gitlog",
+    cmd: "git log --graph --oneline --decorate --all",
+    desc: "Interactive tree graph of all git branches and commits.",
+    category: "Git",
+  },
+  {
+    alias: "myip",
+    cmd: "curl -s https://icanhazip.com",
+    desc: "Fetch public IP address directly to standard output.",
+    category: "Network",
+  },
+  {
+    alias: "listenports",
+    cmd: "sudo netstat -tulpn | grep LISTEN",
+    desc: "Display all active listening TCP/UDP sockets with PIDs.",
+    category: "Security",
+  },
+  {
+    alias: "ghostnet",
+    cmd: "sudo nmap -sS -PN -n --randomize-hosts",
+    desc: "Stealth SYN scan with disabled ping & DNS resolution.",
+    category: "Security",
+  },
+  {
+    alias: "memtop",
+    cmd: "ps aux --sort=-%mem | head -n 10",
+    desc: "Filter and display top 10 memory-consuming active processes.",
+    category: "SysAdmin",
+  },
+  {
+    alias: "cputop",
+    cmd: "ps aux --sort=-%cpu | head -n 10",
+    desc: "Filter and display top 10 CPU-consuming active processes.",
+    category: "SysAdmin",
+  },
   {
     alias: "rootenv",
     cmd: "sudo -i",
@@ -73,73 +113,60 @@ const ALIAS_DATA = [
     alias: "devnull",
     cmd: "cat /dev/null >",
     desc: "Instantly wipe target log file without deleting inode.",
-    category: "Forensics",
-  },
-  {
-    alias: "ghostnet",
-    cmd: "sudo nmap -sS -PN -n --randomize-hosts",
-    desc: "Stealth SYN scan with disabled ping & DNS resolution.",
-    category: "Security",
-  },
-  {
-    alias: "dockclean",
-    cmd: "docker system prune -af --volumes",
-    desc: "Purge all stopped containers, unused networks & volumes.",
-    category: "DevOps",
-  },
-  {
-    alias: "tfapply",
-    cmd: "terraform apply -auto-approve",
-    desc: "Bypass confirmation to rapidly spin cloud infrastructure.",
-    category: "Cloud",
-  },
-  {
-    alias: "tfplan",
-    cmd: "terraform plan -out=tfplan.binary",
-    desc: "Generate speculative declarative infrastructure execution plan.",
-    category: "Cloud",
-  },
-  {
-    alias: "k8spods",
-    cmd: "kubectl get pods -A -o wide --watch",
-    desc: "Live monitor all Kubernetes cluster pods across namespaces.",
-    category: "DevOps",
-  },
-  {
-    alias: "klogs",
-    cmd: "kubectl logs -f --tail=100 -n production",
-    desc: "Follow trailing 100 log lines from production namespace.",
-    category: "DevOps",
-  },
-  {
-    alias: "myip",
-    cmd: "curl -s https://icanhazip.com",
-    desc: "Fetch public IP address directly to standard output.",
-    category: "Network",
-  },
-  {
-    alias: "listenports",
-    cmd: "sudo netstat -tulpn | grep LISTEN",
-    desc: "Display all active listening TCP/UDP sockets with PIDs.",
-    category: "Security",
-  },
-  {
-    alias: "memtop",
-    cmd: "ps aux --sort=-%mem | head -n 10",
-    desc: "Filter top 10 memory-consuming active processes.",
     category: "SysAdmin",
   },
 ];
 
-const BASH_RC_CONFIG = `# Add this to your ~/.bashrc or ~/.zshrc
-export HACKER_ALIAS="Heisen_Elliot_Durden"
-export PS1="\\[\\e[1;31m\\][99.1% PURE] \\[\\e[1;32m\\]\\u@HeisenElliotDurden\\[\\e[0m\\]:\\[\\e[1;34m\\]\\w\\[\\e[0m\\]\\$ "
+const BASH_RC_CONFIG = `# ── 0x_KERNEL_PANIC // Production DevOps & Cloud Aliases ──
+# Add this snippet to your ~/.bashrc or ~/.zshrc
 
-# Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
-alias cook="docker compose up --build -d"              # Start the lab
-alias mayhem="sudo rm -rf /tmp/* && history -c"         # Soap factory cleanup
-alias fsociety="nmap -p- -sV -sC"                       # Systemic network recon
-alias blue_sky="python3 -m py_compile"                  # Check code purity`;
+# Docker & Containers
+alias dockclean="docker system prune -af --volumes"
+alias dps="docker ps --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
+
+# Kubernetes
+alias k="kubectl"
+alias k8spods="kubectl get pods -A -o wide --watch"
+alias klogs="kubectl logs -f --tail=100"
+
+# Terraform & Cloud
+alias tf="terraform"
+alias tfapply="terraform apply -auto-approve"
+alias tfplan="terraform plan -out=tfplan.binary"
+
+# Network & Security
+alias myip="curl -s https://icanhazip.com"
+alias ports="sudo netstat -tulpn | grep LISTEN"
+alias recon="nmap -sS -PN -n"
+
+# System Diagnostics
+alias memtop="ps aux --sort=-%mem | head -n 10"
+alias cputop="ps aux --sort=-%cpu | head -n 10"
+alias reload="source ~/.bashrc && echo 'Config reloaded!'";`;
+
+const ASCII_BANNER = [
+  "  ___        _  _______ ____  _   _ _____ _     ",
+  " / _ \\      | |/ / ____|  _ \\| \\ | | ____| |    ",
+  "| | | |  _  | ' /|  _| | |_) |  \\| |  _| | |    ",
+  "| |_| | | | | . \\| |___|  _ <| |\\  | |___| |___ ",
+  " \\___/  |_| |_|\\_\\_____|_| \\_\\_| \\_|_____|_____|",
+  " [0x_KERNEL_PANIC] // INTERACTIVE DEVOPS WORKSTATION",
+].join("\n");
+
+const getNeofetchOutput = (uptimeStr) => [
+  "       .---.          visitor@siva-workstation",
+  "      /     \\         ------------------------",
+  "     | () () |        OS: Linux Hardened (Kernel 6.8.0-cloud)",
+  "      \\  -  /         HOST: Siva Cloud Edge Infrastructure (AWS/GCP)",
+  "      / '---'\\        ARCH: x86_64 / Quantum CI Core",
+  "     /       \\        UPTIME: " + uptimeStr,
+  "    /   | |   \\       SHELL: bash 5.2.21 / vsh 3.2",
+  "   (__.-' '-.__)      CPU: Virtual vCPU @ 4.80GHz (16 Cores)",
+  "                      MEMORY: 4.2 GB / 16.0 GB (26% Allocated)",
+  "                      ORCHESTRATION: Docker 26.1 / Kubernetes 1.30",
+  "                      IAC: Terraform 1.8.4 / Ansible",
+  "                      STATUS: AVAILABLE FOR NEW OPPORTUNITIES",
+].join("\n");
 
 export default function CyberTerminalWorkstation({ id = "cyber-workstation", initialTab = "terminal" }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -160,20 +187,13 @@ export default function CyberTerminalWorkstation({ id = "cyber-workstation", ini
   const [terminalLogs, setTerminalLogs] = useState([
     {
       type: "banner",
-      content: ` _  _ ___ ___ ___ ___ _  _   ___ _    _    ___ ___ _____ 
-| || | __|_ _/ __| __| \\| | | __| |  | |  |_ _/ _ |_   _|
-| __ | _| | |\\__ \\ _|| .\` | | _|| |__| |__ | | (_) || |  
-|_||_|___|___|___/___|_|\\_| |___|____|____|___\\___/ |_|  
- ___  _   _ ___ ___  ___ _  _ 
-|   \\| | | | _ |   \\| __| \\| |
-| |) | |_| |   / |) | _|| .\` |
-|___/ \\___/|_|_|___/|___|_|\\_|  [99.1% PURE]`,
+      content: ASCII_BANNER,
     },
     {
       type: "welcome",
-      content: `Welcome to Heisen_Elliot_Durden Cyber Terminal Workspace.
-[99.1% PURE] DevOps Architecture // fsociety Security // Project Mayhem Immutability.
-Type 'help' to inspect available system commands or try 'cook', 'mayhem', 'fsociety', 'blue_sky'.`,
+      content: `Welcome to 0x_KERNEL_PANIC Cyber Terminal Workstation v3.2.
+Live guest session connected to Siva S (DevOps & Cloud Systems Architect).
+Type 'help' to inspect available system commands, or try 'neofetch', 'about', 'skills', 'projects', 'recon', 'resume'.`,
     },
   ]);
 
@@ -414,45 +434,271 @@ Type 'help' to inspect available system commands or try 'cook', 'mayhem', 'fsoci
     const newLogs = [...terminalLogs, { type: "user", content: trimmed }];
 
     switch (cmd) {
-      // ── BREAKING BAD + MR. ROBOT + FIGHT CLUB SPECIALS ──
+      // ── PRIMARY VISITOR & GUEST SYSTEM COMMANDS ──
+      case "help":
+      case "?":
+      case "commands":
+        newLogs.push({
+          type: "help",
+          content: [
+            { cmd: "about", desc: "Siva S engineering bio, architecture background & focus" },
+            { cmd: "skills", desc: "Interactive tech matrix (DevOps, Cloud, C, Python, Security)" },
+            { cmd: "projects", desc: "Browse all featured engineering builds & repositories" },
+            { cmd: "certs", desc: "Inspect accredited cloud & engineering credentials" },
+            { cmd: "resume", desc: "View and download verified engineering resume (PDF)" },
+            { cmd: "contact", desc: "Recruiter & client uplink (Email, Phone, Socials)" },
+            { cmd: "neofetch", desc: "Display terminal system specs & tech stack ASCII card" },
+            { cmd: "recon", desc: "Run simulated port scan & zero-trust security audit" },
+            { cmd: "docker", desc: "Query live containerized microservices and status" },
+            { cmd: "sysinfo", desc: "Display system hardware, kernel release & memory telemetry" },
+            { cmd: "ls", desc: "List virtual filesystem files in workstation" },
+            { cmd: "cat <file>", desc: "Read virtual file contents (e.g. 'cat about.txt')" },
+            { cmd: "ping <target>", desc: "Ping remote hosts or IP (e.g. ping aws.amazon.com)" },
+            { cmd: "curl <url>", desc: "Fetch simulated REST API endpoint payload" },
+            { cmd: "whoami", desc: "Display active visitor session telemetry & permissions" },
+            { cmd: "aliases", desc: "View production DevOps ~/.bashrc aliases" },
+            { cmd: "matrix", desc: "Toggle background Matrix Rain visual overlay" },
+            { cmd: "audio", desc: "Toggle Web Audio Synthesizer keyclick sound effects" },
+            { cmd: "clear", desc: "Clear terminal console buffer (or Ctrl+L)" },
+            { cmd: "banner", desc: "Re-render the 0x_KERNEL_PANIC welcome banner" },
+          ],
+        });
+        break;
+
+      case "about":
+      case "bio":
+        newLogs.push({
+          type: "result",
+          content: `// SIVA S — DEVOPS & CLOUD ARCHITECT
+${profile.title} based in ${profile.location}.
+Specialized in automated CI/CD pipelines, container orchestration (Docker/Kubernetes),
+infrastructure as code (Terraform), and high-availability cloud architecture (AWS / GCP).
+Obsessed with zero-downtime deployments, bulletproof reliability, and low-level Linux systems.
+Email: ${profile.email} | Phone: ${profile.phone}
+Type 'skills' to view tech stack or 'projects' to inspect production builds.`,
+        });
+        break;
+
+      case "whoami":
+        newLogs.push({
+          type: "result",
+          content: `USER: guest@siva-workstation (Third-Party Visitor / Recruiter)
+SESSION_ID: 0x_GUEST_${Math.floor(1000 + Math.random() * 9000)}
+CLEARANCE: GUEST_EXPLORER (Unrestricted Portfolio Access)
+NODE_TARGET: Siva S (DevOps & Cloud Systems Architect)
+LOCATION: ${profile.location}
+ACTIVE_SHELL: vsh v3.2.0 (POSIX Compatible / WebAssembly Emulated)
+STATUS: Ready for exploration. Type 'about', 'skills', 'projects', or 'resume'.`,
+        });
+        break;
+
+      case "skills":
+      case "stack":
+      case "tech":
+        newLogs.push({
+          type: "result",
+          content: `// CLOUD & DEVOPS ENGINEERING ARSENAL:
+• Cloud Platforms: AWS (EC2, S3, Beanstalk, IAM, VPC), GCP Cloud Engine, Hostinger
+• Containers & Orch: Docker, Kubernetes, Containerd, Helm, Docker Compose
+• Infrastructure as Code: Terraform (AWS/GCP), Ansible Playbooks
+• CI/CD Pipelines: Jenkins Automated Workflows, GitHub Actions
+• Languages: C / Kernel C (95%), Python (90%), Bash/POSIX (98%), Go (85%), SQL, Solidity
+• Security & Net: eBPF, Nmap, Wireshark, OpenSSL, Iptables, Metasploit, GDB
+• OS Environments: Arch Linux, Kali Linux, Debian Hardened, Ubuntu Server, ZFS`,
+        });
+        break;
+
+      case "neofetch":
+      case "fetch":
+        newLogs.push({
+          type: "result",
+          content: getNeofetchOutput(uptimeStr),
+        });
+        break;
+
+      case "recon":
+      case "scan":
+      case "nmap":
+      case "fsociety":
+        newLogs.push({
+          type: "result",
+          content: `Starting Cyber Reconnaissance Scan v3.2...
+Target: siva-portfolio.internal (10.0.4.1)
+Host is UP (0.00014s latency).
+PORT      STATE SERVICE        SECURITY STATUS
+22/tcp    open  ssh            OpenSSH 9.6p1 (ed25519 authenticated)
+80/tcp    open  http           nginx/1.24.0 (Cloud Edge Reverse Proxy)
+443/tcp   open  https          TLS 1.3 / AES-256-GCM (A+ SSL Labs)
+3000/tcp  open  react-ui       Siva Cyber Terminal UI (Vite Build)
+8080/tcp  open  jenkins-ci     Automated CI/CD Delivery Pipeline
+VULNERABILITIES: 0 detected. All ingress points hardened.
+RECON RESULT: Clean architecture. Zero exploitable vectors.`,
+        });
+        break;
+
+      case "resume":
+      case "cv": {
+        newLogs.push({
+          type: "result",
+          content: `[VERIFIED RESUME ARCHIVE]
+• Candidate: Siva S (DevOps & Cloud Systems Architect)
+• Format: PDF Document (115.42 kB)
+• Action: Opening verified resume in new browser tab...
+Direct Link: /Siva Resume.pdf`,
+        });
+        if (typeof window !== "undefined") {
+          window.open("/Siva Resume.pdf", "_blank");
+        }
+        break;
+      }
+
+      case "ls":
+      case "dir":
+        newLogs.push({
+          type: "result",
+          content: `Mode        LastWriteTime     Length Name
+----        -------------     ------ ----
+-rw-r--r--  2026-11-09 23:45    1.4K about.txt
+-rw-r--r--  2026-11-09 23:45    3.8K skills.json
+-rw-r--r--  2026-11-09 23:45    4.2K projects.md
+-rw-r--r--  2026-11-09 23:45    2.1K certifications.dat
+-rw-r--r--  2026-11-09 23:45  115.4K resume.pdf
+-rw-r--r--  2026-11-09 23:45    0.6K contact.vcf
+drwxr-xr-x  2026-11-09 23:45       - infrastructure/
+(Type 'cat <filename>' to view file contents, e.g. 'cat about.txt')`,
+        });
+        break;
+
+      case "cat": {
+        const targetFile = args[0]?.toLowerCase();
+        if (!targetFile) {
+          newLogs.push({
+            type: "error",
+            content: "Usage: cat <filename> (e.g. 'cat about.txt', 'cat skills.json', 'cat contact.vcf')",
+          });
+        } else if (targetFile === "about.txt") {
+          newLogs.push({
+            type: "result",
+            content: `[about.txt]
+Siva S — Cloud & DevOps Infrastructure Architect
+Location: ${profile.location}
+Email: ${profile.email}
+Specializes in high-availability cloud deployments, automated testing pipelines,
+Kubernetes cluster management, and Terraform infrastructure as code.`,
+          });
+        } else if (targetFile === "skills.json") {
+          newLogs.push({
+            type: "result",
+            content: JSON.stringify(
+              {
+                cloud: ["AWS EC2", "AWS S3", "AWS Beanstalk", "GCP", "Hostinger"],
+                containers: ["Docker", "Kubernetes", "Containerd"],
+                iac_cicd: ["Terraform", "Jenkins", "Ansible", "GitHub Actions"],
+                languages: ["Python", "C", "Bash", "Go", "Solidity", "SQL"],
+                security: ["eBPF", "Nmap", "Wireshark", "OpenSSL", "Iptables"],
+              },
+              null,
+              2
+            ),
+          });
+        } else if (targetFile === "projects.md") {
+          newLogs.push({
+            type: "result",
+            content: projects.map((p) => `# ${p.title} [${p.category}]\n${p.shortDesc}\nTech: ${p.stack.join(", ")}`).join("\n\n"),
+          });
+        } else if (targetFile === "resume.pdf") {
+          newLogs.push({
+            type: "result",
+            content: "[resume.pdf] Binary PDF document. Type 'resume' to view or download.",
+          });
+        } else if (targetFile === "contact.vcf") {
+          newLogs.push({
+            type: "result",
+            content: `BEGIN:VCARD\nVERSION:3.0\nFN:Siva S\nTITLE:DevOps & Cloud Architect\nEMAIL:${profile.email}\nTEL:${profile.phone}\nEND:VCARD`,
+          });
+        } else {
+          newLogs.push({
+            type: "error",
+            content: `cat: ${args[0]}: No such file or directory. Type 'ls' to see available files.`,
+          });
+        }
+        break;
+      }
+
+      case "pwd":
+        newLogs.push({
+          type: "result",
+          content: "/home/visitor/siva-portfolio",
+        });
+        break;
+
+      case "date":
+      case "time":
+        newLogs.push({
+          type: "result",
+          content: new Date().toUTCString(),
+        });
+        break;
+
+      case "echo":
+        newLogs.push({
+          type: "result",
+          content: args.join(" ") || "",
+        });
+        break;
+
+      case "quote":
+      case "fortune": {
+        const quotes = [
+          "\"There are only two hard things in Computer Science: cache invalidation and naming things.\" — Phil Karlton",
+          "\"Automation isn't about replacing humans; it's about eliminating manual human error at 3 AM.\" — DevOps Creed",
+          "\"Simplicity is prerequisite for reliability.\" — Edsger W. Dijkstra",
+          "\"Programs must be written for people to read, and only incidentally for machines to execute.\" — Abelson & Sussman",
+        ];
+        newLogs.push({
+          type: "result",
+          content: quotes[Math.floor(Math.random() * quotes.length)],
+        });
+        break;
+      }
+
+      case "curl": {
+        const url = args[0] || "api/status";
+        newLogs.push({
+          type: "result",
+          content: `HTTP/2 200 OK
+content-type: application/json; charset=utf-8
+server: cloud-edge-gateway/1.24.0
+
+{
+  "target": "${url}",
+  "status": "HEALTHY",
+  "engineer": "Siva S",
+  "role": "DevOps & Cloud Systems Architect",
+  "uptime": "${uptimeStr}",
+  "hire_ready": true
+}`,
+        });
+        break;
+      }
+
+      // Legacy commands compatibility
       case "cook":
         newLogs.push({
           type: "result",
-          content: `[+] Running 4/4
- ✔ Network lab_heisenberg_net        Created                          0.1s
- ✔ Container siva-api-gateway         Started                          0.3s
- ✔ Container fsociety-daemon-recon    Started                          0.4s
- ✔ Container mayhem-cache-redis       Started                          0.2s
-[99.1% PURE] The lab is online. Containers orchestrated with Heisenberg precision.
-"Say my name. — You're Heisenberg. — You're goddamn right."`,
+          content: `[+] Docker compose microservices:
+ ✔ Network siva_cloud_net            Created                          0.1s
+ ✔ Container siva-api-gateway        Running                          0.3s
+ ✔ Container monitoring-prometheus   Running                          0.2s
+ ✔ Container production-app-ui       Healthy                          0.2s
+[SUCCESS] The lab is online. All microservices healthy and orchestrated.`,
         });
         break;
 
       case "mayhem":
         newLogs.push({
           type: "result",
-          content: `[PROJECT MAYHEM] Soap factory cleanup initiated.
-✔ Purging /tmp/* ephemeral artifacts... Done.
-✔ Wiping active session bash history buffer... Done.
-✔ Zero forensic traces left behind.
-"It's only after we've lost everything that we're free to do anything." — Tyler Durden`,
-        });
-        break;
-
-      case "fsociety":
-        newLogs.push({
-          type: "result",
-          content: `Starting Nmap 7.94 ( https://nmap.org ) at 2026-11-07 17:00 UTC
-Nmap scan report for node-us-east-fsociety-09 (10.0.4.1)
-Host is up (0.00012s latency).
-PORT     STATE SERVICE       VERSION
-22/tcp   open  ssh           OpenSSH 9.6p1 (protocol 2.0)
-80/tcp   open  http          nginx/1.24.0 (99.1% Pure Cloud Edge)
-443/tcp  open  ssl/https     nginx/1.24.0 (AES-256-GCM)
-3000/tcp open  react-ui      Siva Doom Workstation
-8080/tcp open  jenkins-ci    Automated Pipeline Engine
-Service detection performed. 0 vulnerabilities exposed. Node secure.
-"Control is an illusion. We exist in the memory gaps between binary executions." — Elliot`,
+          content: `[CLEANUP] Ephemeral state purged. Session memory refreshed. Zero residues.`,
         });
         break;
 
@@ -460,80 +706,21 @@ Service detection performed. 0 vulnerabilities exposed. Node secure.
       case "bluesky":
         newLogs.push({
           type: "result",
-          content: `[BLUE SKY] Testing code purity...
-Compiling AST & checking Python bytecode across deployment modules...
+          content: `[CODE PURITY AUDIT]
 ✔ Syntax validation: PASSED
-✔ Zero memory leaks detected
-✔ Purity rating: 99.1% PURE (Grade: Heisenberg Standard)
-No contaminants. No unhandled promise rejections. Bulletproof execution.`,
-        });
-        break;
-
-      case "help":
-      case "?":
-        newLogs.push({
-          type: "help",
-          content: [
-            { cmd: "cook", desc: "Start the lab (docker compose up --build -d)" },
-            { cmd: "mayhem", desc: "Project Mayhem soap factory cleanup (/tmp purge & history wipe)" },
-            { cmd: "fsociety", desc: "Systemic network recon (nmap -p- -sV -sC)" },
-            { cmd: "blue_sky", desc: "Check code purity (AST compilation verification)" },
-            { cmd: "whoami", desc: "Display detailed Heisen_Elliot_Durden identity & dossier" },
-            { cmd: "handles", desc: "List all registered dark-web codenames & handles" },
-            { cmd: "stack", desc: "Show DevOps, Cloud, C & Security tech matrix" },
-            { cmd: "aliases", desc: "Print production bash alias configurations" },
-            { cmd: "sysinfo", desc: "Display system specs, uptime, and kernel release" },
-            { cmd: "logs", desc: "Inspect simulated security breach event stream" },
-            { cmd: "ping <target>", desc: "Ping remote cyber nodes (Usage: ping google.com)" },
-            { cmd: "projects", desc: "List Siva's production engineering builds" },
-            { cmd: "certs", desc: "View verified certifications & credentials" },
-            { cmd: "hire", desc: "Recruiter uplink & engineering role telemetry" },
-            { cmd: "loser", desc: "Play / Pause 'Loser.mp3' background track 🎵" },
-            { cmd: "coffee", desc: "Check DevOps caffeine telemetry & teapot 418" },
-            { cmd: "docker", desc: "Query active container status and ports" },
-            { cmd: "matrix", desc: "Trigger visual Matrix Rain overlay toggle" },
-            { cmd: "clear", desc: "Clear terminal console buffer (Or Ctrl+L)" },
-            { cmd: "banner", desc: "Re-print initial system welcome banner ASCII" },
-          ],
-        });
-        break;
-
-      case "whoami":
-        newLogs.push({
-          type: "result",
-          content: `HACKER_ALIAS: Heisen_Elliot_Durden [99.1% PURE]
-ARCHETYPE: Walter White (Heisenberg) + Elliot Alderson (fsociety) + Tyler Durden (Fight Club)
-OPERATOR: ${profile.name} (DevOps & Cloud Systems Architect)
-LOCATION: ${profile.location}
-EMAIL: ${profile.email}
-PS1: [99.1% PURE] siva@HeisenElliotDurden:~$
-CLEARANCE: LEVEL 5 // SEC_STATE: ENCRYPTED (AES-256-GCM)
-PHILOSOPHY: 99.1% Pure Code. Zero tolerance for impurities in production.`,
+✔ Memory leaks: 0 detected
+✔ Test coverage: 100% nominal
+Grade: 99.1% Production Standard. Bulletproof execution.`,
         });
         break;
 
       case "handles":
         newLogs.push({
           type: "result",
-          content: `// REGISTERED ALIAS HANDLES:
-1. Heisen_Elliot_Durden - Primary Alias // 99.1% Pure DevOps Mastermind
-2. HEISENBERG           - Cloud Lab Automation & High-Precision Infrastructure
-3. FSOCIETY_ELLIOT      - Zero-Day Defense, Root Access & Deep Network Recon
-4. TYLER_DURDEN         - Project Mayhem // Soap Factory Cleanup & Immutability
-5. 0x_KERNEL_PANIC      - Low-Level C & Linux Kernel Fault Diagnostics
-6. ROOT_GHOST           - Silent Privilege Escalation & Sandbox Hardening`,
-        });
-        break;
-
-      case "stack":
-        newLogs.push({
-          type: "result",
-          content: `// TECH MATRIX ARSENAL [99.1% PURE]:
-• Languages: C / Kernel C (95%), Python (90%), Bash/POSIX (98%), Go (85%), Solidity, SQL
-• Cloud & Hosting: AWS (EC2, S3, Beanstalk, IAM), GCP Cloud Engine, Hostinger Cloud
-• Infrastructure & DevOps: Terraform (IaC), Docker, Kubernetes, Jenkins Pipelines, Ansible
-• Security & Net: eBPF, Nmap, Wireshark, Metasploit, Burp Suite, GDB Reverse Eng, OpenSSL
-• OS & Storage: Arch Linux, Kali Linux, Debian Hardened, Ubuntu Server, ZFS, Systemd Tuning`,
+          content: `// REPOSITORY & DEVOPS HANDLES:
+• GitHub: https://github.com/
+• LinkedIn: https://linkedin.com/
+• Node ID: 0x_KERNEL_PANIC // siva-cloud-edge-01`,
         });
         break;
 
@@ -545,14 +732,14 @@ PHILOSOPHY: 99.1% Pure Code. Zero tolerance for impurities in production.`,
         break;
 
       case "sysinfo":
+      case "specs":
         newLogs.push({
           type: "result",
-          content: `OS: Linux kernel-fsociety 6.8.0-custom-x86_64
-HOST: Cyber-Node-FSOCIETY-9 (HeisenElliotDurden)
-PURITY: 99.1% PURE (No contaminants detected)
+          content: `OS: Linux Hardened Cloud Node 6.8.0-custom-x86_64
+HOST: siva-portfolio.terminal.internal
 UPTIME: ${uptimeStr}
-SHELL: zsh 5.9 (x86_64-pc-linux-gnu) / Bash 5.2
-SECURITY: Level 5 // Zero-Trust Memory Isolation Active
+SHELL: vsh 3.2.0 (web-pty)
+SECURITY: Level 5 // Zero-Trust Isolation Active
 CPU: Quantum Thread Processor @ 4.80GHz (16 Cores)
 MEMORY: 4.2 GB / 16.0 GB Allocated (26% Used)
 ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
@@ -562,10 +749,10 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
       case "logs":
         newLogs.push({
           type: "result",
-          content: `[INFO] 01:42:10 SSH login accepted for siva@HeisenElliotDurden (ed25519)
-[WARN] 01:43:05 Port probe detected from untrusted subnet -> DROPPED BY IPTABLES
-[INFO] 01:44:00 Docker lab healthcheck: 99.1% PURE // ALL CONTAINERS NOMINAL
-[CRIT] 01:44:22 Syscall sys_ptrace trapped from unverified PID 4092 -> TERMINATED BY eBPF PROBE
+          content: `[INFO] 01:42:10 HTTP GET /portfolio 200 OK (0.84ms)
+[INFO] 01:43:05 Guest terminal session initialized from edge network
+[INFO] 01:44:00 Docker healthcheck: ALL MICROSERVICES NOMINAL
+[INFO] 01:44:22 Zero-trust policy verified. Read-only guest sandbox active.
 [INFO] 01:45:00 Continuous telemetry telemetry synced with Prometheus daemon.`,
         });
         break;
@@ -707,14 +894,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
       case "banner":
         newLogs.push({
           type: "banner",
-          content: ` _  _ ___ ___ ___ ___ _  _   ___ _    _    ___ ___ _____ 
-| || | __|_ _/ __| __| \\| | | __| |  | |  |_ _/ _ |_   _|
-| __ | _| | |\\__ \\ _|| .\` | | _|| |__| |__ | | (_) || |  
-|_||_|___|___|___/___|_|\\_| |___|____|____|___\\___/ |_|  
- ___  _   _ ___ ___  ___ _  _ 
-|   \\| | | | _ |   \\| __| \\| |
-| |) | |_| |   / |) | _|| .\` |
-|___/ \\___/|_|_|___/|___|_|\\_|  [99.1% PURE]`,
+          content: ASCII_BANNER,
         });
         break;
 
@@ -772,29 +952,44 @@ Did you really think I'd let you wipe out production? That's what immutable infr
       const val = inputVal.trim().toLowerCase();
       if (!val) return;
       const cmdList = [
+        "help",
+        "about",
+        "skills",
+        "stack",
+        "projects",
+        "certs",
+        "resume",
+        "cv",
+        "contact",
+        "hire",
+        "neofetch",
+        "fetch",
+        "recon",
+        "scan",
+        "docker",
+        "sysinfo",
+        "whoami",
+        "ls",
+        "cat",
+        "ping",
+        "curl",
+        "pwd",
+        "date",
+        "echo",
+        "quote",
+        "aliases",
+        "logs",
+        "matrix",
+        "audio",
+        "clear",
+        "banner",
+        "coffee",
+        "veronica",
+        "music",
         "cook",
         "mayhem",
         "fsociety",
         "blue_sky",
-        "help",
-        "whoami",
-        "handles",
-        "stack",
-        "aliases",
-        "sysinfo",
-        "logs",
-        "ping",
-        "projects",
-        "certs",
-        "hire",
-        "loser",
-        "music",
-        "coffee",
-        "docker",
-        "matrix",
-        "clear",
-        "banner",
-        "veronica",
       ];
       const match = cmdList.find((c) => c.startsWith(val));
       if (match) {
@@ -827,8 +1022,8 @@ Did you really think I'd let you wipe out production? That's what immutable infr
   // PS1 Prompt Component
   const renderPS1Prompt = () => (
     <span className="cyber-prompt-line">
-      <span className="cyber-purity-tag">[99.1% PURE]</span>
-      <span className="cyber-prompt-user">siva@HeisenElliotDurden</span>
+      <span className="cyber-purity-tag">[GUEST]</span>
+      <span className="cyber-prompt-user">visitor@siva-workstation</span>
       <span className="cyber-prompt-sep">:</span>
       <span className="cyber-prompt-path">~</span>
       <span className="cyber-prompt-dollar">$</span>
@@ -864,15 +1059,17 @@ Did you really think I'd let you wipe out production? That's what immutable infr
             </div>
             <div className="cyber-header-titles">
               <div className="cyber-header-title-row">
-                <h1 className="cyber-sys-title neon-glow-green">Heisen_Elliot_Durden</h1>
-                <span className="cyber-pure-badge">[99.1% PURE]</span>
-                <span className="cyber-clearance-badge">LEVEL 5</span>
+                <h1 className="cyber-sys-title neon-glow-green">0x_KERNEL_PANIC</h1>
+                <span className="cyber-pure-badge">[GUEST EXPLORER]</span>
+                <span className="cyber-clearance-badge">LEVEL 1 ACCESS</span>
               </div>
               <p className="cyber-header-subtext">
                 <span className="cyber-ping-dot" />
-                SYS_ID: <span style={{ color: "var(--cyber-cyan)" }}>node-us-east-fsociety-09</span>
+                SYS_ID: <span style={{ color: "var(--cyber-cyan)" }}>siva-cloud-edge-01</span>
                 <span style={{ color: "#334155" }}>|</span>
-                ARCHETYPE: <span style={{ color: "var(--cyber-accent)" }}>BREAKING BAD // MR. ROBOT // FIGHT CLUB</span>
+                HOST: <span style={{ color: "var(--cyber-accent)" }}>portfolio.terminal.internal</span>
+                <span style={{ color: "#334155" }}>|</span>
+                SESSION: <span style={{ color: "var(--cyber-amber)" }}>INTERACTIVE_CLI_V3</span>
               </p>
             </div>
           </div>
@@ -993,20 +1190,20 @@ Did you really think I'd let you wipe out production? That's what immutable infr
               <div className="cyber-identity-top">
                 <div className="cyber-identity-profile">
                   <div className="cyber-handle-avatar neon-glow-green">
-                    HD
+                    0x
                     <div className="cyber-avatar-status-dot" title="Node Online" />
                   </div>
                   <div className="cyber-identity-names">
-                    <h3>Heisen_Elliot_Durden</h3>
-                    <p>Breaking Bad // Mr. Robot // Fight Club</p>
+                    <h3>0x_KERNEL_PANIC</h3>
+                    <p>Siva S // DevOps & Cloud Architect</p>
                   </div>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() => copyToClipboard("Heisen_Elliot_Durden", "Hacker Alias", "handle-main")}
+                  onClick={() => copyToClipboard("https://siva-portfolio.dev", "Portfolio URL", "handle-main")}
                   className="cyber-icon-btn"
-                  title="Copy Handle"
+                  title="Copy Node URL"
                 >
                   {copiedKey === "handle-main" ? (
                     <Check size={14} color="var(--cyber-accent)" />
@@ -1016,24 +1213,29 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                 </button>
               </div>
 
-              {/* Secondary Handles */}
+              {/* Quick Visitor Action Commands */}
               <div className="cyber-handles-section">
-                <span className="cyber-handles-label">Registered Codenames</span>
+                <span className="cyber-handles-label">Quick Visitor Commands</span>
                 <div className="cyber-handles-tags">
                   {[
-                    "HEISENBERG",
-                    "FSOCIETY_ELLIOT",
-                    "TYLER_DURDEN",
-                    "0x_KERNEL_PANIC",
-                    "ROOT_GHOST",
-                  ].map((alias) => (
+                    "neofetch",
+                    "skills",
+                    "projects",
+                    "recon",
+                    "certs",
+                    "resume",
+                  ].map((cmdName) => (
                     <span
-                      key={alias}
-                      onClick={() => copyToClipboard(alias, "Alias", alias)}
+                      key={cmdName}
+                      onClick={() => {
+                        setActiveTab("terminal");
+                        executeCommand(cmdName);
+                        setTimeout(() => terminalInputRef.current?.focus(), 60);
+                      }}
                       className="cyber-handle-chip"
-                      title="Click to copy alias"
+                      title={`Click to execute '${cmdName}' in terminal`}
                     >
-                      {alias}
+                      ${cmdName}
                     </span>
                   ))}
                 </div>
@@ -1050,18 +1252,18 @@ Did you really think I'd let you wipe out production? That's what immutable infr
 
                 <div className="cyber-gauge-item">
                   <div className="cyber-gauge-header">
-                    <span>CODE PURITY DEGREE:</span>
-                    <strong style={{ color: "var(--cyber-magenta)" }}>99.1% PURE</strong>
+                    <span>DEPLOYMENT READINESS:</span>
+                    <strong style={{ color: "var(--cyber-accent)" }}>100% NOMINAL</strong>
                   </div>
                   <div className="cyber-progress-track">
-                    <div className="cyber-progress-fill fill-green" style={{ width: "99.1%" }} />
+                    <div className="cyber-progress-fill fill-green" style={{ width: "100%" }} />
                   </div>
                 </div>
 
                 <div className="cyber-gauge-item">
                   <div className="cyber-gauge-header">
                     <span>MEMORY ALLOCATION:</span>
-                    <strong style={{ color: "var(--cyber-accent)" }}>4.2 GB / 16.0 GB</strong>
+                    <strong style={{ color: "var(--cyber-cyan)" }}>4.2 GB / 16.0 GB</strong>
                   </div>
                   <div className="cyber-progress-track">
                     <div className="cyber-progress-fill fill-green" style={{ width: "26%" }} />
@@ -1070,7 +1272,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
 
                 <div className="cyber-gauge-item">
                   <div className="cyber-gauge-header">
-                    <span>ENCRYPTION DEGREE:</span>
+                    <span>SECURITY ENCRYPTION:</span>
                     <strong style={{ color: "var(--cyber-cyan)" }}>AES-256-GCM (100%)</strong>
                   </div>
                   <div className="cyber-progress-track">
@@ -1079,25 +1281,25 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                 </div>
               </div>
 
-              {/* Quick Execute Cook / Lab in Terminal */}
+              {/* Quick Execute Neofetch in Terminal */}
               <button
                 type="button"
                 onClick={() => {
                   setActiveTab("terminal");
-                  executeCommand("cook");
+                  executeCommand("neofetch");
                   setTimeout(() => terminalInputRef.current?.focus(), 60);
                 }}
                 className="cyber-quick-exec-btn"
               >
-                <Flame size={14} color="#ff3355" />
-                EXECUTE 'cook' (START THE LAB)
+                <Flame size={14} color="#00ff66" />
+                RUN 'neofetch' (SYSTEM SPECS)
               </button>
             </div>
 
-            {/* Cyberpunk / Anti-Hero Manifesto Quote */}
+            {/* Engineering Manifesto Quote */}
             <div className="cyber-panel cyber-manifesto-card">
-              "We synthesize infrastructure with Heisenberg's purity, breach vulnerabilities with Elliot's zero-trust code, and tear down legacy monoliths with Tyler Durden's Project Mayhem."
-              <div className="cyber-manifesto-author">-- Heisen_Elliot_Durden // Manifesto</div>
+              "Automate everything, verify continuously, and deploy with zero downtime. Clean code, immutable infrastructure, and resilient cloud architecture."
+              <div className="cyber-manifesto-author">-- Siva S // Engineering Philosophy</div>
             </div>
           </aside>
 
@@ -1122,7 +1324,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                       <span className="cyber-term-dot dot-green" />
                       <span className="cyber-term-prompt-info">
                         <Shield size={13} color="var(--cyber-accent)" />
-                        bash - siva@HeisenElliotDurden:~ (pty/1)
+                        vsh - visitor@siva-workstation:~ (pty/1)
                       </span>
                     </div>
 
@@ -1143,11 +1345,11 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          executeCommand("sysinfo");
+                          executeCommand("neofetch");
                         }}
                         className="cyber-term-action-btn cyan-action"
                       >
-                        SYSINFO
+                        NEOFETCH
                       </button>
                     </div>
                   </div>
@@ -1182,7 +1384,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         return (
                           <div key={idx} style={{ marginTop: "4px" }}>
                             <div style={{ color: "var(--cyber-accent)", fontWeight: 700, marginBottom: "4px" }}>
-                              AVAILABLE SYSTEM COMMANDS [99.1% PURE]:
+                              AVAILABLE SYSTEM COMMANDS:
                             </div>
                             <table className="cyber-term-table">
                               <tbody>
@@ -1221,7 +1423,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                       value={inputVal}
                       onChange={(e) => setInputVal(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder="Type 'cook', 'mayhem', 'fsociety', 'blue_sky' or 'help'..."
+                      placeholder="Type 'help', 'neofetch', 'skills', 'projects', 'recon', 'resume'..."
                       className="cyber-cli-input"
                       autoComplete="off"
                       spellCheck="false"
@@ -1235,7 +1437,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
               </div>
             )}
 
-            {/* TAB 2: IDENTITY PROFILE DOSSIER */}
+            {/* TAB 2: ARCHITECT PROFILE DOSSIER */}
             {activeTab === "profile" && (
               <div className="cyber-tab-pane">
                 <div className="cyber-panel cyber-profile-container">
@@ -1243,14 +1445,14 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                     <div>
                       <h2>
                         <Fingerprint size={20} color="var(--cyber-accent)" />
-                        OPERATIONAL IDENTITY DOSSIER
+                        OPERATIONAL ARCHITECT DOSSIER
                       </h2>
-                      <p>Hacker Alias: Heisen_Elliot_Durden // 99.1% PURE ARCHITECTURE</p>
+                      <p>Subject: Siva S // Cloud Infrastructure & DevOps Systems Architect</p>
                     </div>
                     <div className="cyber-header-badges">
-                      <span className="cyber-pure-badge">[99.1% PURE]</span>
-                      <span className="cyber-badge-green">STATUS: ACTIVE</span>
-                      <span className="cyber-badge-cyan">DARK-NET NODE</span>
+                      <span className="cyber-pure-badge">[PRODUCTION READY]</span>
+                      <span className="cyber-badge-green">STATUS: AVAILABLE FOR HIRE</span>
+                      <span className="cyber-badge-cyan">CLOUD NATIVE</span>
                     </div>
                   </div>
 
@@ -1258,7 +1460,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                   <div className="cyber-env-box">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <span style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--cyber-cyan)" }}>
-                        // BASH SHELL CONFIGURATION (~/.bashrc / ~/.zshrc)
+                        // PRODUCTION DEVOPS BASH CONFIGURATION (~/.bashrc / ~/.zshrc)
                       </span>
                       <button
                         type="button"
@@ -1281,14 +1483,13 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                   <div className="cyber-two-col-grid">
                     <div className="cyber-dossier-box">
                       <span className="cyber-dossier-box-title" style={{ color: "var(--cyber-cyan)" }}>
-                        // CORE BIO & ALIAS ORIGINS
+                        // CORE BIO & ARCHITECTURAL FOCUS
                       </span>
                       <p className="cyber-dossier-text">
-                        Operating under the composite identity{" "}
-                        <strong style={{ color: "var(--cyber-accent)" }}>Heisen_Elliot_Durden</strong>: combining
-                        Walter White's ruthless obsession for chemical code purity (99.1% Pure), Elliot Alderson's
-                        deep network reconnaissance & cybersecurity discipline (fsociety), and Tyler Durden's
-                        fearless project mayhem philosophy (stateless, transient, immutable cloud infrastructure).
+                        <strong style={{ color: "var(--cyber-accent)" }}>Siva S</strong> is an engineering-driven
+                        DevOps and Cloud Systems Architect. Specialized in automated CI/CD pipelines, container orchestration
+                        (Docker/Kubernetes), declarative infrastructure as code (Terraform), and high-availability cloud architecture
+                        (AWS / GCP). Focused on zero-downtime reliability, proactive security hardening, and low-level Linux systems performance.
                       </p>
                     </div>
 
@@ -1298,19 +1499,19 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                       </span>
                       <ul className="cyber-principles-list">
                         <li>
-                          <strong>99.1% Pure Code:</strong> Zero tolerance for contaminants, memory leaks, or runtime flakiness.
+                          <strong>Zero-Downtime Reliability:</strong> Automated healthchecks, multi-region failover, and canary deployment pipelines.
                         </li>
                         <li>
-                          <strong>fsociety Root Recon:</strong> Zero-trust network scanning, proactive eBPF defenses, and encrypted telemetry.
+                          <strong>Declarative IaC Discipline:</strong> Complete reproducibility with Terraform, immutable Docker images, and strict GitOps.
                         </li>
                         <li>
-                          <strong>Project Mayhem Immutability:</strong> Infrastructure is disposable code. Wipe state without fear.
+                          <strong>Proactive Security Hardening:</strong> Zero-trust network segmentation, eBPF probes, and automated container vulnerability audits.
                         </li>
                       </ul>
                     </div>
                   </div>
 
-                  {/* Registered Codenames Grid */}
+                  {/* Core Disciplines & Competencies */}
                   <div>
                     <h3
                       style={{
@@ -1325,82 +1526,37 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         gap: "6px",
                       }}
                     >
-                      <ShieldAlert size={16} />
-                      REGISTERED CODENAMES & HANDLES
+                      <ShieldCheck size={16} />
+                      CORE ENGINEERING DISCIPLINES
                     </h3>
 
                     <div className="cyber-handles-grid">
-                      <div className="cyber-handle-card">
-                        <div>
-                          <div className="cyber-handle-title" style={{ color: "var(--cyber-magenta)" }}>
-                            Heisen_Elliot_Durden
+                      {[
+                        { title: "Terraform & IaC", sub: "Declarative AWS & GCP Infrastructure" },
+                        { title: "Kubernetes & Docker", sub: "Production Container Orchestration" },
+                        { title: "Jenkins & CI/CD", sub: "Automated Build, Test & Deploy Pipelines" },
+                        { title: "Linux Kernel Tuning", sub: "Sysctl, eBPF & Performance Diagnostics" },
+                      ].map((item) => (
+                        <div key={item.title} className="cyber-handle-card">
+                          <div>
+                            <div className="cyber-handle-title" style={{ color: "var(--cyber-accent)" }}>
+                              {item.title}
+                            </div>
+                            <div className="cyber-handle-sub">{item.sub}</div>
                           </div>
-                          <div className="cyber-handle-sub">Master Triad // 99.1% PURE Operator</div>
+                          <button
+                            type="button"
+                            onClick={() => copyToClipboard(item.title, "Skill", item.title)}
+                            className="cyber-icon-btn"
+                          >
+                            {copiedKey === item.title ? (
+                              <Check size={14} color="var(--cyber-accent)" />
+                            ) : (
+                              <Copy size={14} />
+                            )}
+                          </button>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard("Heisen_Elliot_Durden", "Handle", "h-hed")}
-                          className="cyber-icon-btn"
-                        >
-                          {copiedKey === "h-hed" ? (
-                            <Check size={14} color="var(--cyber-accent)" />
-                          ) : (
-                            <Copy size={14} />
-                          )}
-                        </button>
-                      </div>
-
-                      <div className="cyber-handle-card">
-                        <div>
-                          <div className="cyber-handle-title" style={{ color: "var(--cyber-accent)" }}>
-                            HEISENBERG
-                          </div>
-                          <div className="cyber-handle-sub">Cloud Lab Automation & Purity</div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard("HEISENBERG", "Handle", "h-hb")}
-                          className="cyber-icon-btn"
-                        >
-                          {copiedKey === "h-hb" ? <Check size={14} color="var(--cyber-accent)" /> : <Copy size={14} />}
-                        </button>
-                      </div>
-
-                      <div className="cyber-handle-card">
-                        <div>
-                          <div className="cyber-handle-title" style={{ color: "var(--cyber-cyan)" }}>
-                            FSOCIETY_ELLIOT
-                          </div>
-                          <div className="cyber-handle-sub">Dark-Net Cyber Sec & Network Recon</div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard("FSOCIETY_ELLIOT", "Handle", "h-fe")}
-                          className="cyber-icon-btn"
-                        >
-                          {copiedKey === "h-fe" ? <Check size={14} color="var(--cyber-cyan)" /> : <Copy size={14} />}
-                        </button>
-                      </div>
-
-                      <div className="cyber-handle-card">
-                        <div>
-                          <div className="cyber-handle-title" style={{ color: "var(--cyber-amber)" }}>
-                            TYLER_DURDEN
-                          </div>
-                          <div className="cyber-handle-sub">Project Mayhem // Soap Factory Cleanup</div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard("TYLER_DURDEN", "Handle", "h-td")}
-                          className="cyber-icon-btn"
-                        >
-                          {copiedKey === "h-td" ? (
-                            <Check size={14} color="var(--cyber-amber)" />
-                          ) : (
-                            <Copy size={14} />
-                          )}
-                        </button>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -1417,7 +1573,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         <Cpu size={20} color="var(--cyber-cyan)" />
                         SYSTEM ARCHITECTURE & TECH MATRIX
                       </h2>
-                      <p>99.1% Pure low-level systems, DevOps infrastructure, and cyber security toolkit</p>
+                      <p>Production low-level systems, DevOps infrastructure, and cyber security toolkit</p>
                     </div>
                   </div>
 
@@ -1539,7 +1695,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
                         <FileCode size={20} color="var(--cyber-accent)" />
                         SHELL ALIAS MATRIX (.bashrc / .zshrc)
                       </h2>
-                      <p>Breaking Bad + Mr. Robot + Fight Club DevOps command shortcuts</p>
+                      <p>Production-ready DevOps, Docker, Kubernetes & Cloud terminal shortcuts</p>
                     </div>
 
                     <button
@@ -1623,7 +1779,7 @@ Did you really think I'd let you wipe out production? That's what immutable infr
           <div className="cyber-footer-left">
             <span className="cyber-footer-status">
               <span className="cyber-ping-dot" />
-              NODE_STATUS: ONLINE [99.1% PURE]
+              NODE_STATUS: ONLINE [PRODUCTION]
             </span>
             <span className="cyber-footer-pipe">|</span>
             <span>
@@ -1631,11 +1787,11 @@ Did you really think I'd let you wipe out production? That's what immutable infr
             </span>
             <span className="cyber-footer-pipe">|</span>
             <span>
-              PS1: <strong style={{ color: "var(--cyber-cyan)" }}>[99.1% PURE] siva@HeisenElliotDurden:~$</strong>
+              PS1: <strong style={{ color: "var(--cyber-cyan)" }}>[GUEST] visitor@siva-workstation:~$</strong>
             </span>
           </div>
 
-          <div className="cyber-footer-hint">TRY 'cook', 'mayhem', 'fsociety', 'blue_sky' OR 'help'</div>
+          <div className="cyber-footer-hint">TRY 'help', 'neofetch', 'skills', 'projects', 'recon', 'resume'</div>
         </footer>
       </div>
     </div>
