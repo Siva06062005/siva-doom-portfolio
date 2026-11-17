@@ -115,13 +115,31 @@ export default function VoiceAssistant() {
     };
   }, []);
 
+  // Listen for external trigger events (e.g. from CyberTerminalWorkstation CLI)
+  useEffect(() => {
+    const handleOpenVeronica = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener("open-veronica", handleOpenVeronica);
+    return () => window.removeEventListener("open-veronica", handleOpenVeronica);
+  }, []);
+
   // Execute the action returned by the command engine with full portfolio access
   const executeAction = useCallback((action) => {
     if (!action) return;
 
     switch (action.type) {
       case "navigate":
-        setTimeout(() => navigate(action.payload), 300);
+        setTimeout(() => {
+          const raw = (action.payload || "").replace(/^\/+/, "").replace(/^#/, "").toLowerCase();
+          const targetId = raw === "certs" ? "certificates" : raw;
+          const el = document.getElementById(targetId);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          } else {
+            navigate(action.payload);
+          }
+        }, 300);
         break;
 
       case "theme":

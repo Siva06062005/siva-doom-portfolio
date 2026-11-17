@@ -23,13 +23,41 @@ import {
   CloudCog,
   FileCode,
   Flame,
+  Radio,
 } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 import { profile, projects, skillGroups, certificates } from "../data/portfolio";
 import { sfx } from "../utils/sfx";
 import "./CyberTerminalWorkstation.css";
 
 // ── SHELL ALIAS MATRIX CONFIGURATION ──────────────────────────
 const ALIAS_DATA = [
+  // Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
+  {
+    alias: "cook",
+    cmd: "docker compose up --build -d",
+    desc: "Start the lab — build and run microservices in detached mode.",
+    category: "Breaking Bad",
+  },
+  {
+    alias: "mayhem",
+    cmd: "sudo rm -rf /tmp/* && history -c",
+    desc: "Soap factory cleanup — wipe ephemeral /tmp caches and session history.",
+    category: "Fight Club",
+  },
+  {
+    alias: "fsociety",
+    cmd: "nmap -p- -sV -sC",
+    desc: "Systemic network recon — full vulnerability, port & service enumeration.",
+    category: "Mr. Robot",
+  },
+  {
+    alias: "blue_sky",
+    cmd: "python3 -m py_compile",
+    desc: "Check code purity — verify syntax, integrity, and 99.1% pure production grade.",
+    category: "Breaking Bad",
+  },
+
   // Cloud & DevOps Essentials
   {
     alias: "dockclean",
@@ -117,58 +145,65 @@ const ALIAS_DATA = [
   },
 ];
 
-const BASH_RC_CONFIG = `# ── 0x_KERNEL_PANIC // Production DevOps & Cloud Aliases ──
+const BASH_RC_CONFIG = `# ═════════════════════════════════════════════════════════════════
+# HEISEN_ELLIOT_DURDEN // Production DevOps & Hacker Environment
+# Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
 # Add this snippet to your ~/.bashrc or ~/.zshrc
+# ═════════════════════════════════════════════════════════════════
 
-# Docker & Containers
+export HACKER_ALIAS="Heisen_Elliot_Durden"
+export PS1="\\[\\e[1;31m\\][99.1% PURE] \\[\\e[1;32m\\]\\u@HeisenElliotDurden\\[\\e[0m\\]:\\[\\e[1;34m\\]\\w\\[\\e[0m\\]\\$ "
+
+# Breaking Bad + Mr. Robot + Fight Club DevOps Aliases
+alias cook="docker compose up --build -d"              # Start the lab
+alias mayhem="sudo rm -rf /tmp/* && history -c"         # Soap factory cleanup
+alias fsociety="nmap -p- -sV -sC"                       # Systemic network recon
+alias blue_sky="python3 -m py_compile"                  # Check code purity
+
+# Production Cloud & Kubernetes Orchestration
 alias dockclean="docker system prune -af --volumes"
 alias dps="docker ps --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
-
-# Kubernetes
 alias k="kubectl"
 alias k8spods="kubectl get pods -A -o wide --watch"
-alias klogs="kubectl logs -f --tail=100"
-
-# Terraform & Cloud
+alias klogs="kubectl logs -f --tail=100 -n production"
 alias tf="terraform"
 alias tfapply="terraform apply -auto-approve"
 alias tfplan="terraform plan -out=tfplan.binary"
-
-# Network & Security
 alias myip="curl -s https://icanhazip.com"
 alias ports="sudo netstat -tulpn | grep LISTEN"
-alias recon="nmap -sS -PN -n"
-
-# System Diagnostics
 alias memtop="ps aux --sort=-%mem | head -n 10"
 alias cputop="ps aux --sort=-%cpu | head -n 10"
-alias reload="source ~/.bashrc && echo 'Config reloaded!'";`;
+alias reload="source ~/.bashrc && echo '[99.1% PURE] Config reloaded!'";`;
 
 const ASCII_BANNER = [
-  "  ___        _  _______ ____  _   _ _____ _     ",
-  " / _ \\      | |/ / ____|  _ \\| \\ | | ____| |    ",
-  "| | | |  _  | ' /|  _| | |_) |  \\| |  _| | |    ",
-  "| |_| | | | | . \\| |___|  _ <| |\\  | |___| |___ ",
-  " \\___/  |_| |_|\\_\\_____|_| \\_\\_| \\_|_____|_____|",
-  " [0x_KERNEL_PANIC] // INTERACTIVE DEVOPS WORKSTATION",
+  " _   _ _____ ___ ____  _____ _   _   _____ _     _     ___ ___ _____   ____  _   _ ____  ____  _____ _   _ ",
+  "| | | | ____|_ _/ ___|| ____| \\ | | | ____| |   | |   |_ _/ _ \\_   _| |  _ \\| | | |  _ \\|  _ \\| ____| \\ | |",
+  "| |_| |  _|  | |\\___ \\|  _| |  \\| | |  _| | |   | |    | | | | || |   | | | | | | | |_) | | | |  _| |  \\| |",
+  "|  _  | |___ | | ___) | |___| |\\  | | |___| |___| |___ | | |_| || |   | |_| | |_| |  _ <| |_| | |___| |\\  |",
+  "|_| |_|_____|___|____/|_____|_| \\_| |_____|_____|_____|___\\___/ |_|   |____/ \\___/|_| \\_\\____/|_____|_| \\_|",
+  "[99.1% PURE] // HEISEN_ELLIOT_DURDEN // CYBER WORKSTATION",
 ].join("\n");
 
 const getNeofetchOutput = (uptimeStr) => [
-  "       .---.          visitor@siva-workstation",
-  "      /     \\         ------------------------",
-  "     | () () |        OS: Linux Hardened (Kernel 6.8.0-cloud)",
-  "      \\  -  /         HOST: Siva Cloud Edge Infrastructure (AWS/GCP)",
-  "      / '---'\\        ARCH: x86_64 / Quantum CI Core",
-  "     /       \\        UPTIME: " + uptimeStr,
-  "    /   | |   \\       SHELL: bash 5.2.21 / vsh 3.2",
-  "   (__.-' '-.__)      CPU: Virtual vCPU @ 4.80GHz (16 Cores)",
+  "       .---.          heisen_elliot_durden@doom-workstation",
+  "      /     \\         --------------------------------------",
+  "     | () () |        IDENTITY: Heisen_Elliot_Durden (Siva S)",
+  "      \\  -  /         PURITY: 99.1% PURE (Production Standard)",
+  "      / '---'\\        OS: Linux Hardened (Kernel 6.8.0-cloud)",
+  "     /       \\        CLEARANCE: ROOT // LEVEL 5",
+  "    /   | |   \\       UPTIME: " + uptimeStr,
+  "   (__.-' '-.__)      SHELL: bash 5.2.21 / vsh 3.2 (WebPTY)",
+  "                      CPU: Virtual vCPU @ 4.80GHz (16 Cores)",
   "                      MEMORY: 4.2 GB / 16.0 GB (26% Allocated)",
   "                      ORCHESTRATION: Docker 26.1 / Kubernetes 1.30",
   "                      IAC: Terraform 1.8.4 / Ansible",
+  "                      HACKER ALIASES: cook, mayhem, fsociety, blue_sky",
+  "                      PAGE CONTROLS: goto, theme, music, veronica, resume",
   "                      STATUS: AVAILABLE FOR NEW OPPORTUNITIES",
 ].join("\n");
 
 export default function CyberTerminalWorkstation({ id = "cyber-workstation", initialTab = "terminal" }) {
+  const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
@@ -191,9 +226,11 @@ export default function CyberTerminalWorkstation({ id = "cyber-workstation", ini
     },
     {
       type: "welcome",
-      content: `Welcome to 0x_KERNEL_PANIC Cyber Terminal Workstation v3.2.
-Live guest session connected to Siva S (DevOps & Cloud Systems Architect).
-Type 'help' to inspect available system commands, or try 'neofetch', 'about', 'skills', 'projects', 'recon', 'resume'.`,
+      content: `Welcome to HEISEN_ELLIOT_DURDEN Cyber Terminal Workstation v3.2.
+Live session connected to Siva S (DevOps & Cloud Systems Architect).
+Clearance: ROOT // LEVEL 5 | Code Purity Standard: 99.1% PURE.
+Whole page control armed: Try 'goto projects', 'theme', 'music', 'veronica', 'cook', 'fsociety', 'mayhem', 'blue_sky'.
+Type 'help' to inspect all available system, navigation & DevOps commands.`,
     },
   ]);
 
@@ -416,6 +453,35 @@ Type 'help' to inspect available system commands, or try 'neofetch', 'about', 's
     }
   }, [terminalLogs, activeTab]);
 
+  // ── WHOLE PAGE SECTION NAVIGATION HELPER ───────────────────
+  const scrollToSection = (secName) => {
+    const raw = (secName || "").toLowerCase().replace(/^#/, "").replace(/^\//, "");
+    const map = {
+      home: "home",
+      about: "about",
+      bio: "about",
+      skills: "skills",
+      stack: "skills",
+      projects: "projects",
+      builds: "projects",
+      certs: "certificates",
+      certificates: "certificates",
+      experience: "experience",
+      timeline: "experience",
+      contact: "contact",
+      hire: "contact",
+      terminal: "cyber-workstation",
+      workstation: "cyber-workstation",
+    };
+    const targetId = map[raw] || raw;
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      return { success: true, targetId };
+    }
+    return { success: false, targetId };
+  };
+
   // ── COMMAND ENGINE ──────────────────────────────────────────
   const executeCommand = (raw) => {
     const trimmed = raw.trim();
@@ -434,6 +500,234 @@ Type 'help' to inspect available system commands, or try 'neofetch', 'about', 's
     const newLogs = [...terminalLogs, { type: "user", content: trimmed }];
 
     switch (cmd) {
+      // ── WHOLE PAGE CONTROL COMMANDS ──
+      case "goto":
+      case "jump":
+      case "navigate": {
+        const dest = args[0];
+        if (!dest) {
+          newLogs.push({
+            type: "error",
+            content: "Usage: goto <home | about | skills | projects | certs | experience | contact | terminal>",
+          });
+        } else {
+          const res = scrollToSection(dest);
+          if (res.success) {
+            newLogs.push({
+              type: "result",
+              content: `[NAVIGATION] Teleporting viewport to section #${res.targetId} (Smooth Scroll)...`,
+            });
+          } else {
+            newLogs.push({
+              type: "error",
+              content: `Target section '#${dest}' not found. Available targets: home, about, skills, projects, certs, experience, contact, terminal.`,
+            });
+          }
+        }
+        break;
+      }
+
+      case "home": {
+        scrollToSection("home");
+        newLogs.push({
+          type: "result",
+          content: "[NAVIGATION] Teleporting viewport to top #home section.",
+        });
+        break;
+      }
+
+      case "experience":
+      case "timeline": {
+        scrollToSection("experience");
+        newLogs.push({
+          type: "result",
+          content: `// SERVICE TIMELINE & EXPERIENCE (Teleporting to #experience):
+• 2026: DevOps Engineer & Cloud Systems Architect
+• 2025: Autonomous Infrastructure & CI/CD Pipeline Automation
+• 2024: Blockchain Smart Contract Development (SmartPanchayat)`,
+        });
+        break;
+      }
+
+      case "contact": {
+        scrollToSection("contact");
+        newLogs.push({
+          type: "result",
+          content: `// DIRECT TRANSMISSION UPLINK (Teleporting to #contact):
+• Email: ${profile.email}
+• Phone: ${profile.phone}
+• Location: ${profile.location}
+• Status: Ready for interview / project dispatch.`,
+        });
+        break;
+      }
+
+      case "theme": {
+        const sub = args[0]?.toLowerCase();
+        if (sub === "doom" || sub === "ironman" || sub === "toggle") {
+          toggleTheme();
+          newLogs.push({
+            type: "result",
+            content: `[THEME CONTROLLER] Active Theme: DOOM CYBER INDUSTRIAL (Obsidian & Neon Green / Cyan).`,
+          });
+        } else {
+          newLogs.push({
+            type: "result",
+            content: `[THEME CONTROLLER]
+Current Theme: ${theme.toUpperCase()} (Doom Industrial Cyberpunk)
+Syntax: theme <toggle | doom | ironman>
+Rendered with scanline overlays, cyber grid, and glow accents.`,
+          });
+        }
+        break;
+      }
+
+      case "music":
+      case "song":
+      case "bgm":
+      case "loser": {
+        const sub = args[0]?.toLowerCase();
+        let playing = sfx.bgmPlaying;
+        if (sub === "play" && !playing) {
+          sfx.toggleBgm();
+          playing = true;
+        } else if ((sub === "pause" || sub === "stop") && playing) {
+          sfx.toggleBgm();
+          playing = false;
+        } else {
+          playing = sfx.toggleBgm();
+        }
+        newLogs.push({
+          type: "result",
+          content: playing
+            ? "🎵 [BGM ACTIVE] Soundtrack playing (Loser.mp3)! Type 'music pause' to mute or use top Navbar control."
+            : "🔇 [BGM PAUSED] Background soundtrack halted. Type 'music play' to resume.",
+        });
+        break;
+      }
+
+      case "veronica":
+      case "ai":
+      case "assistant": {
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("open-veronica"));
+        }
+        newLogs.push({
+          type: "result",
+          content: `[VERONICA AI PROTOCOL ENGAGED]
+• Neural Interface: MODAL POPUP ACTIVATED
+• Status: ONLINE (Speech Synthesis & Voice Recognition Armed)
+• Capabilities: Full portfolio voice navigation, DevOps Q&A, and technical breakdown.
+• Directive: Speak into your microphone or type in Veronica's HUD!`,
+        });
+        break;
+      }
+
+      case "audio":
+      case "sound": {
+        const sub = args[0]?.toLowerCase();
+        let next;
+        if (sub === "on") next = true;
+        else if (sub === "off") next = false;
+        else next = !audioEnabled;
+        setAudioEnabled(next);
+        if (next) {
+          initAudioCtx();
+          playSynthBeep(880, 0.08);
+          showToast("Web Audio Synthesizer Enabled", "success");
+        } else {
+          showToast("Audio Muted", "info");
+        }
+        newLogs.push({
+          type: "result",
+          content: `[AUDIO SYNTH] Web Audio Keyclick & Status Beeps: ${next ? "ENABLED" : "MUTED"}.`,
+        });
+        break;
+      }
+
+      case "matrix": {
+        const sub = args[0]?.toLowerCase();
+        let next;
+        if (sub === "on") next = true;
+        else if (sub === "off") next = false;
+        else next = !matrixActive;
+        setMatrixActive(next);
+        newLogs.push({
+          type: "result",
+          content: `[MATRIX RAIN] Canvas digital stream set to: ${next ? "ONLINE (ON)" : "HALTED (OFF)"}.`,
+        });
+        break;
+      }
+
+      case "fullscreen":
+      case "fs": {
+        setIsFullscreen((prev) => !prev);
+        newLogs.push({
+          type: "result",
+          content: `Workstation display mode: ${!isFullscreen ? "FULLSCREEN EXPANDED" : "STANDARD INLINE"}.`,
+        });
+        break;
+      }
+
+      // ── HEISEN_ELLIOT_DURDEN HACKER ALIASES ──
+      case "cook":
+        newLogs.push({
+          type: "result",
+          content: `[HEISENBERG // START THE LAB]
+$ docker compose up --build -d
+✔ Network siva_cloud_net           Created    0.1s
+✔ Container siva-api-gateway       Running    0.3s
+✔ Container prometheus-monitoring  Running    0.2s
+✔ Container production-app-ui      Healthy    0.2s
+[99.1% PURE] The lab is online. All microservices orchestrated and nominal.`,
+        });
+        break;
+
+      case "mayhem":
+        sfx.playWarning();
+        newLogs.push({
+          type: "result",
+          content: `[TYLER DURDEN // PROJECT MAYHEM CLEANUP]
+$ sudo rm -rf /tmp/* && history -c
+✔ /tmp ephemeral caches purged.
+✔ Session command traces wiped clean.
+✔ Soap factory standards maintained. Zero residues left behind.`,
+        });
+        break;
+
+      case "fsociety":
+        newLogs.push({
+          type: "result",
+          content: `[ELLIOT ALDERSON // FSOCIETY SYSTEMIC RECON]
+$ nmap -p- -sV -sC siva-portfolio.internal
+Starting Nmap 7.94 ( https://nmap.org )
+Nmap scan report for siva-portfolio.internal (10.0.4.1)
+Host is up (0.00012s latency).
+PORT     STATE SERVICE        VERSION
+22/tcp   open  ssh            OpenSSH 9.6p1 (ed25519 authenticated)
+80/tcp   open  http           nginx/1.24.0 (Cloud Edge Reverse Proxy)
+443/tcp  open  ssl/https      TLSv1.3 / AES-256-GCM (A+ Grade)
+3000/tcp open  react-terminal Siva Cyber Workstation (Vite Engine)
+8080/tcp open  jenkins-ci     Automated CI/CD Delivery Pipeline
+All 65535 scanned ports on siva-portfolio.internal are secured.
+Zero vulnerabilities detected. Defense is unbreakable.`,
+        });
+        break;
+
+      case "blue_sky":
+      case "bluesky":
+        newLogs.push({
+          type: "result",
+          content: `[WALTER WHITE // BLUE SKY CODE PURITY AUDIT]
+$ python3 -m py_compile --check-all
+✔ Syntax Tree & AST: 100% VALIDATED
+✔ Memory Leaks: 0 DETECTED
+✔ Test Suite Execution: ALL TESTS PASSED
+✔ Production Standard: 99.1% PURE CHEMISTRY
+"Say my name. You're Heisenberg." — Grade: Flawless.`,
+        });
+        break;
+
       // ── PRIMARY VISITOR & GUEST SYSTEM COMMANDS ──
       case "help":
       case "?":
@@ -441,26 +735,39 @@ Type 'help' to inspect available system commands, or try 'neofetch', 'about', 's
         newLogs.push({
           type: "help",
           content: [
-            { cmd: "about", desc: "Siva S engineering bio, architecture background & focus" },
+            // Page Control
+            { cmd: "goto <sec>", desc: "Jump to section: home, about, skills, projects, certs, experience, contact" },
+            { cmd: "theme", desc: "Query or toggle active portfolio visual theme (Doom Cyberpunk)" },
+            { cmd: "music", desc: "Toggle background music soundtrack (Loser.mp3)" },
+            { cmd: "veronica", desc: "Deploy Veronica AI Voice Assistant modal HUD" },
+            { cmd: "resume", desc: "Open verified engineering PDF resume in new tab" },
+            { cmd: "matrix", desc: "Toggle background Matrix Rain visual overlay (ON/OFF)" },
+            { cmd: "audio", desc: "Toggle Web Audio Synthesizer keyclick sound effects" },
+            { cmd: "fullscreen", desc: "Toggle fullscreen expanded workstation display" },
+            // Hacker Aliases
+            { cmd: "cook", desc: "docker compose up --build -d (Start the lab microservices)" },
+            { cmd: "mayhem", desc: "sudo rm -rf /tmp/* && history -c (Soap factory cleanup)" },
+            { cmd: "fsociety", desc: "nmap -p- -sV -sC (Systemic network recon & port scan)" },
+            { cmd: "blue_sky", desc: "python3 -m py_compile (Check code purity: 99.1% pure)" },
+            // Portfolio Dossier
+            { cmd: "about", desc: "Engineering bio, architecture background & focus" },
             { cmd: "skills", desc: "Interactive tech matrix (DevOps, Cloud, C, Python, Security)" },
             { cmd: "projects", desc: "Browse all featured engineering builds & repositories" },
             { cmd: "certs", desc: "Inspect accredited cloud & engineering credentials" },
-            { cmd: "resume", desc: "View and download verified engineering resume (PDF)" },
-            { cmd: "contact", desc: "Recruiter & client uplink (Email, Phone, Socials)" },
-            { cmd: "neofetch", desc: "Display terminal system specs & tech stack ASCII card" },
-            { cmd: "recon", desc: "Run simulated port scan & zero-trust security audit" },
+            { cmd: "experience", desc: "Service timeline & production engineering history" },
+            { cmd: "contact", desc: "Direct transmission uplink (Email, Phone, Location)" },
+            { cmd: "hire", desc: "Recruiter telemetry & immediate availability summary" },
+            // System & Utilities
+            { cmd: "neofetch", desc: "Display Heisen_Elliot_Durden specs & ASCII card" },
             { cmd: "docker", desc: "Query live containerized microservices and status" },
-            { cmd: "sysinfo", desc: "Display system hardware, kernel release & memory telemetry" },
+            { cmd: "sysinfo", desc: "Display hardware specs, kernel release & memory usage" },
+            { cmd: "whoami", desc: "Display active session telemetry & 99.1% purity clearance" },
+            { cmd: "aliases", desc: "Display full ~/.bashrc DevOps & hacker alias matrix" },
             { cmd: "ls", desc: "List virtual filesystem files in workstation" },
             { cmd: "cat <file>", desc: "Read virtual file contents (e.g. 'cat about.txt')" },
-            { cmd: "ping <target>", desc: "Ping remote hosts or IP (e.g. ping aws.amazon.com)" },
+            { cmd: "ping <host>", desc: "Ping remote hosts or IP (e.g. ping aws.amazon.com)" },
             { cmd: "curl <url>", desc: "Fetch simulated REST API endpoint payload" },
-            { cmd: "whoami", desc: "Display active visitor session telemetry & permissions" },
-            { cmd: "aliases", desc: "View production DevOps ~/.bashrc aliases" },
-            { cmd: "matrix", desc: "Toggle background Matrix Rain visual overlay" },
-            { cmd: "audio", desc: "Toggle Web Audio Synthesizer keyclick sound effects" },
             { cmd: "clear", desc: "Clear terminal console buffer (or Ctrl+L)" },
-            { cmd: "banner", desc: "Re-render the 0x_KERNEL_PANIC welcome banner" },
           ],
         });
         break;
@@ -482,13 +789,15 @@ Type 'skills' to view tech stack or 'projects' to inspect production builds.`,
       case "whoami":
         newLogs.push({
           type: "result",
-          content: `USER: guest@siva-workstation (Third-Party Visitor / Recruiter)
-SESSION_ID: 0x_GUEST_${Math.floor(1000 + Math.random() * 9000)}
-CLEARANCE: GUEST_EXPLORER (Unrestricted Portfolio Access)
-NODE_TARGET: Siva S (DevOps & Cloud Systems Architect)
+          content: `[SESSION TELEMETRY]
+USER: guest@siva-workstation (Third-Party Visitor / Recruiter)
+IDENTITY: Siva S (Alias: Heisen_Elliot_Durden)
+PURITY: 99.1% PURE
+CLEARANCE: ROOT // LEVEL 5 ACCESS
+ROLE: Cloud & DevOps Infrastructure Architect
 LOCATION: ${profile.location}
-ACTIVE_SHELL: vsh v3.2.0 (POSIX Compatible / WebAssembly Emulated)
-STATUS: Ready for exploration. Type 'about', 'skills', 'projects', or 'resume'.`,
+SHELL: bash 5.2.21 / vsh 3.2 (WebPTY)
+STATUS: Ready. Full page control armed. Type 'help' or 'goto <section>' to command the portfolio.`,
         });
         break;
 
@@ -519,7 +828,6 @@ STATUS: Ready for exploration. Type 'about', 'skills', 'projects', or 'resume'.`
       case "recon":
       case "scan":
       case "nmap":
-      case "fsociety":
         newLogs.push({
           type: "result",
           content: `Starting Cyber Reconnaissance Scan v3.2...
@@ -541,10 +849,10 @@ RECON RESULT: Clean architecture. Zero exploitable vectors.`,
         newLogs.push({
           type: "result",
           content: `[VERIFIED RESUME ARCHIVE]
-• Candidate: Siva S (DevOps & Cloud Systems Architect)
+• Candidate: Siva S (Alias: Heisen_Elliot_Durden)
+• Credentials: Cloud & DevOps Infrastructure Architect
 • Format: PDF Document (115.42 kB)
-• Action: Opening verified resume in new browser tab...
-Direct Link: /Siva Resume.pdf`,
+• Action: Opening verified resume in new tab... (/Siva Resume.pdf)`,
         });
         if (typeof window !== "undefined") {
           window.open("/Siva Resume.pdf", "_blank");
@@ -805,20 +1113,6 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
         });
         break;
 
-      case "loser":
-      case "music":
-      case "song":
-      case "bgm": {
-        const isPlaying = sfx.toggleBgm();
-        newLogs.push({
-          type: "result",
-          content: isPlaying
-            ? "🎵 [BGM ACTIVE] Playing 'Loser.mp3' soundtrack! Use 'music' or top Navbar button to toggle."
-            : "🔇 [BGM PAUSED] Background music paused.",
-        });
-        break;
-      }
-
       case "coffee":
       case "caffeine":
         newLogs.push({
@@ -840,18 +1134,6 @@ ENCRYPTION: AES-256-GCM Hardware Accelerated (100%)`,
 4e1f7a8b9c     siva/automation-ci:v2          Up 14 days     8080/tcp (Jenkins)
 5a6b7c8d9e     siva/fakenews-ml-pipeline      Up 10 days     8000/tcp, 3306/tcp (MySQL/TF-IDF)
 STATUS: All containers 99.1% pure. Automated restart policies enabled.`,
-        });
-        break;
-
-      case "veronica":
-      case "assistant":
-        newLogs.push({
-          type: "result",
-          content: `[VERONICA AI VOICE INTERFACE]
-• Status: ONLINE & STANDBY
-• Interface: Click the 'VERONICA' button in the top navigation bar or say 'Hey Veronica'.
-• Voice: Natural synthesis (Web Speech API).
-• Directives: Voice navigation, telemetry inquiry, resume pitching, music control.`,
         });
         break;
 
@@ -880,14 +1162,6 @@ Did you really think I'd let you wipe out production? That's what immutable infr
         newLogs.push({
           type: "error",
           content: "PERMISSION DENIED: Root access is strictly reserved for automated CI/CD pipelines.",
-        });
-        break;
-
-      case "matrix":
-        setMatrixActive((prev) => !prev);
-        newLogs.push({
-          type: "result",
-          content: `Matrix Rain visual effect toggled ${!matrixActive ? "ON" : "OFF"}.`,
         });
         break;
 

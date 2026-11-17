@@ -159,10 +159,11 @@ function setCachedResponse(prompt, text, model) {
 // ─── Gemini API Configuration ────────────────────────────────────
 // Using fast, lightweight production models; raced concurrently via Promise.any
 const PRIMARY_MODELS = [
-  "gemini-3.5-flash-lite",
-  "gemini-flash-latest",
+  "gemini-1.5-flash",
+  "gemini-2.0-flash",
+  "gemini-1.5-flash-latest",
 ];
-const FALLBACK_MODEL = "gemini-flash-lite-latest";
+const FALLBACK_MODEL = "gemini-1.5-pro";
 const MODEL_TIMEOUT_MS = 3500; // Strict 3.5s timeout per request
 
 async function querySingleModel(model, prompt, apiKey, timeoutMs = MODEL_TIMEOUT_MS) {
